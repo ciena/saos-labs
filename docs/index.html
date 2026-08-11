@@ -1,0 +1,262 @@
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" >
+<head>
+    <meta charset="utf-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="description" content="None" />
+      <link rel="shortcut icon" href="img/favicon.ico" />
+    <title>SAOS Labs</title>
+    <link rel="stylesheet" href="css/theme.css" />
+    <link rel="stylesheet" href="css/theme_extra.css" />
+        <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.8.0/styles/github.min.css" />
+        <link href="assets/css/ciena.css" rel="stylesheet" />
+    
+      <script>
+        // Current page data
+        var mkdocs_page_name = "Home";
+        var mkdocs_page_input_path = "index.md";
+        var mkdocs_page_url = null;
+      </script>
+    
+    <!--[if lt IE 9]>
+      <script src="js/html5shiv.min.js"></script>
+    <![endif]-->
+      <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.8.0/highlight.min.js"></script>
+      <script>hljs.highlightAll();</script> 
+</head>
+
+<body class="wy-body-for-nav" role="document">
+
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side stickynav">
+    <div class="wy-side-scroll">
+      <div class="wy-side-nav-search">
+          <a href="." class="icon icon-home"> SAOS Labs
+        </a><div role="search">
+  <form id ="rtd-search-form" class="wy-form" action="./search.html" method="get">
+      <input type="text" name="q" placeholder="Search docs" aria-label="Search docs" title="Type search term here" />
+  </form>
+</div>
+      </div>
+
+      <div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+              <ul class="current">
+                <li class="toctree-l1 current"><a class="reference internal current" href="#">Home</a>
+    <ul class="current">
+    <li class="toctree-l2"><a class="reference internal" href="#getting-started">Getting Started</a>
+        <ul>
+    <li class="toctree-l3"><a class="reference internal" href="#option-a-shallow-git-clone-sparse-checkout">Option A — Shallow git clone (sparse checkout)</a>
+    </li>
+    <li class="toctree-l3"><a class="reference internal" href="#option-b-download-archive-no-git">Option B — Download archive (no git)</a>
+    </li>
+        </ul>
+    </li>
+    <li class="toctree-l2"><a class="reference internal" href="#foundation-track">Foundation Track</a>
+    </li>
+    <li class="toctree-l2"><a class="reference internal" href="#services-track">Services Track</a>
+    </li>
+    </ul>
+                </li>
+              </ul>
+              <p class="caption"><span class="caption-text">Foundation</span></p>
+              <ul>
+                  <li class="toctree-l1"><a class="reference internal" href="F0-SAOS-Fundamentals/">F0 SAOS Fundamentals</a>
+                  </li>
+              </ul>
+      </div>
+    </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap">
+      <nav class="wy-nav-top" role="navigation" aria-label="Mobile navigation menu">
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href=".">SAOS Labs</a>
+        
+      </nav>
+      <div class="wy-nav-content">
+        <div class="rst-content"><div role="navigation" aria-label="breadcrumbs navigation">
+  <ul class="wy-breadcrumbs">
+    <li><a href="." class="icon icon-home" aria-label="Docs"></a></li>
+      <li class="breadcrumb-item active">Home</li>
+    <li class="wy-breadcrumbs-aside">
+    </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+            <div class="section" itemprop="articleBody">
+              
+                <h1 id="saos-10x-lab-program">SAOS 10x Lab Program</h1>
+<p>Hands-on containerlab labs for Ciena SAOS 10 SE enablement. All labs are
+built and validated against SAOS release 10.12.00.0228 (container image
+<code>vrnetlab/ciena_saos:10-12-00-0228</code>).</p>
+<h2 id="getting-started">Getting Started</h2>
+<p>Set your repo coordinates and target lab, then use either retrieval path
+below. Replace the placeholder values with the actual GitHub owner, repo
+name, and the lab you want to run.</p>
+<pre><code class="language-bash">GITHUB_OWNER=&lt;your-github-owner&gt;
+GITHUB_REPO=&lt;your-repo-name&gt;
+REPO_URL=&quot;https://github.com/${GITHUB_OWNER}/${GITHUB_REPO}&quot;
+LAB=F1-Loopbacks-and-Interfaces   # replace with your target lab
+</code></pre>
+<h3 id="option-a-shallow-git-clone-sparse-checkout">Option A — Shallow git clone (sparse checkout)</h3>
+<p>Clones only the commit history needed and limits the working tree to the
+single lab directory plus top-level files:</p>
+<pre><code class="language-bash">git clone --filter=blob:none --no-checkout &quot;${REPO_URL}.git&quot;
+cd &quot;${GITHUB_REPO}&quot;
+git sparse-checkout init --cone
+git sparse-checkout set &quot;labs/${LAB}&quot;
+git checkout
+</code></pre>
+<p>Deploy from the repo root:</p>
+<pre><code class="language-bash">containerlab deploy -t &quot;labs/${LAB}/topo.clab.yml&quot;
+</code></pre>
+<h3 id="option-b-download-archive-no-git">Option B — Download archive (no git)</h3>
+<p>Downloads and unpacks only the lab directory you need without cloning the
+full repository:</p>
+<pre><code class="language-bash">wget -qO- &quot;${REPO_URL}/archive/refs/heads/main.tar.gz&quot; \
+  | tar -xz --strip-components=2 \
+       &quot;${GITHUB_REPO}-main/labs/${LAB}&quot;
+cd &quot;${LAB}&quot;
+containerlab deploy -t topo.clab.yml
+</code></pre>
+<blockquote>
+<p><strong>Tip:</strong> Prefer Option A if you plan to iterate on configs or pull future
+updates. Use Option B for a one-shot deployment on a host without git.</p>
+</blockquote>
+<h2 id="foundation-track">Foundation Track</h2>
+<p>Start with the F0 theory guide, then follow the recommended F1-F4 sequence.
+F5 is an alternative branch from F2 for learners who specifically need LDP.
+An OSPF → SR-MPLS → BGP alternative is planned; the <code>O</code> identifiers remain
+reserved for Operations, so that future branch will use <code>A</code> identifiers.</p>
+<table>
+<thead>
+<tr>
+<th>ID</th>
+<th>Lab</th>
+<th>Topic</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>F0</td>
+<td><a href="F0-SAOS-Fundamentals/">SAOS Fundamentals</a></td>
+<td>CLI contexts, hierarchy, classifiers, FPs, and FDs</td>
+</tr>
+<tr>
+<td>F1</td>
+<td><a href="F1-Loopbacks-and-Interfaces/README.md">Loopbacks and Interfaces</a></td>
+<td>Classifiers, FDs, FPs, IPv4/IPv6, loopbacks</td>
+</tr>
+<tr>
+<td>F2</td>
+<td><a href="F2-IS-IS-Routing/README.md">IS-IS Routing</a></td>
+<td>IS-IS, NET/NSAP, BFD, MD5, IPv6 AF</td>
+</tr>
+<tr>
+<td>F3</td>
+<td><a href="F3-SR-MPLS/README.md">SR-MPLS</a></td>
+<td>SR prefix-SID, SRGB, IS-IS MPLS-TE/SR, CSPF</td>
+</tr>
+<tr>
+<td>F4</td>
+<td><a href="F4-BGP/README.md">BGP</a></td>
+<td>iBGP, MP-BGP, routing policy over SR-MPLS</td>
+</tr>
+<tr>
+<td>F5</td>
+<td><a href="F5-LDP/README.md">LDP</a></td>
+<td>Alternative LDP/MPLS transport from F2</td>
+</tr>
+</tbody>
+</table>
+<p>SR Policy follows the SR-MPLS foundation in the Transport track. Its first
+lab will stay introductory and omit color-based policy.</p>
+<h2 id="services-track">Services Track</h2>
+<p>Prerequisites: F1, F2, F3, F4</p>
+<table>
+<thead>
+<tr>
+<th>ID</th>
+<th>Lab</th>
+<th>Topic</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>S1</td>
+<td><a href="S1-L3VPN/README.md">L3VPN</a></td>
+<td>VRF, RD, RT, VPNv4, route leaking</td>
+</tr>
+<tr>
+<td>S2</td>
+<td><a href="S2-EVPN-VPWS/README.md">EVPN-VPWS</a></td>
+<td>EVPN instance, VPWS, ESI, all-active multi-homing</td>
+</tr>
+</tbody>
+</table>
+<table>
+<thead>
+<tr>
+<th>Lab</th>
+<th>Topic</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td></td>
+<td></td>
+</tr>
+</tbody>
+</table>
+              
+            </div>
+          </div><footer>
+    <div class="rst-footer-buttons" role="navigation" aria-label="Footer Navigation">
+        <a href="F0-SAOS-Fundamentals/" class="btn btn-neutral float-right" title="F0 SAOS Fundamentals">Next <span class="icon icon-circle-arrow-right"></span></a>
+    </div>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <!-- Copyright etc -->
+  </div>
+
+  Built with <a href="https://www.mkdocs.org/">MkDocs</a> using a <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a> provided by <a href="https://readthedocs.org">Read the Docs</a>.
+</footer>
+          
+        </div>
+      </div>
+
+    </section>
+
+  </div>
+
+  <div class="rst-versions" role="note" aria-label="Versions">
+  <span class="rst-current-version" data-toggle="rst-current-version">
+    
+    
+    
+      <span><a href="F0-SAOS-Fundamentals/" style="color: #fcfcfc">Next &raquo;</a></span>
+    
+  </span>
+</div>
+    <script src="js/jquery-3.6.0.min.js"></script>
+    <script>var base_url = ".";</script>
+    <script src="js/theme_extra.js"></script>
+    <script src="js/theme.js"></script>
+      <script src="assets/js/lightbox.js"></script>
+      <script src="search/main.js"></script>
+    <script>
+        jQuery(function () {
+            SphinxRtdTheme.Navigation.enable(true);
+        });
+    </script>
+
+</body>
+</html>
+
+<!--
+MkDocs version : 1.6.1
+Build Date UTC : 2026-08-11 20:30:17.265719+00:00
+-->

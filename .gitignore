@@ -1,0 +1,18 @@
+# Python
+__pycache__/
+*.py[codz]
+*.egg-info/
+.venv/
+venv/
+
+# MkDocs default output (the site is served from the committed docs/ folder)
+/site
+
+# Containerlab runtime artifacts (TLS certs, inventory, per-node rendered config)
+clab-*/
+
+# Lab run reports
+reports/
+
+# OS / editor cruft
+.DS_Store

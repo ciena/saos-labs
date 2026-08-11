@@ -1,0 +1,179 @@
+:root {
+  --ciena-red: #C71C2C;
+  --ciena-green: #55AF89;
+  --ciena-orange: #F47F0C;
+  --ciena-purple: #800A68;
+  --ciena-blue: #294CC4;
+  --ciena-light-grey: #E4E5E6;
+  --ciena-dark-grey: #343642;
+  --ciena-dark-blue: #282A36;
+  --ciena-black: #1C1E2A;
+}
+
+html,
+body {
+  background: var(--ciena-light-grey);
+  color: var(--ciena-dark-grey);
+}
+
+/* Sidebar */
+.wy-nav-side {
+  background: var(--ciena-dark-blue);
+}
+
+.wy-side-nav-search {
+  background: var(--ciena-black);
+  color: #ffffff;
+  border-bottom: 2px solid var(--ciena-red);
+}
+
+.wy-side-nav-search a,
+.wy-side-nav-search a:hover {
+  color: #ffffff;
+}
+
+.wy-side-nav-search input[type="text"] {
+  border: 1px solid var(--ciena-blue);
+  box-shadow: none;
+}
+
+.wy-menu-vertical a {
+  color: var(--ciena-light-grey);
+}
+
+.wy-menu-vertical a:hover {
+  background: var(--ciena-purple);
+  color: #ffffff;
+}
+
+.wy-menu-vertical li.current > a {
+  background: var(--ciena-red);
+  color: #ffffff;
+}
+
+.wy-menu-vertical li.current > a:hover {
+  background: var(--ciena-red);
+}
+
+/* Top nav (mobile) */
+.wy-nav-top {
+  background: var(--ciena-black);
+  border-bottom: 2px solid var(--ciena-red);
+}
+
+.wy-nav-top a,
+.wy-nav-top a:hover {
+  color: #ffffff;
+}
+
+/* Content */
+.wy-nav-content {
+  background: var(--ciena-light-grey);
+}
+
+.wy-nav-content a {
+  color: var(--ciena-blue);
+}
+
+.wy-nav-content a:hover {
+  color: var(--ciena-red);
+}
+
+h1,
+h2,
+h3,
+h4,
+h5,
+h6 {
+  color: var(--ciena-black);
+}
+
+/* Code blocks */
+.rst-content pre code,
+.rst-content code {
+  border: 1px solid #d0d2d3;
+}
+
+/* Admonitions */
+.rst-content .admonition {
+  border-left: 4px solid var(--ciena-orange);
+}
+
+.rst-content .admonition-title {
+  background: var(--ciena-orange);
+  color: #ffffff;
+}
+
+/* Tables */
+.rst-content table thead th {
+  background: var(--ciena-dark-grey);
+  color: #ffffff;
+}
+
+.rst-content table tbody tr:nth-child(odd) {
+  background: #f0f1f2;
+}
+
+/* Let the content column fill the space up to the sidebar so topology
+   diagrams can use the full available width. Prose is re-capped below. */
+.wy-nav-content {
+  max-width: none;
+}
+
+/* Keep body text, code, and tables at a comfortable reading measure even
+   though the column is now full width — but exempt the paragraphs that only
+   hold a topology SVG so those can break out to full width. */
+.rst-content .section > *:not(:has(> img[src$=".svg"])) {
+  max-width: 1100px;
+}
+
+/* Topology SVGs span the full content width (responsive via their viewBox),
+   with a ceiling so they don't balloon on ultra-wide monitors. */
+.rst-content img[src$=".svg"] {
+  display: block;
+  width: 100%;
+  max-width: 1600px;
+  height: auto;
+}
+
+/* Click-to-zoom lightbox (see assets/js/lightbox.js). Diagrams get a zoom
+   cursor; clicking opens a full-viewport overlay with the SVG scaled to fit. */
+.rst-content img[src$=".svg"].zoomable {
+  cursor: zoom-in;
+}
+
+.topo-lightbox {
+  display: none;
+  position: fixed;
+  inset: 0;
+  z-index: 1000;
+  align-items: center;
+  justify-content: center;
+  padding: 2.5vh 2.5vw;
+  background: var(--ciena-black); /* fully opaque — not see-through */
+  cursor: zoom-out;
+}
+
+.topo-lightbox.open {
+  display: flex;
+}
+
+/* Higher specificity than the global SVG rule above, so it wins and the
+   enlarged image fits the viewport instead of spanning full width.
+   The diagram SVGs are transparent with dark-grey ink meant for a light
+   page, so give the enlarged image a solid white card — otherwise the ink
+   washes out against the dark backdrop and the diagram looks see-through. */
+.topo-lightbox img {
+  box-sizing: border-box;
+  width: auto;
+  height: auto;
+  max-width: 95vw;
+  max-height: 95vh;
+  padding: 1.5rem;
+  background: #ffffff;
+  border-radius: 4px;
+}
+
+body.lightbox-open {
+  overflow: hidden;
+}

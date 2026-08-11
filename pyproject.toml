@@ -1,0 +1,16 @@
+[tool.poetry]
+name = "saos-labs"
+version = "0.9.0"
+description = "Automation helpers for Ciena SAOS containerlab labs."
+authors = ["Ciena Recipes"]
+readme = "README.md"
+
+[tool.poetry.dependencies]
+python = "^3.11"
+mkdocs = "^1.6.1"
+pyyaml = "^6.0"
+paramiko = "^3.4"
+
+[build-system]
+requires = ["poetry-core"]
+build-backend = "poetry.core.masonry.api"

@@ -1,0 +1,23 @@
+site_name: SAOS Labs
+docs_dir: labs
+site_dir: docs
+theme:
+  name: readthedocs
+extra_css:
+  - assets/css/ciena.css
+extra_javascript:
+  - assets/js/lightbox.js
+plugins:
+  - search
+nav:
+  - Home: index.md
+  - Foundation:
+      - F0 SAOS Fundamentals: F0-SAOS-Fundamentals/README.md
+      - F1 Loopbacks and Interfaces: F1-Loopbacks-and-Interfaces/README.md
+      - F2 IS-IS Routing: F2-IS-IS-Routing/README.md
+      - F3 SR-MPLS: F3-SR-MPLS/README.md
+      - F4 BGP: F4-BGP/README.md
+      - F5 LDP: F5-LDP/README.md
+  - Services:
+      - S1 L3VPN: S1-L3VPN/README.md
+      - S2 EVPN-VPWS: S2-EVPN-VPWS/README.md
