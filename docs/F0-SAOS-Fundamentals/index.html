@@ -52,11 +52,25 @@
     </li>
     <li class="toctree-l2"><a class="reference internal" href="#understanding-the-cli-hierarchy">Understanding the CLI Hierarchy</a>
     </li>
+    <li class="toctree-l2"><a class="reference internal" href="#advanced-cli">Advanced CLI</a>
+        <ul>
+    <li class="toctree-l3"><a class="reference internal" href="#when-an-edit-takes-effect">When an edit takes effect</a>
+    </li>
+    <li class="toctree-l3"><a class="reference internal" href="#apply-commit-without-leaving-the-level">apply — commit without leaving the level</a>
+    </li>
+    <li class="toctree-l3"><a class="reference internal" href="#exit-step-up-one-level">exit — step up one level</a>
+    </li>
+    <li class="toctree-l3"><a class="reference internal" href="#gotop-jump-straight-to-the-config-root">gotop — jump straight to the config root</a>
+    </li>
+        </ul>
+    </li>
     <li class="toctree-l2"><a class="reference internal" href="#how-the-saos-objects-fit-together">How the SAOS Objects Fit Together</a>
     </li>
     <li class="toctree-l2"><a class="reference internal" href="#traffic-through-the-objects">Traffic Through the Objects</a>
     </li>
     </ul>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" href="../F1-Loopbacks-and-Interfaces/">F1 Loopbacks and Interfaces</a>
                   </li>
               </ul>
       </div>
@@ -76,6 +90,7 @@
           <li class="breadcrumb-item">Foundation</li>
       <li class="breadcrumb-item active">F0 SAOS Fundamentals</li>
     <li class="wy-breadcrumbs-aside">
+          <a href="https://github.com/ciena/saos-labs/edit/master/docs/F0-SAOS-Fundamentals/README.md" class="icon icon-github"> Edit on GitHub</a>
     </li>
   </ul>
   <hr/>
@@ -155,6 +170,85 @@ exit
 exit
 </code></pre>
 <p>Both forms configure the same object. Complete commands are convenient for short changes. Sub-modes make longer objects easier to read, but you must track your current level and use <code>exit</code> to move back up the hierarchy.</p>
+<h2 id="advanced-cli">Advanced CLI</h2>
+<p>The navigation table above named <code>exit</code>, <code>apply</code>, and <code>return</code>. This section shows <em>when</em> you reach for each — plus <code>gotop</code> — and how SAOS decides when an edit takes effect. Every prompt and message below was captured from a live SAOS 10x node (the operational prompt is <code>PE_1&gt;</code>, the config root is <code>diag@PE_1#</code>, and a sub-mode prompt names the current level, e.g. <code>diag@PE_1(interface)#</code>).</p>
+<h3 id="when-an-edit-takes-effect">When an edit takes effect</h3>
+<p>There are two ways your edits reach the running configuration.</p>
+<p><strong>A complete command applies immediately.</strong> Typing a full object path on one line takes effect the moment you press Enter — SAOS echoes <code>Applying 1 edit</code>:</p>
+<pre><code>diag@PE_1# oc-if:interfaces interface DOC-LB config name DOC-LB type loopback
+Applying 1 edit
+diag@PE_1#
+</code></pre>
+<p>This is why the hands-on labs never type <code>apply</code>: every configuration line is a complete path, applied on Enter.</p>
+<p><strong>Edits made inside a sub-mode are staged.</strong> When you descend into an object to set several properties, those edits are held until you step back up. Entering a container drops you into a sub-mode (note the prompt), and setting a property there produces no <code>Applying</code> message yet:</p>
+<pre><code>diag@PE_1# oc-if:interfaces interface DOC-LB
+diag@PE_1(interface)# ipv4 addresses address 10.20.30.40 config ip 10.20.30.40 prefix-length 32
+diag@PE_1(interface)#
+</code></pre>
+<p>The staged edits are applied when you leave the level — with <code>apply</code>, <code>exit</code>, or <code>gotop</code>.</p>
+<h3 id="apply-commit-without-leaving-the-level"><code>apply</code> — commit without leaving the level</h3>
+<p><code>apply</code> writes staged edits to the running configuration <strong>without changing your position</strong> in the hierarchy. Reach for it to commit a partial change and keep working in the same sub-mode:</p>
+<pre><code>diag@PE_1(interface)# apply
+Applying 1 edit
+diag@PE_1(interface)#
+</code></pre>
+<h3 id="exit-step-up-one-level"><code>exit</code> — step up one level</h3>
+<p><code>exit</code> moves up exactly one level, applying any edits staged at the level you leave. From the config root it returns you to the operational prompt. Walking all the way out of the interface hierarchy takes one <code>exit</code> per level:</p>
+<pre><code>diag@PE_1(interface)# exit
+Applying 1 edit
+diag@PE_1(interfaces)# exit
+diag@PE_1# exit
+PE_1&gt;
+</code></pre>
+<h3 id="gotop-jump-straight-to-the-config-root"><code>gotop</code> — jump straight to the config root</h3>
+<p>When you are deep in a sub-mode and want to configure an unrelated object, <code>gotop</code> returns you to the top of the configuration hierarchy in a single step — applying staged edits on the way — and leaves you in config mode:</p>
+<pre><code>diag@PE_1(interface)# gotop
+Applying 1 edit
+diag@PE_1#
+</code></pre>
+<p>Compare with the three <code>exit</code> commands above: <code>gotop</code> collapses that climb into one.</p>
+<blockquote>
+<p><strong>Key idea:</strong> complete one-line commands apply themselves; sub-mode edits are
+staged until you step up. <code>apply</code> commits in place, <code>exit</code> commits one level
+at a time, and <code>gotop</code> commits and jumps to the root — all without leaving
+config mode. <code>return</code> leaves config mode and discards any edit still pending.</p>
+</blockquote>
+<table>
+<thead>
+<tr>
+<th>Command</th>
+<th>Moves you to</th>
+<th>Pending edits</th>
+<th>Leaves config mode?</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>apply</code></td>
+<td>nowhere (same level)</td>
+<td>applied</td>
+<td>no</td>
+</tr>
+<tr>
+<td><code>exit</code></td>
+<td>up one level</td>
+<td>applied</td>
+<td>only from the root</td>
+</tr>
+<tr>
+<td><code>gotop</code></td>
+<td>the config root</td>
+<td>applied</td>
+<td>no</td>
+</tr>
+<tr>
+<td><code>return</code></td>
+<td>the operational prompt</td>
+<td>discarded</td>
+<td>yes</td>
+</tr>
+</tbody>
+</table>
 <h2 id="how-the-saos-objects-fit-together">How the SAOS Objects Fit Together</h2>
 <p>An IP interface reached through an Ethernet faceplate port is built from
 several linked SAOS objects. The physical interface components are abstracted
@@ -229,6 +323,7 @@ connect that logical port to the FD.</p>
           </div><footer>
     <div class="rst-footer-buttons" role="navigation" aria-label="Footer Navigation">
         <a href=".." class="btn btn-neutral float-left" title="Home"><span class="icon icon-circle-arrow-left"></span> Previous</a>
+        <a href="../F1-Loopbacks-and-Interfaces/" class="btn btn-neutral float-right" title="F1 Loopbacks and Interfaces">Next <span class="icon icon-circle-arrow-right"></span></a>
     </div>
 
   <hr/>
@@ -250,9 +345,15 @@ connect that logical port to the FD.</p>
   <div class="rst-versions" role="note" aria-label="Versions">
   <span class="rst-current-version" data-toggle="rst-current-version">
     
+        <span>
+          <a href="https://github.com/ciena/saos-labs" class="fa fa-github" style="color: #fcfcfc"> GitHub</a>
+        </span>
+    
     
       <span><a href=".." style="color: #fcfcfc">&laquo; Previous</a></span>
     
+    
+      <span><a href="../F1-Loopbacks-and-Interfaces/" style="color: #fcfcfc">Next &raquo;</a></span>
     
   </span>
 </div>
