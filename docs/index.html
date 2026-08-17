@@ -45,9 +45,7 @@
     <ul class="current">
     <li class="toctree-l2"><a class="reference internal" href="#getting-started">Getting Started</a>
         <ul>
-    <li class="toctree-l3"><a class="reference internal" href="#option-a-shallow-git-clone-sparse-checkout">Option A — Shallow git clone (sparse checkout)</a>
-    </li>
-    <li class="toctree-l3"><a class="reference internal" href="#option-b-download-archive-no-git">Option B — Download archive (no git)</a>
+    <li class="toctree-l3"><a class="reference internal" href="#advanced-git">Advanced (git)</a>
     </li>
         </ul>
     </li>
@@ -61,6 +59,8 @@
               <p class="caption"><span class="caption-text">Foundation</span></p>
               <ul>
                   <li class="toctree-l1"><a class="reference internal" href="F0-SAOS-Fundamentals/">F0 SAOS Fundamentals</a>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" href="F1-Loopbacks-and-Interfaces/">F1 Loopbacks and Interfaces</a>
                   </li>
               </ul>
       </div>
@@ -79,6 +79,7 @@
     <li><a href="." class="icon icon-home" aria-label="Docs"></a></li>
       <li class="breadcrumb-item active">Home</li>
     <li class="wy-breadcrumbs-aside">
+          <a href="https://github.com/ciena/saos-labs/edit/master/docs/index.md" class="icon icon-github"> Edit on GitHub</a>
     </li>
   </ul>
   <hr/>
@@ -91,39 +92,38 @@
 built and validated against SAOS release 10.12.00.0228 (container image
 <code>vrnetlab/ciena_saos:10-12-00-0228</code>).</p>
 <h2 id="getting-started">Getting Started</h2>
-<p>Set your repo coordinates and target lab, then use either retrieval path
-below. Replace the placeholder values with the actual GitHub owner, repo
-name, and the lab you want to run.</p>
-<pre><code class="language-bash">GITHUB_OWNER=&lt;your-github-owner&gt;
-GITHUB_REPO=&lt;your-repo-name&gt;
-REPO_URL=&quot;https://github.com/${GITHUB_OWNER}/${GITHUB_REPO}&quot;
-LAB=F1-Loopbacks-and-Interfaces   # replace with your target lab
+<p>Every lab is self-contained and can be followed straight from this guide — no
+repository checkout required. Pick a lab from the menu on the left, then:</p>
+<ol>
+<li>Read its <strong>Goals</strong>, <strong>Topology</strong>, and <strong>Prerequisites</strong>.</li>
+<li>Under <strong>Startup Configs</strong>, copy each linked <code>*.cfg.partial</code> into a local
+   <code>configs/</code> folder, and save the <code>topo.clab.yml</code> shown under <strong>Deploy</strong> next
+   to it.</li>
+<li>Run the command in <strong>Deploy</strong>, then work through <strong>Instructions</strong>.</li>
+</ol>
+<h3 id="advanced-git">Advanced (git)</h3>
+<p>Prefer to pull the artifacts instead of copying files by hand? If you have git,
+fetch just the lab you want from
+<a href="https://github.com/ciena/saos-labs"><code>ciena/saos-labs</code></a>:</p>
+<pre><code class="language-bash">REPO_URL=&quot;https://github.com/ciena/saos-labs&quot;
+LAB=F1-Loopbacks-and-Interfaces   # the lab you want to run
 </code></pre>
-<h3 id="option-a-shallow-git-clone-sparse-checkout">Option A — Shallow git clone (sparse checkout)</h3>
-<p>Clones only the commit history needed and limits the working tree to the
+<p>Option A — shallow git clone (sparse checkout) limits the working tree to the
 single lab directory plus top-level files:</p>
 <pre><code class="language-bash">git clone --filter=blob:none --no-checkout &quot;${REPO_URL}.git&quot;
-cd &quot;${GITHUB_REPO}&quot;
+cd saos-labs
 git sparse-checkout init --cone
 git sparse-checkout set &quot;labs/${LAB}&quot;
 git checkout
+containerlab deploy -t &quot;labs/${LAB}/topo.clab.yml&quot;
 </code></pre>
-<p>Deploy from the repo root:</p>
-<pre><code class="language-bash">containerlab deploy -t &quot;labs/${LAB}/topo.clab.yml&quot;
-</code></pre>
-<h3 id="option-b-download-archive-no-git">Option B — Download archive (no git)</h3>
-<p>Downloads and unpacks only the lab directory you need without cloning the
-full repository:</p>
+<p>Option B — download the archive (no git) unpacks only the lab directory you
+need:</p>
 <pre><code class="language-bash">wget -qO- &quot;${REPO_URL}/archive/refs/heads/main.tar.gz&quot; \
-  | tar -xz --strip-components=2 \
-       &quot;${GITHUB_REPO}-main/labs/${LAB}&quot;
+  | tar -xz --strip-components=2 &quot;saos-labs-main/labs/${LAB}&quot;
 cd &quot;${LAB}&quot;
 containerlab deploy -t topo.clab.yml
 </code></pre>
-<blockquote>
-<p><strong>Tip:</strong> Prefer Option A if you plan to iterate on configs or pull future
-updates. Use Option B for a one-shot deployment on a host without git.</p>
-</blockquote>
 <h2 id="foundation-track">Foundation Track</h2>
 <p>Start with the F0 theory guide, then follow the recommended F1-F4 sequence.
 F5 is an alternative branch from F2 for learners who specifically need LDP.
@@ -145,7 +145,7 @@ reserved for Operations, so that future branch will use <code>A</code> identifie
 </tr>
 <tr>
 <td>F1</td>
-<td><a href="F1-Loopbacks-and-Interfaces/README.md">Loopbacks and Interfaces</a></td>
+<td><a href="F1-Loopbacks-and-Interfaces/">Loopbacks and Interfaces</a></td>
 <td>Classifiers, FDs, FPs, IPv4/IPv6, loopbacks</td>
 </tr>
 <tr>
@@ -235,6 +235,10 @@ lab will stay introductory and omit color-based policy.</p>
   <div class="rst-versions" role="note" aria-label="Versions">
   <span class="rst-current-version" data-toggle="rst-current-version">
     
+        <span>
+          <a href="https://github.com/ciena/saos-labs" class="fa fa-github" style="color: #fcfcfc"> GitHub</a>
+        </span>
+    
     
     
       <span><a href="F0-SAOS-Fundamentals/" style="color: #fcfcfc">Next &raquo;</a></span>
@@ -258,5 +262,5 @@ lab will stay introductory and omit color-based policy.</p>
 
 <!--
 MkDocs version : 1.6.1
-Build Date UTC : 2026-08-11 20:30:17.265719+00:00
+Build Date UTC : 2026-08-17 16:49:03.690949+00:00
 -->

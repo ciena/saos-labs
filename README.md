@@ -29,42 +29,47 @@ downstream tracks.
 
 ## Getting Started
 
-Set your repo coordinates and target lab, then use either retrieval path below.
+Every lab is self-contained and can be followed straight from the published
+guide — no repository checkout required. Pick a lab, then:
+
+1. Read its **Goals**, **Topology**, and **Prerequisites**.
+2. Under **Startup Configs**, copy each linked `*.cfg.partial` into a local
+   `configs/` folder, and save the `topo.clab.yml` shown under **Deploy** next
+   to it.
+3. Run the command in **Deploy**, then work through **Instructions**.
+
+### Advanced (git)
+
+Prefer to pull the artifacts instead of copying files by hand? If you have git,
+fetch just the lab you want from
+[`ciena/saos-labs`](https://github.com/ciena/saos-labs):
 
 ```bash
-GITHUB_OWNER=<your-github-owner>
-GITHUB_REPO=<your-repo-name>
-REPO_URL="https://github.com/${GITHUB_OWNER}/${GITHUB_REPO}"
-LAB=F1-Loopbacks-and-Interfaces   # replace with your target lab
+REPO_URL="https://github.com/ciena/saos-labs"
+LAB=F1-Loopbacks-and-Interfaces   # the lab you want to run
 ```
 
-### Option A — Shallow git clone (sparse checkout)
-
-Clones only the history needed and limits the working tree to a single lab
-directory plus top-level files:
+Option A — shallow git clone (sparse checkout) limits the working tree to a
+single lab directory plus top-level files:
 
 ```bash
 git clone --filter=blob:none --no-checkout "${REPO_URL}.git"
-cd "${GITHUB_REPO}"
+cd saos-labs
 git sparse-checkout init --cone
 git sparse-checkout set "labs/${LAB}"
 git checkout
 containerlab deploy -t "labs/${LAB}/topo.clab.yml"
 ```
 
-### Option B — Download archive (no git)
-
-Downloads and unpacks only the lab directory you need:
+Option B — download the archive (no git) unpacks only the lab directory you
+need:
 
 ```bash
 wget -qO- "${REPO_URL}/archive/refs/heads/main.tar.gz" \
-  | tar -xz --strip-components=2 "${GITHUB_REPO}-main/labs/${LAB}"
+  | tar -xz --strip-components=2 "saos-labs-main/labs/${LAB}"
 cd "${LAB}"
 containerlab deploy -t topo.clab.yml
 ```
-
-> **Tip:** Prefer Option A if you plan to iterate on configs or pull future
-> updates. Use Option B for a one-shot deployment on a host without git.
 
 ## Labs
 
@@ -146,8 +151,8 @@ Set via `topology.defaults.labels.lab-mode` in the topology file:
 - **Naming** — classifiers, FDs, FPs, interfaces, and VRFs follow a consistent
   scheme; see the per-lab READMEs for the concrete names in context.
 - **Overview structure** — lab READMEs carry a fixed section set in order
-  (Goals, Topology, Prerequisites, Deploy, Instructions, Tests, Solutions),
-  with labeled callouts and embedded diagrams.
+  (Goals, Topology, Prerequisites, Startup Configs, Deploy, Instructions,
+  Tests, Solutions), with labeled callouts and embedded diagrams.
 - **Checks bind to tasks** — every `tests.md` check maps to a numbered task,
   and a Task *n* check depends only on the preloaded baseline and Tasks ≤ *n*.
 

@@ -1,4 +1,7 @@
 site_name: SAOS Labs
+# repo_name intentionally omitted: MkDocs derives it as 'GitHub' from the
+# github.com URL, which the readthedocs theme renders with a GitHub icon.
+repo_url: https://github.com/ciena/saos-labs
 docs_dir: labs
 site_dir: docs
 theme:

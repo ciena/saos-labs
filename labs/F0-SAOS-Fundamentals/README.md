@@ -49,6 +49,80 @@ exit
 
 Both forms configure the same object. Complete commands are convenient for short changes. Sub-modes make longer objects easier to read, but you must track your current level and use `exit` to move back up the hierarchy.
 
+## Advanced CLI
+
+The navigation table above named `exit`, `apply`, and `return`. This section shows *when* you reach for each — plus `gotop` — and how SAOS decides when an edit takes effect. Every prompt and message below was captured from a live SAOS 10x node (the operational prompt is `PE_1>`, the config root is `diag@PE_1#`, and a sub-mode prompt names the current level, e.g. `diag@PE_1(interface)#`).
+
+### When an edit takes effect
+
+There are two ways your edits reach the running configuration.
+
+**A complete command applies immediately.** Typing a full object path on one line takes effect the moment you press Enter — SAOS echoes `Applying 1 edit`:
+
+```
+diag@PE_1# oc-if:interfaces interface DOC-LB config name DOC-LB type loopback
+Applying 1 edit
+diag@PE_1#
+```
+
+This is why the hands-on labs never type `apply`: every configuration line is a complete path, applied on Enter.
+
+**Edits made inside a sub-mode are staged.** When you descend into an object to set several properties, those edits are held until you step back up. Entering a container drops you into a sub-mode (note the prompt), and setting a property there produces no `Applying` message yet:
+
+```
+diag@PE_1# oc-if:interfaces interface DOC-LB
+diag@PE_1(interface)# ipv4 addresses address 10.20.30.40 config ip 10.20.30.40 prefix-length 32
+diag@PE_1(interface)#
+```
+
+The staged edits are applied when you leave the level — with `apply`, `exit`, or `gotop`.
+
+### `apply` — commit without leaving the level
+
+`apply` writes staged edits to the running configuration **without changing your position** in the hierarchy. Reach for it to commit a partial change and keep working in the same sub-mode:
+
+```
+diag@PE_1(interface)# apply
+Applying 1 edit
+diag@PE_1(interface)#
+```
+
+### `exit` — step up one level
+
+`exit` moves up exactly one level, applying any edits staged at the level you leave. From the config root it returns you to the operational prompt. Walking all the way out of the interface hierarchy takes one `exit` per level:
+
+```
+diag@PE_1(interface)# exit
+Applying 1 edit
+diag@PE_1(interfaces)# exit
+diag@PE_1# exit
+PE_1>
+```
+
+### `gotop` — jump straight to the config root
+
+When you are deep in a sub-mode and want to configure an unrelated object, `gotop` returns you to the top of the configuration hierarchy in a single step — applying staged edits on the way — and leaves you in config mode:
+
+```
+diag@PE_1(interface)# gotop
+Applying 1 edit
+diag@PE_1#
+```
+
+Compare with the three `exit` commands above: `gotop` collapses that climb into one.
+
+> **Key idea:** complete one-line commands apply themselves; sub-mode edits are
+> staged until you step up. `apply` commits in place, `exit` commits one level
+> at a time, and `gotop` commits and jumps to the root — all without leaving
+> config mode. `return` leaves config mode and discards any edit still pending.
+
+| Command  | Moves you to           | Pending edits | Leaves config mode? |
+|----------|------------------------|---------------|---------------------|
+| `apply`  | nowhere (same level)   | applied       | no                  |
+| `exit`   | up one level           | applied       | only from the root  |
+| `gotop`  | the config root        | applied       | no                  |
+| `return` | the operational prompt | discarded     | yes                 |
+
 ## How the SAOS Objects Fit Together
 
 An IP interface reached through an Ethernet faceplate port is built from
