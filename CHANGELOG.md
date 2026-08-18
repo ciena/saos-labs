@@ -6,6 +6,15 @@ upstream authoring history.
 
 The format is based on [Keep a Changelog](https://keepachangelog.com/).
 
+## 2026-08-18
+
+### Fixed
+- **Edit on GitHub** links now resolve. They pointed at a non-existent
+  `edit/master/docs/...` path; they now target `edit/main/labs/<lab>/README.md`.
+- Simplified the "Advanced (git)" one-lab fetch to a plain
+  `git clone --depth 1` (dropped the `--filter`/`--no-checkout`/sparse-checkout
+  ceremony) on the home page and in the repository README.
+
 ## 2026-08-17
 
 ### Added
