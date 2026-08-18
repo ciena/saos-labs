@@ -148,6 +148,8 @@
     </li>
     </ul>
                   </li>
+                  <li class="toctree-l1"><a class="reference internal" href="../F2-IS-IS-Routing/">F2 IS-IS Routing</a>
+                  </li>
               </ul>
       </div>
     </div>
@@ -192,10 +194,11 @@ shown in gray because F1 does not configure or test them.</p>
 <blockquote>
 <p><strong>Resource note:</strong> If you do not plan to continue into the Services track
 and your host is resource constrained, you may comment out CE1, CE2, PE_3,
-and every link except PE_1 <code>eth1</code> to PE_2 <code>eth1</code> in your local
+and every link except <code>[ "PE_1:1", "PE_2:1" ]</code> in your local
 <code>topo.clab.yml</code>.</p>
 </blockquote>
-<p>The generated topology diagrams are in <code>topo.clab.svg</code> and <code>topo.detail.svg</code>.</p>
+<p>The topology diagrams are <code>topo.clab.svg</code> (physical connectivity) and
+<code>topo.detail.svg</code> (annotated view with addressing).</p>
 <h3 id="ip-address-table">IP Address Table</h3>
 <table>
 <thead>
@@ -5727,6 +5730,7 @@ oc-if:interfaces interface PE_1-PE_2-if ipv6 addresses address FC00::601 config 
           </div><footer>
     <div class="rst-footer-buttons" role="navigation" aria-label="Footer Navigation">
         <a href="../F0-SAOS-Fundamentals/" class="btn btn-neutral float-left" title="F0 SAOS Fundamentals"><span class="icon icon-circle-arrow-left"></span> Previous</a>
+        <a href="../F2-IS-IS-Routing/" class="btn btn-neutral float-right" title="F2 IS-IS Routing">Next <span class="icon icon-circle-arrow-right"></span></a>
     </div>
 
   <hr/>
@@ -5755,6 +5759,8 @@ oc-if:interfaces interface PE_1-PE_2-if ipv6 addresses address FC00::601 config 
     
       <span><a href="../F0-SAOS-Fundamentals/" style="color: #fcfcfc">&laquo; Previous</a></span>
     
+    
+      <span><a href="../F2-IS-IS-Routing/" style="color: #fcfcfc">Next &raquo;</a></span>
     
   </span>
 </div>
