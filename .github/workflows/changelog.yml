@@ -1,0 +1,58 @@
+name: Changelog
+
+# Deliberately NOT path-filtered. This job is a required status check, and a
+# filtered workflow that never runs leaves the PR stuck on "Expected — waiting
+# for status to be reported" instead of failing or passing.
+on:
+  pull_request:
+    types: [opened, synchronize, reopened, labeled, unlabeled]
+
+permissions:
+  contents: read
+
+jobs:
+  changelog:
+    name: changelog
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - name: Require a CHANGELOG entry
+        env:
+          BASE: ${{ github.base_ref }}
+          LABELS: ${{ toJSON(github.event.pull_request.labels.*.name) }}
+        run: |
+          set -euo pipefail
+
+          if printf '%s' "$LABELS" | grep -q '"no-changelog"'; then
+            echo "The 'no-changelog' label is applied — skipping the check."
+            exit 0
+          fi
+
+          git fetch --no-tags origin "+refs/heads/${BASE}:refs/remotes/origin/${BASE}"
+
+          if git diff --name-only "origin/${BASE}...HEAD" | grep -qx 'CHANGELOG.md'; then
+            echo "CHANGELOG.md is updated in this PR."
+            exit 0
+          fi
+
+          echo "::error file=CHANGELOG.md::This PR does not update CHANGELOG.md."
+          cat <<'EOF'
+
+          Every publish should carry its own release notes, so a release is one
+          squash commit rather than a publish commit plus a changelog commit.
+
+          Add your bullets under a '## YYYY-MM-DD' heading at the top of
+          CHANGELOG.md (reuse today's heading if it already exists), written for
+          someone reading the published lab site.
+
+          CHANGELOG.md is intentionally outside the publisher's file set, so it
+          is never overwritten by a publish and must be edited here — add it to
+          the publish branch before opening the PR.
+
+          If this PR genuinely ships nothing user-visible, apply the
+          'no-changelog' label and re-run.
+          EOF
+          exit 1
