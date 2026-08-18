@@ -1,0 +1,2308 @@
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" >
+<head>
+    <meta charset="utf-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+      <link rel="shortcut icon" href="../img/favicon.ico" />
+    <title>F2 IS-IS Routing - SAOS Labs</title>
+    <link rel="stylesheet" href="../css/theme.css" />
+    <link rel="stylesheet" href="../css/theme_extra.css" />
+        <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.8.0/styles/github.min.css" />
+        <link href="../assets/css/ciena.css" rel="stylesheet" />
+    
+      <script>
+        // Current page data
+        var mkdocs_page_name = "F2 IS-IS Routing";
+        var mkdocs_page_input_path = "F2-IS-IS-Routing/README.md";
+        var mkdocs_page_url = null;
+      </script>
+    
+    <!--[if lt IE 9]>
+      <script src="../js/html5shiv.min.js"></script>
+    <![endif]-->
+      <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.8.0/highlight.min.js"></script>
+      <script>hljs.highlightAll();</script> 
+</head>
+
+<body class="wy-body-for-nav" role="document">
+
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side stickynav">
+    <div class="wy-side-scroll">
+      <div class="wy-side-nav-search">
+          <a href=".." class="icon icon-home"> SAOS Labs
+        </a><div role="search">
+  <form id ="rtd-search-form" class="wy-form" action="../search.html" method="get">
+      <input type="text" name="q" placeholder="Search docs" aria-label="Search docs" title="Type search term here" />
+  </form>
+</div>
+      </div>
+
+      <div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+              <ul>
+                <li class="toctree-l1"><a class="reference internal" href="..">Home</a>
+                </li>
+              </ul>
+              <p class="caption"><span class="caption-text">Foundation</span></p>
+              <ul class="current">
+                  <li class="toctree-l1"><a class="reference internal" href="../F0-SAOS-Fundamentals/">F0 SAOS Fundamentals</a>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" href="../F1-Loopbacks-and-Interfaces/">F1 Loopbacks and Interfaces</a>
+                  </li>
+                  <li class="toctree-l1 current"><a class="reference internal current" href="#">F2 IS-IS Routing</a>
+    <ul class="current">
+    <li class="toctree-l2"><a class="reference internal" href="#goals">Goals</a>
+    </li>
+    <li class="toctree-l2"><a class="reference internal" href="#topology">Topology</a>
+        <ul>
+    <li class="toctree-l3"><a class="reference internal" href="#ip-addressing">IP Addressing</a>
+    </li>
+    <li class="toctree-l3"><a class="reference internal" href="#nsap-addresses">NSAP Addresses</a>
+    </li>
+        </ul>
+    </li>
+    <li class="toctree-l2"><a class="reference internal" href="#prerequisites">Prerequisites</a>
+    </li>
+    <li class="toctree-l2"><a class="reference internal" href="#startup-configs">Startup Configs</a>
+    </li>
+    <li class="toctree-l2"><a class="reference internal" href="#deploy">Deploy</a>
+        <ul>
+    <li class="toctree-l3"><a class="reference internal" href="#start-from-checkpoint">Start from checkpoint</a>
+    </li>
+        </ul>
+    </li>
+    <li class="toctree-l2"><a class="reference internal" href="#instructions">Instructions</a>
+        <ul>
+    <li class="toctree-l3"><a class="reference internal" href="#task-1-survey-the-network-before-any-routing-protocol">Task 1: Survey the network before any routing protocol</a>
+    </li>
+    <li class="toctree-l3"><a class="reference internal" href="#task-2-create-an-is-is-instance-on-pe_1-and-add-interfaces-to-it">Task 2: Create an IS-IS instance on PE_1 and add interfaces to it</a>
+    </li>
+    <li class="toctree-l3"><a class="reference internal" href="#task-3-create-an-is-is-instance-on-pe_2-and-add-interfaces-to-it">Task 3: Create an IS-IS instance on PE_2 and add interfaces to it</a>
+    </li>
+    <li class="toctree-l3"><a class="reference internal" href="#task-4-observe-is-is-carrying-ipv4-but-not-ipv6">Task 4: Observe IS-IS carrying IPv4 but not IPv6</a>
+    </li>
+    <li class="toctree-l3"><a class="reference internal" href="#task-5-confirm-the-ipv6-underlay-addressing">Task 5: Confirm the IPv6 underlay addressing</a>
+    </li>
+    <li class="toctree-l3"><a class="reference internal" href="#task-6-add-the-ipv6-address-family-to-the-is-is-interfaces">Task 6: Add the ipv6 address-family to the IS-IS interfaces</a>
+    </li>
+    <li class="toctree-l3"><a class="reference internal" href="#task-7-confirm-ipv6-reachability-over-is-is">Task 7: Confirm IPv6 reachability over IS-IS</a>
+    </li>
+    <li class="toctree-l3"><a class="reference internal" href="#task-8-add-md5-authentication-to-the-is-is-neighbor-association">Task 8: Add MD5 authentication to the IS-IS neighbor association</a>
+    </li>
+        </ul>
+    </li>
+    <li class="toctree-l2"><a class="reference internal" href="#tests">Tests</a>
+        <ul>
+    <li class="toctree-l3"><a class="reference internal" href="#g1-task-2-create-an-is-is-instance-on-pe_1-and-add-interfaces-to-it">G1: Task 2 — Create an IS-IS instance on PE_1 and add interfaces to it</a>
+    </li>
+    <li class="toctree-l3"><a class="reference internal" href="#g2-task-3-create-an-is-is-instance-on-pe_2-and-add-interfaces-to-it">G2: Task 3 — Create an IS-IS instance on PE_2 and add interfaces to it</a>
+    </li>
+    <li class="toctree-l3"><a class="reference internal" href="#g3-task-6-add-the-ipv6-address-family-to-the-is-is-interfaces">G3: Task 6 — Add the ipv6 address-family to the IS-IS interfaces</a>
+    </li>
+    <li class="toctree-l3"><a class="reference internal" href="#g4-task-8-add-md5-authentication-to-the-is-is-neighbor-association">G4: Task 8 — Add MD5 authentication to the IS-IS neighbor association</a>
+    </li>
+        </ul>
+    </li>
+    <li class="toctree-l2"><a class="reference internal" href="#solutions">Solutions</a>
+        <ul>
+    <li class="toctree-l3"><a class="reference internal" href="#preloaded-baseline">Preloaded baseline</a>
+        <ul>
+    <li class="toctree-l4"><a class="reference internal" href="#pe_1">PE_1</a>
+    </li>
+    <li class="toctree-l4"><a class="reference internal" href="#pe_2">PE_2</a>
+    </li>
+    <li class="toctree-l4"><a class="reference internal" href="#pe_3">PE_3</a>
+    </li>
+    <li class="toctree-l4"><a class="reference internal" href="#ce1">CE1</a>
+    </li>
+    <li class="toctree-l4"><a class="reference internal" href="#ce2">CE2</a>
+    </li>
+        </ul>
+    </li>
+    <li class="toctree-l3"><a class="reference internal" href="#solution-for-task-1">Solution for Task 1</a>
+    </li>
+    <li class="toctree-l3"><a class="reference internal" href="#solution-for-task-2">Solution for Task 2</a>
+        <ul>
+    <li class="toctree-l4"><a class="reference internal" href="#pe_4">PE_1</a>
+    </li>
+        </ul>
+    </li>
+    <li class="toctree-l3"><a class="reference internal" href="#solution-for-task-3">Solution for Task 3</a>
+        <ul>
+    <li class="toctree-l4"><a class="reference internal" href="#pe_5">PE_2</a>
+    </li>
+        </ul>
+    </li>
+    <li class="toctree-l3"><a class="reference internal" href="#solution-for-task-4">Solution for Task 4</a>
+    </li>
+    <li class="toctree-l3"><a class="reference internal" href="#solution-for-task-5">Solution for Task 5</a>
+    </li>
+    <li class="toctree-l3"><a class="reference internal" href="#solution-for-task-6">Solution for Task 6</a>
+        <ul>
+    <li class="toctree-l4"><a class="reference internal" href="#pe_6">PE_1</a>
+    </li>
+    <li class="toctree-l4"><a class="reference internal" href="#pe_7">PE_2</a>
+    </li>
+        </ul>
+    </li>
+    <li class="toctree-l3"><a class="reference internal" href="#solution-for-task-7">Solution for Task 7</a>
+    </li>
+    <li class="toctree-l3"><a class="reference internal" href="#solution-for-task-8">Solution for Task 8</a>
+        <ul>
+    <li class="toctree-l4"><a class="reference internal" href="#pe_8">PE_1</a>
+    </li>
+    <li class="toctree-l4"><a class="reference internal" href="#pe_9">PE_2</a>
+    </li>
+        </ul>
+    </li>
+        </ul>
+    </li>
+    </ul>
+                  </li>
+              </ul>
+      </div>
+    </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap">
+      <nav class="wy-nav-top" role="navigation" aria-label="Mobile navigation menu">
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="..">SAOS Labs</a>
+        
+      </nav>
+      <div class="wy-nav-content">
+        <div class="rst-content"><div role="navigation" aria-label="breadcrumbs navigation">
+  <ul class="wy-breadcrumbs">
+    <li><a href=".." class="icon icon-home" aria-label="Docs"></a></li>
+          <li class="breadcrumb-item">Foundation</li>
+      <li class="breadcrumb-item active">F2 IS-IS Routing</li>
+    <li class="wy-breadcrumbs-aside">
+          <a href="https://github.com/ciena/saos-labs/edit/main/labs/F2-IS-IS-Routing/README.md" class="icon icon-github"> Edit on GitHub</a>
+    </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+            <div class="section" itemprop="articleBody">
+              
+                <h1 id="f2-is-is-routing">F2 — IS-IS Routing</h1>
+<h2 id="goals">Goals</h2>
+<p>Enable IS-IS routing between the two SAOS 10x nodes addressed in F1 so their loopbacks are reachable over the core link. By the end of this lab you will be able to:</p>
+<ul>
+<li>Create an IS-IS instance with a NET and add interfaces to it</li>
+<li>Observe which address families IS-IS advertises by default</li>
+<li>Enable the IPv6 address-family on IS-IS interfaces</li>
+<li>Secure the IS-IS adjacency with MD5 authentication</li>
+<li>Verify adjacencies, learned routes, and loopback-to-loopback reachability</li>
+</ul>
+<h2 id="topology">Topology</h2>
+<p><img alt="topology" src="topo.clab.svg" /></p>
+<p><img alt="topology detail" src="topo.detail.svg" /></p>
+<p>The physical topology already matches S2. CE1, CE2, PE_3, and their future
+links are intentionally unused in F2, so the diagrams show them in gray. All
+tasks and checks remain scoped to PE_1 and PE_2.</p>
+<blockquote>
+<p><strong>Resource note:</strong> If you do not plan to continue into the Services track
+and your host is resource constrained, you may comment out CE1, CE2, PE_3,
+and every link except <code>[ "PE_1:1", "PE_2:1" ]</code> in your local
+<code>topo.clab.yml</code>.</p>
+</blockquote>
+<p>See <code>topo.clab.svg</code> for the physical connectivity diagram, and
+<code>topo.detail.svg</code> for the annotated view with addressing and IS-IS roles.</p>
+<ul>
+<li><strong>PE_1</strong>: SAOS 5162, loopback 172.16.0.1/32</li>
+<li><strong>PE_2</strong>: SAOS 5162, loopback 172.16.0.2/32</li>
+<li><strong>Link</strong> (SAOS port 1): PE_1 port 1 ↔ PE_2 port 1, untagged</li>
+</ul>
+<h3 id="ip-addressing">IP Addressing</h3>
+<table>
+<thead>
+<tr>
+<th>Node</th>
+<th>Interface</th>
+<th>IPv4</th>
+<th>Prefix</th>
+<th>IPv6</th>
+<th>Prefix</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>PE_1</td>
+<td>lb1</td>
+<td>172.16.0.1</td>
+<td>/32</td>
+<td>FC00::1</td>
+<td>/128</td>
+</tr>
+<tr>
+<td>PE_1</td>
+<td>PE_1-PE_2-if</td>
+<td>172.16.1.1</td>
+<td>/30</td>
+<td>FC00::600</td>
+<td>/127</td>
+</tr>
+<tr>
+<td>PE_2</td>
+<td>lb1</td>
+<td>172.16.0.2</td>
+<td>/32</td>
+<td>FC00::2</td>
+<td>/128</td>
+</tr>
+<tr>
+<td>PE_2</td>
+<td>PE_1-PE_2-if</td>
+<td>172.16.1.2</td>
+<td>/30</td>
+<td>FC00::601</td>
+<td>/127</td>
+</tr>
+</tbody>
+</table>
+<blockquote>
+<p><strong>SAOS display note:</strong> SAOS displays IPv4 address and prefix-length as separate fields — you will not see CIDR notation such as <code>172.16.0.1/32</code> in device output. IPv6 addresses are shown fully expanded.</p>
+</blockquote>
+<h3 id="nsap-addresses">NSAP Addresses</h3>
+<table>
+<thead>
+<tr>
+<th>Node</th>
+<th>NET</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>PE_1</td>
+<td>49.0001.0172.0016.0001.00</td>
+</tr>
+<tr>
+<td>PE_2</td>
+<td>49.0001.0172.0016.0002.00</td>
+</tr>
+</tbody>
+</table>
+<p>The NET encodes: area <code>49.0001</code>, system ID derived from the loopback address, and NSEL <code>00</code>.</p>
+<h2 id="prerequisites">Prerequisites</h2>
+<ul>
+<li>Complete <a href="../F1-Loopbacks-and-Interfaces/">F1 — IP Interfaces</a>, or deploy this lab with its included F1 baseline</li>
+<li>ContainerLab installed and accessible</li>
+<li>SAOS 10x image <code>vrnetlab/ciena_saos:10-12-00-0228</code> (release 10.12.00.0228) available in the container registry</li>
+<li>Activate the built-in trial license after deployment</li>
+</ul>
+<h2 id="startup-configs">Startup Configs</h2>
+<p>The checkpoint baseline each node boots from. If you are assembling the lab by hand, create a <code>configs/</code> folder next to <code>topo.clab.yml</code> and copy each file into it before you deploy.</p>
+<ul>
+<li><a href="configs/PE_1.cfg.partial">PE_1.cfg.partial</a></li>
+<li><a href="configs/PE_2.cfg.partial">PE_2.cfg.partial</a></li>
+<li><a href="configs/PE_3.cfg.partial">PE_3.cfg.partial</a></li>
+<li><a href="configs/CE1.cfg.partial">CE1.cfg.partial</a></li>
+<li><a href="configs/CE2.cfg.partial">CE2.cfg.partial</a></li>
+</ul>
+<h2 id="deploy">Deploy</h2>
+<h3 id="start-from-checkpoint">Start from checkpoint</h3>
+<pre><code class="language-bash">LAB=F2-IS-IS-Routing
+cd labs/${LAB}            # from the repo root, or cd into the unpacked directory
+containerlab deploy -t topo.clab.yml
+</code></pre>
+<p>Equivalent invocation from the repo root:</p>
+<pre><code class="language-bash">containerlab deploy -t &quot;labs/${LAB}/topo.clab.yml&quot;
+</code></pre>
+<p>The lab topology (<code>topo.clab.yml</code>):</p>
+<pre><code class="language-yaml">name: F2-IS-IS-Routing
+topology:
+  defaults:
+    kind: ciena_saos
+    image: vrnetlab/ciena_saos:10-12-00-0228
+    labels:
+      lab-mode: hands-on
+  nodes:
+    PE_1:
+      type: '5162'
+      startup-config: configs/PE_1.cfg.partial
+    PE_2:
+      type: '5162'
+      startup-config: configs/PE_2.cfg.partial
+    PE_3:
+      type: '5162'
+      labels:
+        lab-state: unused
+      startup-config: configs/PE_3.cfg.partial
+    CE1:
+      type: '3984'
+      labels:
+        lab-state: unused
+      startup-config: configs/CE1.cfg.partial
+    CE2:
+      type: '3984'
+      labels:
+        lab-state: unused
+      startup-config: configs/CE2.cfg.partial
+  links:
+  - endpoints: [ &quot;PE_1:1&quot;, &quot;PE_2:1&quot; ]
+  - endpoints: [ &quot;PE_1:2&quot;, &quot;CE1:1&quot; ]
+  - endpoints: [ &quot;PE_2:2&quot;, &quot;CE2:1&quot; ]
+  - endpoints: [ &quot;PE_2:4&quot;, &quot;PE_3:1&quot; ]
+  - endpoints: [ &quot;PE_1:4&quot;, &quot;PE_3:3&quot; ]
+  - endpoints: [ &quot;CE2:2&quot;, &quot;PE_3:2&quot; ]
+</code></pre>
+<p>Wait for all five nodes to reach healthy state, then complete the F2 tasks on
+PE_1 and PE_2:</p>
+<pre><code class="language-bash">ssh diag@clab-F2-IS-IS-Routing-PE_1
+ssh diag@clab-F2-IS-IS-Routing-PE_2
+</code></pre>
+<p>Default credentials: <code>diag</code> / <code>ciena123</code></p>
+<h2 id="instructions">Instructions</h2>
+<!-- task-index -->
+<ul>
+<li><a href="#task-1">Task 1: Survey the network before any routing protocol</a></li>
+<li><a href="#task-2">Task 2: Create an IS-IS instance on PE_1 and add interfaces to it</a></li>
+<li><a href="#task-3">Task 3: Create an IS-IS instance on PE_2 and add interfaces to it</a></li>
+<li><a href="#task-4">Task 4: Observe IS-IS carrying IPv4 but not IPv6</a></li>
+<li><a href="#task-5">Task 5: Confirm the IPv6 underlay addressing</a></li>
+<li><a href="#task-6">Task 6: Add the ipv6 address-family to the IS-IS interfaces</a></li>
+<li><a href="#task-7">Task 7: Confirm IPv6 reachability over IS-IS</a></li>
+<li><a href="#task-8">Task 8: Add MD5 authentication to the IS-IS neighbor association</a></li>
+</ul>
+<p><a id="task-1"></a></p>
+<h3 id="task-1-survey-the-network-before-any-routing-protocol">Task 1: Survey the network before any routing protocol</h3>
+<p><a href="#task-1" title="Direct link to this task (right-click to copy)">🔗</a></p>
+<!-- prose: detailed -->
+
+<p><strong>Summary</strong> — This lab starts where F1 finished: the routed underlay between
+<code>PE_1</code> and <code>PE_2</code> is preloaded, but any routing protocol is deliberately
+missing — each PE knows only its connected networks. Before configuring
+anything, take stock. This baseline is what makes the effect of IS-IS
+visible later.</p>
+<p><strong>Implementation</strong> — Nothing to configure yet: look at each router's IP
+route table and try reaching the far side. The preloaded pieces are the
+<code>PE_1-PE_2-FD</code> forwarding domain, the <code>PE_1-PE_2-FP</code> flow point on the link
+port, the routed interface <code>PE_1-PE_2-if</code> (<code>172.16.1.1/30</code> and
+<code>172.16.1.2/30</code>), and the <code>lb1</code> loopbacks (<code>172.16.0.1/32</code>,
+<code>172.16.0.2/32</code>), each also carrying IPv6 addresses.</p>
+<!-- verify-prose -->
+
+<p>Expect the route table on each PE to hold only connected entries (its own
+<code>lb1</code> /32 and the <code>172.16.1.0/30</code> link) plus management routes — nothing
+learned from a protocol. A ping across the link to the neighbor's
+<code>172.16.1.x</code> address should work: that subnet is directly connected. A ping
+to the far loopback (<code>172.16.0.2</code> from <code>PE_1</code>) should fail — can you explain
+why one works and the other doesn't? Which single fact in the route table
+predicts both outcomes?</p>
+<p><a id="task-2"></a></p>
+<h3 id="task-2-create-an-is-is-instance-on-pe_1-and-add-interfaces-to-it">Task 2: Create an IS-IS instance on PE_1 and add interfaces to it</h3>
+<p><a href="#task-2" title="Direct link to this task (right-click to copy)">🔗</a></p>
+<!-- prose: in-depth -->
+
+<p><strong>Summary</strong> — Now layer the first IGP onto that underlay. On <code>PE_1</code>, create
+an IS-IS instance named <code>Bootcamp</code>, restricted to level-1, with the NET
+<code>49.0001.0172.0016.0001.00</code>, then add two interfaces to it.</p>
+<p><strong>Background</strong> — Read the NET right to left: <code>00</code> is the NSAP selector
+(always zero on a router), <code>0172.0016.0001</code> is the system ID — the loopback
+<code>172.16.0.1</code> with each octet zero-padded to three digits and regrouped in
+fours — and what remains, <code>49.0001</code>, is the area (AFI <code>49</code> means private
+addressing). Deriving the system ID from <code>lb1</code> gives every router a unique,
+self-documenting identity.</p>
+<p><strong>Implementation</strong> — Create the instance, then join both interfaces as
+point-to-point: <code>PE_1-PE_2-if</code>, pinned to level-1, is where hellos will
+actually be exchanged; joining <code>lb1</code> is what injects the <code>172.16.0.1/32</code>
+prefix into IS-IS so other routers can learn a path to it — exactly the
+reachability F1 lacked.</p>
+<p><strong>Configure</strong> (config mode) on <strong>PE_1</strong>:</p>
+<pre><code class="language-saos-config">isis instance Bootcamp level-type level-1 net 49.0001.0172.0016.0001.00
+isis instance Bootcamp interfaces interface lb1 interface-type point-to-point
+isis instance Bootcamp interfaces interface PE_1-PE_2-if interface-type point-to-point level-type level-1
+</code></pre>
+<!-- verify-prose -->
+
+<p>The IS-IS summary should show Instance <code>Bootcamp</code> and Level Type <code>level-1</code>.
+Note the SAOS display convention: the NET you configured never appears as
+one string — it is decomposed into a System ID field (<code>0172.0016.0001</code>) and
+an Area Ids field (<code>49.0001</code>). Confirm both interfaces are listed,
+<code>PE_1-PE_2-if</code> as point-to-point level-1. Don't expect a neighbor yet —
+<code>PE_2</code> is not running IS-IS until the next task, so who would answer the
+hellos?</p>
+<p><strong>Verify</strong> (show mode) on <strong>PE_1</strong>:</p>
+<pre><code class="language-saos-show">show isis summary
+</code></pre>
+<p>Pass: Output contains <code>Bootcamp</code> and <code>level-1</code> and <code>0172.0016.0001</code> and <code>49.0001</code></p>
+<details><summary>Example output</summary>
+
+
+<pre><code>+------------------------ ISIS SUMMARY -----------------------+
+| Name                                      |           Value |
++-------------------------------------------+-----------------+
+| Instance                                  |        Bootcamp |
+| Level Type                                |         level-1 |
+| System ID                                 |  0172.0016.0001 |
+| Area Ids                                  |         49.0001 |
+| Topology Type                             | Single-Topology |
+| Dynamic Hostname                          |           False |
+| Transition                                |           False |
+| Level 1                                   |                 |
+|   Authentication                          |        Disabled |
+|   Authentication Type                     |               - |
+|   Authentication Send Only                |           False |
+|   Level Restarting                        |           False |
+|   Configured T2 Restart Timer (Seconds)   |              60 |
+|   Remaining T2 Restart Timer (Seconds)    |               0 |
+|   Minimum LSP Generation Interval (ms)    |             100 |
+|   Maximum LSP Generation Interval (ms)    |           10000 |
+| Level 2                                   |                 |
+|   Authentication                          |        Disabled |
+|   Authentication Type                     |               - |
+|   Authentication Send Only                |           False |
+|   Level Restarting                        |           False |
+|   Configured T2 Restart Timer (Seconds)   |              60 |
+|   Remaining T2 Restart Timer (Seconds)    |               0 |
+|   Minimum LSP Generation Interval (ms)    |             100 |
+|   Maximum LSP Generation Interval (ms)    |           10000 |
+| MPLS-TE                                   |  Not Configured |
+| Segment Routing                           |        Disabled |
+| Microloop Avoidance                       |        Disabled |
+| Graceful Restart                          |        Disabled |
+| Graceful Restart Helper                   |         Enabled |
+| Node Restarting                           |           False |
+| Configured T3 Grace Period (Seconds)      |           65535 |
+| Remaining T3 Grace Period (Seconds)       |               0 |
+| Interfaces                                |                 |
+|                                           |                 |
+|   Interface Name                          |    PE_1-PE_2-if |
+|     Interface Type                        |  point-to-point |
+|     Level Type                            |         level-1 |
+|     Passive Interface                     |           False |
+|     IPv4 Unicast                          |            True |
+|     IPv6 Unicast                          |            True |
+|     Level 1                               |                 |
+|       Authentication                      |         Enabled |
+|       Authentication Type                 |        HMAC-MD5 |
+|       Authentication Send Only            |           False |
+|       Metric                              |              10 |
+|       Wide Metric                         |              10 |
+|       Admin Tag                           |               - |
+|       T1 Restart Hello Interval (Seconds) |               3 |
+|       Restart Request (RR) Sent           |               0 |
+|       Restart Acknowledge (RA) Received   |               0 |
+|       Restart Request (RR) Received       |               0 |
+|       Restart Acknowledge (RA) Sent       |               0 |
+|     Level 2                               |                 |
+|       Authentication                      |         Enabled |
+|       Authentication Type                 |        HMAC-MD5 |
+|       Authentication Send Only            |           False |
+|       Metric                              |              10 |
+|       Wide Metric                         |              10 |
+|       Admin Tag                           |               - |
+|       T1 Restart Hello Interval (Seconds) |               3 |
+|       Restart Request (RR) Sent           |               0 |
+|       Restart Acknowledge (RA) Received   |               0 |
+|       Restart Request (RR) Received       |               0 |
+|       Restart Acknowledge (RA) Sent       |               0 |
+|                                           |                 |
+|   Interface Name                          |             lb1 |
+|     Interface Type                        |  point-to-point |
+|     Level Type                            |       level-1-2 |
+|     Passive Interface                     |           False |
+|     IPv4 Unicast                          |            True |
+|     IPv6 Unicast                          |            True |
+|     Level 1                               |                 |
+|       Authentication                      |        Disabled |
+|       Authentication Type                 |               - |
+|       Authentication Send Only            |           False |
+|       Metric                              |              10 |
+|       Wide Metric                         |              10 |
+|       Admin Tag                           |               - |
+|       T1 Restart Hello Interval (Seconds) |               3 |
+|       Restart Request (RR) Sent           |               0 |
+|       Restart Acknowledge (RA) Received   |               0 |
+|       Restart Request (RR) Received       |               0 |
+|       Restart Acknowledge (RA) Sent       |               0 |
+|     Level 2                               |                 |
+|       Authentication                      |        Disabled |
+|       Authentication Type                 |               - |
+|       Authentication Send Only            |           False |
+|       Metric                              |              10 |
+|       Wide Metric                         |              10 |
+|       Admin Tag                           |               - |
+|       T1 Restart Hello Interval (Seconds) |               3 |
+|       Restart Request (RR) Sent           |               0 |
+|       Restart Acknowledge (RA) Received   |               0 |
+|       Restart Request (RR) Received       |               0 |
+|       Restart Acknowledge (RA) Sent       |               0 |
++-------------------------------------------+-----------------+
+</code></pre>
+
+
+</details>
+
+<p><a id="task-3"></a></p>
+<h3 id="task-3-create-an-is-is-instance-on-pe_2-and-add-interfaces-to-it">Task 3: Create an IS-IS instance on PE_2 and add interfaces to it</h3>
+<p><a href="#task-3" title="Direct link to this task (right-click to copy)">🔗</a></p>
+<!-- prose: simple -->
+
+<p>Mirror Task 2 on <code>PE_2</code> — the area must match (level-1 adjacencies only form
+within a common area) while the system ID derives from its own loopback.
+Only the values change:</p>
+<ul>
+<li>NET: <code>49.0001.0172.0016.0002.00</code> (from <code>172.16.0.2</code>)</li>
+<li>interfaces: <code>lb1</code> and <code>PE_1-PE_2-if</code>, added the same way</li>
+</ul>
+<p><strong>Configure</strong> (config mode) on <strong>PE_2</strong>:</p>
+<pre><code class="language-saos-config">isis instance Bootcamp level-type level-1 net 49.0001.0172.0016.0002.00
+isis instance Bootcamp interfaces interface lb1 interface-type point-to-point
+isis instance Bootcamp interfaces interface PE_1-PE_2-if interface-type point-to-point level-type level-1
+</code></pre>
+<!-- verify-prose -->
+
+<p>The moment both ends run IS-IS on the shared link, hellos meet, the
+point-to-point adjacency forms, and each router floods a link-state PDU
+describing its prefixes — including the loopback /32s. On each PE the
+neighbor view should show a <code>P2P</code> adjacency of type <code>L1</code> in
+state <code>Up</code>, identifying the peer by system ID (<code>0172.0016.0002</code> seen from
+<code>PE_1</code>). Then check the payoff in the route table: <code>PE_1</code> should learn
+<code>172.16.0.2/32</code> as an IS-IS level-1 route with next hop <code>172.16.1.2</code> via
+<code>PE_1-PE_2-if</code>, and <code>PE_2</code> the mirror image. A loopback-to-loopback ping
+should now succeed — the exact test that failed in Task 1. Which configured
+line caused the /32 to be advertised at all?</p>
+<p><strong>Verify</strong> (show mode) on <strong>PE_2</strong>:</p>
+<pre><code class="language-saos-show">show isis summary
+</code></pre>
+<p>Pass: Output contains <code>Bootcamp</code> and <code>level-1</code> and <code>0172.0016.0002</code> and <code>49.0001</code></p>
+<details><summary>Example output</summary>
+
+
+<pre><code>+------------------------ ISIS SUMMARY -----------------------+
+| Name                                      |           Value |
++-------------------------------------------+-----------------+
+| Instance                                  |        Bootcamp |
+| Level Type                                |         level-1 |
+| System ID                                 |  0172.0016.0002 |
+| Area Ids                                  |         49.0001 |
+| Topology Type                             | Single-Topology |
+| Dynamic Hostname                          |           False |
+| Transition                                |           False |
+| Level 1                                   |                 |
+|   Authentication                          |        Disabled |
+|   Authentication Type                     |               - |
+|   Authentication Send Only                |           False |
+|   Level Restarting                        |           False |
+|   Configured T2 Restart Timer (Seconds)   |              60 |
+|   Remaining T2 Restart Timer (Seconds)    |               0 |
+|   Minimum LSP Generation Interval (ms)    |             100 |
+|   Maximum LSP Generation Interval (ms)    |           10000 |
+| Level 2                                   |                 |
+|   Authentication                          |        Disabled |
+|   Authentication Type                     |               - |
+|   Authentication Send Only                |           False |
+|   Level Restarting                        |           False |
+|   Configured T2 Restart Timer (Seconds)   |              60 |
+|   Remaining T2 Restart Timer (Seconds)    |               0 |
+|   Minimum LSP Generation Interval (ms)    |             100 |
+|   Maximum LSP Generation Interval (ms)    |           10000 |
+| MPLS-TE                                   |  Not Configured |
+| Segment Routing                           |        Disabled |
+| Microloop Avoidance                       |        Disabled |
+| Graceful Restart                          |        Disabled |
+| Graceful Restart Helper                   |         Enabled |
+| Node Restarting                           |           False |
+| Configured T3 Grace Period (Seconds)      |           65535 |
+| Remaining T3 Grace Period (Seconds)       |               0 |
+| Interfaces                                |                 |
+|                                           |                 |
+|   Interface Name                          |    PE_1-PE_2-if |
+|     Interface Type                        |  point-to-point |
+|     Level Type                            |         level-1 |
+|     Passive Interface                     |           False |
+|     IPv4 Unicast                          |            True |
+|     IPv6 Unicast                          |            True |
+|     Level 1                               |                 |
+|       Authentication                      |         Enabled |
+|       Authentication Type                 |        HMAC-MD5 |
+|       Authentication Send Only            |           False |
+|       Metric                              |              10 |
+|       Wide Metric                         |              10 |
+|       Admin Tag                           |               - |
+|       T1 Restart Hello Interval (Seconds) |               3 |
+|       Restart Request (RR) Sent           |               0 |
+|       Restart Acknowledge (RA) Received   |               0 |
+|       Restart Request (RR) Received       |               0 |
+|       Restart Acknowledge (RA) Sent       |               0 |
+|     Level 2                               |                 |
+|       Authentication                      |         Enabled |
+|       Authentication Type                 |        HMAC-MD5 |
+|       Authentication Send Only            |           False |
+|       Metric                              |              10 |
+|       Wide Metric                         |              10 |
+|       Admin Tag                           |               - |
+|       T1 Restart Hello Interval (Seconds) |               3 |
+|       Restart Request (RR) Sent           |               0 |
+|       Restart Acknowledge (RA) Received   |               0 |
+|       Restart Request (RR) Received       |               0 |
+|       Restart Acknowledge (RA) Sent       |               0 |
+|                                           |                 |
+|   Interface Name                          |             lb1 |
+|     Interface Type                        |  point-to-point |
+|     Level Type                            |       level-1-2 |
+|     Passive Interface                     |           False |
+|     IPv4 Unicast                          |            True |
+|     IPv6 Unicast                          |            True |
+|     Level 1                               |                 |
+|       Authentication                      |        Disabled |
+|       Authentication Type                 |               - |
+|       Authentication Send Only            |           False |
+|       Metric                              |              10 |
+|       Wide Metric                         |              10 |
+|       Admin Tag                           |               - |
+|       T1 Restart Hello Interval (Seconds) |               3 |
+|       Restart Request (RR) Sent           |               0 |
+|       Restart Acknowledge (RA) Received   |               0 |
+|       Restart Request (RR) Received       |               0 |
+|       Restart Acknowledge (RA) Sent       |               0 |
+|     Level 2                               |                 |
+|       Authentication                      |        Disabled |
+|       Authentication Type                 |               - |
+|       Authentication Send Only            |           False |
+|       Metric                              |              10 |
+|       Wide Metric                         |              10 |
+|       Admin Tag                           |               - |
+|       T1 Restart Hello Interval (Seconds) |               3 |
+|       Restart Request (RR) Sent           |               0 |
+|       Restart Acknowledge (RA) Received   |               0 |
+|       Restart Request (RR) Received       |               0 |
+|       Restart Acknowledge (RA) Sent       |               0 |
++-------------------------------------------+-----------------+
+</code></pre>
+
+
+</details>
+
+<!-- retry: 90s -->
+<p><strong>Verify</strong> (show mode) on <strong>PE_1</strong>:</p>
+<pre><code class="language-saos-show">show isis neighbors
+</code></pre>
+<p>Pass: Output contains <code>0172.0016.0002</code> and <code>PE_1-PE_2-if</code> and <code>Up</code></p>
+<details><summary>Example output</summary>
+
+
+<pre><code>+-------------------------------------- ISIS NEIGHBOR STATE: Bootcamp ---------------------------------------+
+| Neighbor |                        |                  |                |       |   Hold   |      |          |
+|   Type   |       System ID        |    Interface     |      SNPA      | State | Time (s) | Type | Protocol |
++----------+------------------------+------------------+----------------+-------+----------+------+----------+
+|   P2P    |     0172.0016.0002     |   PE_1-PE_2-if   | 0c00.e1d6.83f6 |    Up |       23 |  L1  |  IS-IS   |
++----------+------------------------+------------------+----------------+-------+----------+------+----------+
+</code></pre>
+
+
+</details>
+
+<!-- retry: 90s -->
+<p><strong>Verify</strong> (show mode) on <strong>PE_2</strong>:</p>
+<pre><code class="language-saos-show">show isis neighbors
+</code></pre>
+<p>Pass: Output contains <code>0172.0016.0001</code> and <code>PE_1-PE_2-if</code> and <code>Up</code></p>
+<details><summary>Example output</summary>
+
+
+<pre><code>+-------------------------------------- ISIS NEIGHBOR STATE: Bootcamp ---------------------------------------+
+| Neighbor |                        |                  |                |       |   Hold   |      |          |
+|   Type   |       System ID        |    Interface     |      SNPA      | State | Time (s) | Type | Protocol |
++----------+------------------------+------------------+----------------+-------+----------+------+----------+
+|   P2P    |     0172.0016.0001     |   PE_1-PE_2-if   | 0c00.2f0f.4af6 |    Up |       22 |  L1  |  IS-IS   |
++----------+------------------------+------------------+----------------+-------+----------+------+----------+
+</code></pre>
+
+
+</details>
+
+<!-- retry: 90s -->
+<p><strong>Verify</strong> (show mode) on <strong>PE_1</strong>:</p>
+<pre><code class="language-saos-show">show ip routes
+</code></pre>
+<p>Pass: Output contains <code>172.16.0.2/32</code> and <code>172.16.1.2</code></p>
+<details><summary>Example output</summary>
+
+
+<pre><code>+---------------------------------------------------------------------------------------+
+| Codes: K - kernel, C - connected, S - static, B - BGP, O - OSPF, IA - OSPF inter area |
+|        E1 - OSPF external type 1, E2 - OSPF external type 2                           |
+|        I - IS-IS, L1 - IS-IS level-1, L2 - IS-IS level-2, ia - IS-IS inter area       |
+|        N1 - OSPF NSSA external type 1, N2 - OSPF NSSA external type 2                 |
+|        M - MPLS                                                                       |
+|        &gt; - selected route, * - FIB route, ~ - Anycast Prefix                          |
+|        S/T - Sub Type, RP/M - Route Preference/Metric                                 |
++---------------------------------------------------------------------------------------+
++------------------------------------------------------------------------------- RIB STATE: default -------------------------------------------------------------------------------+
+|       |      |     |                  |                    |           |                 |                           | Recursive...                                | Last Update |
+| State | Type | S/T | Instance         | Destination        | RP/M      | Next Hop        | Interface                 | Next Hop        | Interface                 | (hh:mm:ss)  |
++-------+------+-----+------------------+--------------------+-----------+-----------------+---------------------------+-----------------+---------------------------+-------------+
+| *&gt;    |  K   |  -  | -                | 0.0.0.0/0          | [254/0]   | 10.0.0.2        | mgmtbr0                   | -               | -                         | -           |
+| *&gt;    |  C   |  -  | -                | 10.0.0.0/24        | [0/0]     | -               | mgmtbr0                   | -               | -                         | -           |
+| *&gt;    |  C   |  -  | -                | 172.16.0.1/32      | [0/0]     | -               | lb1                       | -               | -                         | -           |
+| *&gt;    |  I   |  L1 | Bootcamp         | 172.16.0.2/32      | [115/20]  | 172.16.1.2      | PE_1-PE_2-if              | -               | -                         | 00:00:56    |
+| *&gt;    |  C   |  -  | -                | 172.16.1.0/30      | [0/0]     | -               | PE_1-PE_2-if              | -               | -                         | -           |
++-------+------+-----+------------------+--------------------+-----------+-----------------+---------------------------+-----------------+---------------------------+-------------+
+</code></pre>
+
+
+</details>
+
+<!-- retry: 90s -->
+<p><strong>Verify</strong> (show mode) on <strong>PE_1</strong>:</p>
+<pre><code class="language-saos-show">ping ip destination 172.16.0.2 source 172.16.0.1 repeat-count 3
+</code></pre>
+<p>Pass: Output contains <code>100.00 percent</code></p>
+<details><summary>Example output</summary>
+
+
+<pre><code>Sending 3 ICMP Echos to 172.16.0.2, timeout is 1 second
+
+Codes: 
+'!' - Success, 'Q' - Request not sent, '.' - Timeout 
+
+ Type 'Ctrl+C' to abort
+
+! seq_num = 1  RTT = 2.58 ms  TTL = 255
+! seq_num = 2  RTT = 1.73 ms  TTL = 255
+! seq_num = 3  RTT = 2.33 ms  TTL = 255
+Success Rate is 100.00 percent (3/3)
+Round-trip min/avg/max = 1.73/2.21/2.58
+</code></pre>
+
+
+</details>
+
+<!-- retry: 90s -->
+<p><strong>Verify</strong> (show mode) on <strong>PE_2</strong>:</p>
+<pre><code class="language-saos-show">show ip routes
+</code></pre>
+<p>Pass: Output contains <code>172.16.0.1/32</code> and <code>172.16.1.1</code></p>
+<details><summary>Example output</summary>
+
+
+<pre><code>+---------------------------------------------------------------------------------------+
+| Codes: K - kernel, C - connected, S - static, B - BGP, O - OSPF, IA - OSPF inter area |
+|        E1 - OSPF external type 1, E2 - OSPF external type 2                           |
+|        I - IS-IS, L1 - IS-IS level-1, L2 - IS-IS level-2, ia - IS-IS inter area       |
+|        N1 - OSPF NSSA external type 1, N2 - OSPF NSSA external type 2                 |
+|        M - MPLS                                                                       |
+|        &gt; - selected route, * - FIB route, ~ - Anycast Prefix                          |
+|        S/T - Sub Type, RP/M - Route Preference/Metric                                 |
++---------------------------------------------------------------------------------------+
++------------------------------------------------------------------------------- RIB STATE: default -------------------------------------------------------------------------------+
+|       |      |     |                  |                    |           |                 |                           | Recursive...                                | Last Update |
+| State | Type | S/T | Instance         | Destination        | RP/M      | Next Hop        | Interface                 | Next Hop        | Interface                 | (hh:mm:ss)  |
++-------+------+-----+------------------+--------------------+-----------+-----------------+---------------------------+-----------------+---------------------------+-------------+
+| *&gt;    |  K   |  -  | -                | 0.0.0.0/0          | [254/0]   | 10.0.0.2        | mgmtbr0                   | -               | -                         | -           |
+| *&gt;    |  C   |  -  | -                | 10.0.0.0/24        | [0/0]     | -               | mgmtbr0                   | -               | -                         | -           |
+| *&gt;    |  I   |  L1 | Bootcamp         | 172.16.0.1/32      | [115/20]  | 172.16.1.1      | PE_1-PE_2-if              | -               | -                         | 00:00:40    |
+| *&gt;    |  C   |  -  | -                | 172.16.0.2/32      | [0/0]     | -               | lb1                       | -               | -                         | -           |
+| *&gt;    |  C   |  -  | -                | 172.16.1.0/30      | [0/0]     | -               | PE_1-PE_2-if              | -               | -                         | -           |
++-------+------+-----+------------------+--------------------+-----------+-----------------+---------------------------+-----------------+---------------------------+-------------+
+</code></pre>
+
+
+</details>
+
+<!-- retry: 90s -->
+<p><strong>Verify</strong> (show mode) on <strong>PE_2</strong>:</p>
+<pre><code class="language-saos-show">ping ip destination 172.16.0.1 source 172.16.0.2 repeat-count 3
+</code></pre>
+<p>Pass: Output contains <code>100.00 percent</code></p>
+<details><summary>Example output</summary>
+
+
+<pre><code>Sending 3 ICMP Echos to 172.16.0.1, timeout is 1 second
+
+Codes: 
+'!' - Success, 'Q' - Request not sent, '.' - Timeout 
+
+ Type 'Ctrl+C' to abort
+
+! seq_num = 1  RTT = 3.31 ms  TTL = 255
+! seq_num = 2  RTT = 1.93 ms  TTL = 255
+! seq_num = 3  RTT = 2.03 ms  TTL = 255
+Success Rate is 100.00 percent (3/3)
+Round-trip min/avg/max = 1.93/2.42/3.31
+</code></pre>
+
+
+</details>
+
+<p><a id="task-4"></a></p>
+<h3 id="task-4-observe-is-is-carrying-ipv4-but-not-ipv6">Task 4: Observe IS-IS carrying IPv4 but not IPv6</h3>
+<p><a href="#task-4" title="Direct link to this task (right-click to copy)">🔗</a></p>
+<!-- prose: detailed -->
+
+<p><strong>Summary</strong> — Pause and survey the network again, the way you did in Task 1,
+before touching IPv6. IS-IS is now exchanging IPv4 reachability: the
+loopbacks appear in each other's route tables and respond to ping. But the
+F1 underlay also gave every interface an IPv6 address — <code>lb1</code> has
+<code>FC00::1/128</code> and <code>FC00::2/128</code>, and the link carries the <code>FC00::600/127</code>
+pair.</p>
+<p><strong>Implementation</strong> — Nothing to configure: ask yourself what the IS-IS
+instance you just built is actually carrying. Did adding an interface to the
+instance say anything about which address families it advertises?</p>
+<!-- verify-prose -->
+
+<p>Expect a split picture: IPv4 loopback-to-loopback pings succeed, but a ping
+from <code>PE_1</code> to <code>FC00::2</code> should still fail. The adjacency is up, the
+interfaces have IPv6 addresses — so what is missing? Predict the answer
+before moving on: reachability requires not just a neighbor, but a protocol
+willing to exchange routes for that address family.</p>
+<p><a id="task-5"></a></p>
+<h3 id="task-5-confirm-the-ipv6-underlay-addressing">Task 5: Confirm the IPv6 underlay addressing</h3>
+<p><a href="#task-5" title="Direct link to this task (right-click to copy)">🔗</a></p>
+<!-- prose: detailed -->
+
+<p><strong>Summary</strong> — Confirm the IPv6 side of the underlay is genuinely in place
+before blaming it. This is a diagnostic habit worth building: separate "the
+address is missing" from "the route is missing" — they fail identically from
+ping's point of view but have different fixes.</p>
+<p><strong>Implementation</strong> — On each PE, inspect the interface addressing: <code>lb1</code>
+should carry its /128 (<code>FC00::1</code> on <code>PE_1</code>, <code>FC00::2</code> on <code>PE_2</code>) and
+<code>PE_1-PE_2-if</code> its half of the /127 point-to-point pair (<code>FC00::600</code> and
+<code>FC00::601</code>).</p>
+<!-- verify-prose -->
+
+<p>Expect the addresses to all be present — they were preloaded from F1. A ping
+across the link to the neighbor's /127 address (<code>FC00::601</code> from <code>PE_1</code>)
+should work, since that prefix is directly connected. The remote loopback
+/128 should remain unreachable: nothing advertises it yet. If both facts
+hold, you've isolated the problem to route exchange, which the next task
+fixes.</p>
+<p><a id="task-6"></a></p>
+<h3 id="task-6-add-the-ipv6-address-family-to-the-is-is-interfaces">Task 6: Add the ipv6 address-family to the IS-IS interfaces</h3>
+<p><a href="#task-6" title="Direct link to this task (right-click to copy)">🔗</a></p>
+<!-- prose: in-depth -->
+
+<p><strong>Summary</strong> — Teach IS-IS to carry IPv6. On both PEs, enable the <code>ipv6</code>
+unicast address family on each IS-IS interface — <code>lb1</code> and <code>PE_1-PE_2-if</code>.</p>
+<p><strong>Background</strong> — This is the integrated-IS-IS advantage: IS-IS is not an IP
+protocol underneath (it runs directly over the link layer), so the same
+instance, same adjacency, and same flooding can announce IPv4 and IPv6
+prefixes side by side — no second protocol, no second neighbor relationship.</p>
+<p><strong>Implementation</strong> — Add the <code>ipv6</code> unicast family to both interfaces
+inside instance <code>Bootcamp</code>, on both PEs. Enabling the family on <code>lb1</code> is
+what injects <code>FC00::1/128</code> and <code>FC00::2/128</code> into the level-1 database.</p>
+<p><strong>Configure</strong> (config mode) on <strong>PE_1</strong>:</p>
+<pre><code class="language-saos-config">isis instance Bootcamp interfaces interface lb1 address-families address-family ipv6 unicast
+isis instance Bootcamp interfaces interface PE_1-PE_2-if address-families address-family ipv6 unicast
+</code></pre>
+<p><strong>Configure</strong> (config mode) on <strong>PE_2</strong>:</p>
+<pre><code class="language-saos-config">isis instance Bootcamp interfaces interface lb1 address-families address-family ipv6 unicast
+isis instance Bootcamp interfaces interface PE_1-PE_2-if address-families address-family ipv6 unicast
+</code></pre>
+<!-- verify-prose -->
+
+<p>The IS-IS interface state on each PE should now list an IPv6 address
+alongside the IPv4 address for both <code>PE_1-PE_2-if</code> and <code>lb1</code>, while the
+adjacency itself is unchanged — same instance, broader payload. The decisive
+test is the one that failed before: <code>PE_1</code> pinging <code>FC00::2</code> and <code>PE_2</code>
+pinging <code>FC00::1</code> should both succeed. Notice the adjacency count didn't
+change — why did no new neighbor relationship need to form for IPv6 to start
+working?</p>
+<p><strong>Verify</strong> (show mode) on <strong>PE_1</strong>:</p>
+<pre><code class="language-saos-show">show isis interfaces
+</code></pre>
+<p>Pass: Output contains <code>PE_1-PE_2-if</code> and <code>lb1</code> and <code>IPv6</code></p>
+<details><summary>Example output</summary>
+
+
+<pre><code>+------------------------ ISIS INTERFACE STATE -----------------------+
+| Name                             |                            Value |
++----------------------------------+----------------------------------+
+| Interface                        |                     PE_1-PE_2-if |
+| Routing Protocol                 |                  ISIS (Bootcamp) |
+| Network Type                     |                   Point-to-Point |
+| Circuit Type                     |                          level-1 |
+| Local Circuit ID                 |                               02 |
+| Extended Local Circuit ID        |                         3FFFD8F2 |
+| Local SNPA                       |                                - |
+| Hello Padding                    |                             True |
+| LDP IGP SYNC Status              |                   Not Configured |
+| IP Interface Address(es)         |                    172.16.1.1/30 |
+| IPv6 Interface Address(es)       |                    fc00::600/127 |
+|                                  |      fe80::e00:2fff:fe0f:4af6/64 |
+| Level Index                      |                          level-1 |
+|    Circuit ID                    |                0172.0016.0001.02 |
+|    Active Adjacencies            |                                1 |
+|    LSP MTU                       |                             1492 |
+|    Metric (Narrow/Wide)          |                            10/10 |
+|    Admin Tag                     |                                - |
+|    Protocol Oper State           |                               up |
+|    Next Hello                    |                        5 seconds |
+|    Hello Interval                |                       10 seconds |
+|    Hello Multiplier              |                                3 |
+|    Authentication                |                              MD5 |
+|   Password                       |                             **** |
+| BFD                              |                         Disabled |
+| BFD IPv6                         |                         Disabled |
++----------------------------------+----------------------------------+
+| Interface                        |                              lb1 |
+| Routing Protocol                 |                  ISIS (Bootcamp) |
+| Network Type                     |                   Point-to-Point |
+| Circuit Type                     |                        level-1-2 |
+| Local Circuit ID                 |                               01 |
+| Extended Local Circuit ID        |                         3FFFE8F5 |
+| Local SNPA                       |                                - |
+| Hello Padding                    |                             True |
+| LDP IGP SYNC Status              |                   Not Configured |
+| IP Interface Address(es)         |                    172.16.0.1/32 |
+| IPv6 Interface Address(es)       |                      fc00::1/128 |
+|                                  |      fe80::e00:2fff:fe0f:4af6/64 |
+| Level Index                      |                          level-1 |
+|    Circuit ID                    |                0172.0016.0001.01 |
+|    Active Adjacencies            |                                0 |
+|    LSP MTU                       |                             1492 |
+|    Metric (Narrow/Wide)          |                            10/10 |
+|    Admin Tag                     |                                - |
+|    Protocol Oper State           |                               up |
+|    Next Hello                    |                        0 seconds |
+|    Hello Interval                |                       10 seconds |
+|    Hello Multiplier              |                                3 |
+|    Authentication                |                          Not Set |
+| BFD                              |                         Disabled |
+| BFD IPv6                         |                         Disabled |
++----------------------------------+----------------------------------+
+</code></pre>
+
+
+</details>
+
+<p><strong>Verify</strong> (show mode) on <strong>PE_2</strong>:</p>
+<pre><code class="language-saos-show">show isis interfaces
+</code></pre>
+<p>Pass: Output contains <code>PE_1-PE_2-if</code> and <code>lb1</code> and <code>IPv6</code></p>
+<details><summary>Example output</summary>
+
+
+<pre><code>+------------------------ ISIS INTERFACE STATE -----------------------+
+| Name                             |                            Value |
++----------------------------------+----------------------------------+
+| Interface                        |                     PE_1-PE_2-if |
+| Routing Protocol                 |                  ISIS (Bootcamp) |
+| Network Type                     |                   Point-to-Point |
+| Circuit Type                     |                          level-1 |
+| Local Circuit ID                 |                               02 |
+| Extended Local Circuit ID        |                         3FFFD8F2 |
+| Local SNPA                       |                                - |
+| Hello Padding                    |                             True |
+| LDP IGP SYNC Status              |                   Not Configured |
+| IP Interface Address(es)         |                    172.16.1.2/30 |
+| IPv6 Interface Address(es)       |                    fc00::601/127 |
+|                                  |      fe80::e00:e1ff:fed6:83f6/64 |
+| Level Index                      |                          level-1 |
+|    Circuit ID                    |                0172.0016.0002.02 |
+|    Active Adjacencies            |                                1 |
+|    LSP MTU                       |                             1492 |
+|    Metric (Narrow/Wide)          |                            10/10 |
+|    Admin Tag                     |                                - |
+|    Protocol Oper State           |                               up |
+|    Next Hello                    |                        6 seconds |
+|    Hello Interval                |                       10 seconds |
+|    Hello Multiplier              |                                3 |
+|    Authentication                |                              MD5 |
+|   Password                       |                             **** |
+| BFD                              |                         Disabled |
+| BFD IPv6                         |                         Disabled |
++----------------------------------+----------------------------------+
+| Interface                        |                              lb1 |
+| Routing Protocol                 |                  ISIS (Bootcamp) |
+| Network Type                     |                   Point-to-Point |
+| Circuit Type                     |                        level-1-2 |
+| Local Circuit ID                 |                               01 |
+| Extended Local Circuit ID        |                         3FFFE8F5 |
+| Local SNPA                       |                                - |
+| Hello Padding                    |                             True |
+| LDP IGP SYNC Status              |                   Not Configured |
+| IP Interface Address(es)         |                    172.16.0.2/32 |
+| IPv6 Interface Address(es)       |                      fc00::2/128 |
+|                                  |      fe80::e00:e1ff:fed6:83f6/64 |
+| Level Index                      |                          level-1 |
+|    Circuit ID                    |                0172.0016.0002.01 |
+|    Active Adjacencies            |                                0 |
+|    LSP MTU                       |                             1492 |
+|    Metric (Narrow/Wide)          |                            10/10 |
+|    Admin Tag                     |                                - |
+|    Protocol Oper State           |                               up |
+|    Next Hello                    |                        0 seconds |
+|    Hello Interval                |                       10 seconds |
+|    Hello Multiplier              |                                3 |
+|    Authentication                |                          Not Set |
+| BFD                              |                         Disabled |
+| BFD IPv6                         |                         Disabled |
++----------------------------------+----------------------------------+
+</code></pre>
+
+
+</details>
+
+<!-- retry: 90s -->
+<p><strong>Verify</strong> (show mode) on <strong>PE_1</strong>:</p>
+<pre><code class="language-saos-show">ping ip destination FC00::2 source FC00::1 repeat-count 3
+</code></pre>
+<p>Pass: Output contains <code>100.00 percent</code></p>
+<details><summary>Example output</summary>
+
+
+<pre><code>Sending 3 ICMP Echos to FC00::2, timeout is 1 second
+
+Codes: 
+'!' - Success, 'Q' - Request not sent, '.' - Timeout 
+
+ Type 'Ctrl+C' to abort
+
+! seq_num = 1  RTT = 1.87 ms  TTL = 255
+! seq_num = 2  RTT = 1.82 ms  TTL = 255
+! seq_num = 3  RTT = 2.05 ms  TTL = 255
+Success Rate is 100.00 percent (3/3)
+Round-trip min/avg/max = 1.82/1.91/2.05
+</code></pre>
+
+
+</details>
+
+<!-- retry: 90s -->
+<p><strong>Verify</strong> (show mode) on <strong>PE_2</strong>:</p>
+<pre><code class="language-saos-show">ping ip destination FC00::1 source FC00::2 repeat-count 3
+</code></pre>
+<p>Pass: Output contains <code>100.00 percent</code></p>
+<details><summary>Example output</summary>
+
+
+<pre><code>Sending 3 ICMP Echos to FC00::1, timeout is 1 second
+
+Codes: 
+'!' - Success, 'Q' - Request not sent, '.' - Timeout 
+
+ Type 'Ctrl+C' to abort
+
+! seq_num = 1  RTT = 1.61 ms  TTL = 255
+! seq_num = 2  RTT = 2.37 ms  TTL = 255
+! seq_num = 3  RTT = 1.74 ms  TTL = 255
+Success Rate is 100.00 percent (3/3)
+Round-trip min/avg/max = 1.61/1.91/2.37
+</code></pre>
+
+
+</details>
+
+<p><a id="task-7"></a></p>
+<h3 id="task-7-confirm-ipv6-reachability-over-is-is">Task 7: Confirm IPv6 reachability over IS-IS</h3>
+<p><a href="#task-7" title="Direct link to this task (right-click to copy)">🔗</a></p>
+<!-- prose: simple -->
+
+<p>Repeat the Task 5 confirmation now that the <code>ipv6</code> address family is active
+— the addresses are unchanged; only what IS-IS advertises changed.
+Re-running an identical check after a one-line change ties the symptom
+(loopback unreachable) to its exact cause (the missing address family).</p>
+<!-- verify-prose -->
+
+<p>Expect the remote loopback pings that failed in Task 5 to succeed now, with
+the on-link /127 behavior unchanged. If you inspect the IPv6 routing
+information, expect the far /128 loopbacks to appear as IS-IS-learned
+entries. One question to close the loop: of the three ingredients — address,
+adjacency, address family — which two were already present in Task 5, and
+how did your checks there prove it?</p>
+<p><a id="task-8"></a></p>
+<h3 id="task-8-add-md5-authentication-to-the-is-is-neighbor-association">Task 8: Add MD5 authentication to the IS-IS neighbor association</h3>
+<p><a href="#task-8" title="Direct link to this task (right-click to copy)">🔗</a></p>
+<!-- prose: in-depth -->
+
+<p><strong>Summary</strong> — Finally, protect the neighbor relationship. On <code>PE_1-PE_2-if</code>
+on both PEs, configure a level-1 authentication password (<code>ciena123</code> — it
+must match exactly on both ends).</p>
+<p><strong>Background</strong> — SAOS applies it as HMAC-MD5: each hello carries a hash
+computed from the packet and the shared secret, and a receiver discards
+hellos whose hash it cannot reproduce, so a rogue or misconfigured device
+cannot join the area over this link. The password attaches to the interface
+at level-1 because that is where this adjacency lives; <code>lb1</code> needs none —
+no hellos are exchanged with anyone there.</p>
+<p><strong>Implementation</strong> — One password line per PE, on the link interface. Worth
+watching in real time: configure <code>PE_1</code> first and pause — <code>show isis
+neighbors</code> and the route table will show the adjacency and its learned
+routes drop, because authenticated and unauthenticated hellos reject each
+other. Configure <code>PE_2</code> and watch both return.</p>
+<p><strong>Configure</strong> (config mode) on <strong>PE_1</strong>:</p>
+<pre><code class="language-saos-config">isis instance Bootcamp interfaces interface PE_1-PE_2-if level-1 password ciena123
+</code></pre>
+<p><strong>Configure</strong> (config mode) on <strong>PE_2</strong>:</p>
+<pre><code class="language-saos-config">isis instance Bootcamp interfaces interface PE_1-PE_2-if level-1 password ciena123
+</code></pre>
+<!-- verify-prose -->
+
+<p>The IS-IS interface state on <code>PE_1-PE_2-if</code> should report level-1
+authentication as <code>MD5</code> — the secret itself is never shown in readable form,
+on this or any well-behaved platform. That means you cannot verify
+authentication by reading it back; you prove it by its effect: with matching
+passwords the adjacency should return to <code>Up</code> on both PEs, and the IPv4 and
+IPv6 loopback pings should still succeed. What would you expect the neighbor
+table to show if the two passwords differed — and how would that differ from
+the link simply being down?</p>
+<!-- retry: 90s -->
+<p><strong>Verify</strong> (show mode) on <strong>PE_1</strong>:</p>
+<pre><code class="language-saos-show">show isis interfaces
+</code></pre>
+<p>Pass: Output contains <code>PE_1-PE_2-if</code> and <code>level-1</code> and <code>MD5</code></p>
+<details><summary>Example output</summary>
+
+
+<pre><code>+------------------------ ISIS INTERFACE STATE -----------------------+
+| Name                             |                            Value |
++----------------------------------+----------------------------------+
+| Interface                        |                     PE_1-PE_2-if |
+| Routing Protocol                 |                  ISIS (Bootcamp) |
+| Network Type                     |                   Point-to-Point |
+| Circuit Type                     |                          level-1 |
+| Local Circuit ID                 |                               02 |
+| Extended Local Circuit ID        |                         3FFFD8F2 |
+| Local SNPA                       |                                - |
+| Hello Padding                    |                             True |
+| LDP IGP SYNC Status              |                   Not Configured |
+| IP Interface Address(es)         |                    172.16.1.1/30 |
+| IPv6 Interface Address(es)       |                    fc00::600/127 |
+|                                  |      fe80::e00:2fff:fe0f:4af6/64 |
+| Level Index                      |                          level-1 |
+|    Circuit ID                    |                0172.0016.0001.02 |
+|    Active Adjacencies            |                                1 |
+|    LSP MTU                       |                             1492 |
+|    Metric (Narrow/Wide)          |                            10/10 |
+|    Admin Tag                     |                                - |
+|    Protocol Oper State           |                               up |
+|    Next Hello                    |                        8 seconds |
+|    Hello Interval                |                       10 seconds |
+|    Hello Multiplier              |                                3 |
+|    Authentication                |                              MD5 |
+|   Password                       |                             **** |
+| BFD                              |                         Disabled |
+| BFD IPv6                         |                         Disabled |
++----------------------------------+----------------------------------+
+| Interface                        |                              lb1 |
+| Routing Protocol                 |                  ISIS (Bootcamp) |
+| Network Type                     |                   Point-to-Point |
+| Circuit Type                     |                        level-1-2 |
+| Local Circuit ID                 |                               01 |
+| Extended Local Circuit ID        |                         3FFFE8F5 |
+| Local SNPA                       |                                - |
+| Hello Padding                    |                             True |
+| LDP IGP SYNC Status              |                   Not Configured |
+| IP Interface Address(es)         |                    172.16.0.1/32 |
+| IPv6 Interface Address(es)       |                      fc00::1/128 |
+|                                  |      fe80::e00:2fff:fe0f:4af6/64 |
+| Level Index                      |                          level-1 |
+|    Circuit ID                    |                0172.0016.0001.01 |
+|    Active Adjacencies            |                                0 |
+|    LSP MTU                       |                             1492 |
+|    Metric (Narrow/Wide)          |                            10/10 |
+|    Admin Tag                     |                                - |
+|    Protocol Oper State           |                               up |
+|    Next Hello                    |                        0 seconds |
+|    Hello Interval                |                       10 seconds |
+|    Hello Multiplier              |                                3 |
+|    Authentication                |                          Not Set |
+| BFD                              |                         Disabled |
+| BFD IPv6                         |                         Disabled |
++----------------------------------+----------------------------------+
+</code></pre>
+
+
+</details>
+
+<!-- retry: 90s -->
+<p><strong>Verify</strong> (show mode) on <strong>PE_2</strong>:</p>
+<pre><code class="language-saos-show">show isis interfaces
+</code></pre>
+<p>Pass: Output contains <code>PE_1-PE_2-if</code> and <code>level-1</code> and <code>MD5</code></p>
+<details><summary>Example output</summary>
+
+
+<pre><code>+------------------------ ISIS INTERFACE STATE -----------------------+
+| Name                             |                            Value |
++----------------------------------+----------------------------------+
+| Interface                        |                     PE_1-PE_2-if |
+| Routing Protocol                 |                  ISIS (Bootcamp) |
+| Network Type                     |                   Point-to-Point |
+| Circuit Type                     |                          level-1 |
+| Local Circuit ID                 |                               02 |
+| Extended Local Circuit ID        |                         3FFFD8F2 |
+| Local SNPA                       |                                - |
+| Hello Padding                    |                             True |
+| LDP IGP SYNC Status              |                   Not Configured |
+| IP Interface Address(es)         |                    172.16.1.2/30 |
+| IPv6 Interface Address(es)       |                    fc00::601/127 |
+|                                  |      fe80::e00:e1ff:fed6:83f6/64 |
+| Level Index                      |                          level-1 |
+|    Circuit ID                    |                0172.0016.0002.02 |
+|    Active Adjacencies            |                                1 |
+|    LSP MTU                       |                             1492 |
+|    Metric (Narrow/Wide)          |                            10/10 |
+|    Admin Tag                     |                                - |
+|    Protocol Oper State           |                               up |
+|    Next Hello                    |                        9 seconds |
+|    Hello Interval                |                       10 seconds |
+|    Hello Multiplier              |                                3 |
+|    Authentication                |                              MD5 |
+|   Password                       |                             **** |
+| BFD                              |                         Disabled |
+| BFD IPv6                         |                         Disabled |
++----------------------------------+----------------------------------+
+| Interface                        |                              lb1 |
+| Routing Protocol                 |                  ISIS (Bootcamp) |
+| Network Type                     |                   Point-to-Point |
+| Circuit Type                     |                        level-1-2 |
+| Local Circuit ID                 |                               01 |
+| Extended Local Circuit ID        |                         3FFFE8F5 |
+| Local SNPA                       |                                - |
+| Hello Padding                    |                             True |
+| LDP IGP SYNC Status              |                   Not Configured |
+| IP Interface Address(es)         |                    172.16.0.2/32 |
+| IPv6 Interface Address(es)       |                      fc00::2/128 |
+|                                  |      fe80::e00:e1ff:fed6:83f6/64 |
+| Level Index                      |                          level-1 |
+|    Circuit ID                    |                0172.0016.0002.01 |
+|    Active Adjacencies            |                                0 |
+|    LSP MTU                       |                             1492 |
+|    Metric (Narrow/Wide)          |                            10/10 |
+|    Admin Tag                     |                                - |
+|    Protocol Oper State           |                               up |
+|    Next Hello                    |                        0 seconds |
+|    Hello Interval                |                       10 seconds |
+|    Hello Multiplier              |                                3 |
+|    Authentication                |                          Not Set |
+| BFD                              |                         Disabled |
+| BFD IPv6                         |                         Disabled |
++----------------------------------+----------------------------------+
+</code></pre>
+
+
+</details>
+
+<!-- retry: 90s -->
+<p><strong>Verify</strong> (show mode) on <strong>PE_1</strong>:</p>
+<pre><code class="language-saos-show">show isis neighbors
+</code></pre>
+<p>Pass: Output contains <code>0172.0016.0002</code> and <code>Up</code></p>
+<details><summary>Example output</summary>
+
+
+<pre><code>+-------------------------------------- ISIS NEIGHBOR STATE: Bootcamp ---------------------------------------+
+| Neighbor |                        |                  |                |       |   Hold   |      |          |
+|   Type   |       System ID        |    Interface     |      SNPA      | State | Time (s) | Type | Protocol |
++----------+------------------------+------------------+----------------+-------+----------+------+----------+
+|   P2P    |     0172.0016.0002     |   PE_1-PE_2-if   | 0c00.e1d6.83f6 |    Up |       29 |  L1  |  IS-IS   |
++----------+------------------------+------------------+----------------+-------+----------+------+----------+
+</code></pre>
+
+
+</details>
+
+<!-- retry: 90s -->
+<p><strong>Verify</strong> (show mode) on <strong>PE_2</strong>:</p>
+<pre><code class="language-saos-show">show isis neighbors
+</code></pre>
+<p>Pass: Output contains <code>0172.0016.0001</code> and <code>Up</code></p>
+<details><summary>Example output</summary>
+
+
+<pre><code>+-------------------------------------- ISIS NEIGHBOR STATE: Bootcamp ---------------------------------------+
+| Neighbor |                        |                  |                |       |   Hold   |      |          |
+|   Type   |       System ID        |    Interface     |      SNPA      | State | Time (s) | Type | Protocol |
++----------+------------------------+------------------+----------------+-------+----------+------+----------+
+|   P2P    |     0172.0016.0001     |   PE_1-PE_2-if   | 0c00.2f0f.4af6 |    Up |       27 |  L1  |  IS-IS   |
++----------+------------------------+------------------+----------------+-------+----------+------+----------+
+</code></pre>
+
+
+</details>
+
+<!-- retry: 90s -->
+<p><strong>Verify</strong> (show mode) on <strong>PE_1</strong>:</p>
+<pre><code class="language-saos-show">ping ip destination FC00::2 source FC00::1 repeat-count 3
+</code></pre>
+<p>Pass: Output contains <code>100.00 percent</code></p>
+<details><summary>Example output</summary>
+
+
+<pre><code>Sending 3 ICMP Echos to FC00::2, timeout is 1 second
+
+Codes: 
+'!' - Success, 'Q' - Request not sent, '.' - Timeout 
+
+ Type 'Ctrl+C' to abort
+
+! seq_num = 1  RTT = 1.92 ms  TTL = 255
+! seq_num = 2  RTT = 2.87 ms  TTL = 255
+! seq_num = 3  RTT = 2.28 ms  TTL = 255
+Success Rate is 100.00 percent (3/3)
+Round-trip min/avg/max = 1.92/2.36/2.87
+</code></pre>
+
+
+</details>
+
+<!-- retry: 90s -->
+<p><strong>Verify</strong> (show mode) on <strong>PE_2</strong>:</p>
+<pre><code class="language-saos-show">ping ip destination FC00::1 source FC00::2 repeat-count 3
+</code></pre>
+<p>Pass: Output contains <code>100.00 percent</code></p>
+<details><summary>Example output</summary>
+
+
+<pre><code>Sending 3 ICMP Echos to FC00::1, timeout is 1 second
+
+Codes: 
+'!' - Success, 'Q' - Request not sent, '.' - Timeout 
+
+ Type 'Ctrl+C' to abort
+
+! seq_num = 1  RTT = 2.00 ms  TTL = 255
+! seq_num = 2  RTT = 2.94 ms  TTL = 255
+! seq_num = 3  RTT = 2.04 ms  TTL = 255
+Success Rate is 100.00 percent (3/3)
+Round-trip min/avg/max = 2.00/2.33/2.94
+</code></pre>
+
+
+</details>
+
+<h2 id="tests">Tests</h2>
+<p>Deploy <code>F2-IS-IS-Routing</code>, then run the following validation checks.</p>
+<h3 id="g1-task-2-create-an-is-is-instance-on-pe_1-and-add-interfaces-to-it">G1: Task 2 — Create an IS-IS instance on PE_1 and add interfaces to it</h3>
+<p>On <strong>PE_1</strong>, run:</p>
+<pre><code class="language-saos">show isis summary
+</code></pre>
+<p>Pass: Output contains <code>Bootcamp</code> and <code>level-1</code> and <code>0172.0016.0001</code> and <code>49.0001</code></p>
+<details><summary>Example output</summary>
+
+
+<pre><code>+------------------------ ISIS SUMMARY -----------------------+
+| Name                                      |           Value |
++-------------------------------------------+-----------------+
+| Instance                                  |        Bootcamp |
+| Level Type                                |         level-1 |
+| System ID                                 |  0172.0016.0001 |
+| Area Ids                                  |         49.0001 |
+| Topology Type                             | Single-Topology |
+| Dynamic Hostname                          |           False |
+| Transition                                |           False |
+| Level 1                                   |                 |
+|   Authentication                          |        Disabled |
+|   Authentication Type                     |               - |
+|   Authentication Send Only                |           False |
+|   Level Restarting                        |           False |
+|   Configured T2 Restart Timer (Seconds)   |              60 |
+|   Remaining T2 Restart Timer (Seconds)    |               0 |
+|   Minimum LSP Generation Interval (ms)    |             100 |
+|   Maximum LSP Generation Interval (ms)    |           10000 |
+| Level 2                                   |                 |
+|   Authentication                          |        Disabled |
+|   Authentication Type                     |               - |
+|   Authentication Send Only                |           False |
+|   Level Restarting                        |           False |
+|   Configured T2 Restart Timer (Seconds)   |              60 |
+|   Remaining T2 Restart Timer (Seconds)    |               0 |
+|   Minimum LSP Generation Interval (ms)    |             100 |
+|   Maximum LSP Generation Interval (ms)    |           10000 |
+| MPLS-TE                                   |  Not Configured |
+| Segment Routing                           |        Disabled |
+| Microloop Avoidance                       |        Disabled |
+| Graceful Restart                          |        Disabled |
+| Graceful Restart Helper                   |         Enabled |
+| Node Restarting                           |           False |
+| Configured T3 Grace Period (Seconds)      |           65535 |
+| Remaining T3 Grace Period (Seconds)       |               0 |
+| Interfaces                                |                 |
+|                                           |                 |
+|   Interface Name                          |    PE_1-PE_2-if |
+|     Interface Type                        |  point-to-point |
+|     Level Type                            |         level-1 |
+|     Passive Interface                     |           False |
+|     IPv4 Unicast                          |            True |
+|     IPv6 Unicast                          |            True |
+|     Level 1                               |                 |
+|       Authentication                      |         Enabled |
+|       Authentication Type                 |        HMAC-MD5 |
+|       Authentication Send Only            |           False |
+|       Metric                              |              10 |
+|       Wide Metric                         |              10 |
+|       Admin Tag                           |               - |
+|       T1 Restart Hello Interval (Seconds) |               3 |
+|       Restart Request (RR) Sent           |               0 |
+|       Restart Acknowledge (RA) Received   |               0 |
+|       Restart Request (RR) Received       |               0 |
+|       Restart Acknowledge (RA) Sent       |               0 |
+|     Level 2                               |                 |
+|       Authentication                      |         Enabled |
+|       Authentication Type                 |        HMAC-MD5 |
+|       Authentication Send Only            |           False |
+|       Metric                              |              10 |
+|       Wide Metric                         |              10 |
+|       Admin Tag                           |               - |
+|       T1 Restart Hello Interval (Seconds) |               3 |
+|       Restart Request (RR) Sent           |               0 |
+|       Restart Acknowledge (RA) Received   |               0 |
+|       Restart Request (RR) Received       |               0 |
+|       Restart Acknowledge (RA) Sent       |               0 |
+|                                           |                 |
+|   Interface Name                          |             lb1 |
+|     Interface Type                        |  point-to-point |
+|     Level Type                            |       level-1-2 |
+|     Passive Interface                     |           False |
+|     IPv4 Unicast                          |            True |
+|     IPv6 Unicast                          |            True |
+|     Level 1                               |                 |
+|       Authentication                      |        Disabled |
+|       Authentication Type                 |               - |
+|       Authentication Send Only            |           False |
+|       Metric                              |              10 |
+|       Wide Metric                         |              10 |
+|       Admin Tag                           |               - |
+|       T1 Restart Hello Interval (Seconds) |               3 |
+|       Restart Request (RR) Sent           |               0 |
+|       Restart Acknowledge (RA) Received   |               0 |
+|       Restart Request (RR) Received       |               0 |
+|       Restart Acknowledge (RA) Sent       |               0 |
+|     Level 2                               |                 |
+|       Authentication                      |        Disabled |
+|       Authentication Type                 |               - |
+|       Authentication Send Only            |           False |
+|       Metric                              |              10 |
+|       Wide Metric                         |              10 |
+|       Admin Tag                           |               - |
+|       T1 Restart Hello Interval (Seconds) |               3 |
+|       Restart Request (RR) Sent           |               0 |
+|       Restart Acknowledge (RA) Received   |               0 |
+|       Restart Request (RR) Received       |               0 |
+|       Restart Acknowledge (RA) Sent       |               0 |
++-------------------------------------------+-----------------+
+</code></pre>
+
+
+</details>
+
+<h3 id="g2-task-3-create-an-is-is-instance-on-pe_2-and-add-interfaces-to-it">G2: Task 3 — Create an IS-IS instance on PE_2 and add interfaces to it</h3>
+<p>On <strong>PE_2</strong>, run:</p>
+<pre><code class="language-saos">show isis summary
+</code></pre>
+<p>Pass: Output contains <code>Bootcamp</code> and <code>level-1</code> and <code>0172.0016.0002</code> and <code>49.0001</code></p>
+<details><summary>Example output</summary>
+
+
+<pre><code>+------------------------ ISIS SUMMARY -----------------------+
+| Name                                      |           Value |
++-------------------------------------------+-----------------+
+| Instance                                  |        Bootcamp |
+| Level Type                                |         level-1 |
+| System ID                                 |  0172.0016.0002 |
+| Area Ids                                  |         49.0001 |
+| Topology Type                             | Single-Topology |
+| Dynamic Hostname                          |           False |
+| Transition                                |           False |
+| Level 1                                   |                 |
+|   Authentication                          |        Disabled |
+|   Authentication Type                     |               - |
+|   Authentication Send Only                |           False |
+|   Level Restarting                        |           False |
+|   Configured T2 Restart Timer (Seconds)   |              60 |
+|   Remaining T2 Restart Timer (Seconds)    |               0 |
+|   Minimum LSP Generation Interval (ms)    |             100 |
+|   Maximum LSP Generation Interval (ms)    |           10000 |
+| Level 2                                   |                 |
+|   Authentication                          |        Disabled |
+|   Authentication Type                     |               - |
+|   Authentication Send Only                |           False |
+|   Level Restarting                        |           False |
+|   Configured T2 Restart Timer (Seconds)   |              60 |
+|   Remaining T2 Restart Timer (Seconds)    |               0 |
+|   Minimum LSP Generation Interval (ms)    |             100 |
+|   Maximum LSP Generation Interval (ms)    |           10000 |
+| MPLS-TE                                   |  Not Configured |
+| Segment Routing                           |        Disabled |
+| Microloop Avoidance                       |        Disabled |
+| Graceful Restart                          |        Disabled |
+| Graceful Restart Helper                   |         Enabled |
+| Node Restarting                           |           False |
+| Configured T3 Grace Period (Seconds)      |           65535 |
+| Remaining T3 Grace Period (Seconds)       |               0 |
+| Interfaces                                |                 |
+|                                           |                 |
+|   Interface Name                          |    PE_1-PE_2-if |
+|     Interface Type                        |  point-to-point |
+|     Level Type                            |         level-1 |
+|     Passive Interface                     |           False |
+|     IPv4 Unicast                          |            True |
+|     IPv6 Unicast                          |            True |
+|     Level 1                               |                 |
+|       Authentication                      |         Enabled |
+|       Authentication Type                 |        HMAC-MD5 |
+|       Authentication Send Only            |           False |
+|       Metric                              |              10 |
+|       Wide Metric                         |              10 |
+|       Admin Tag                           |               - |
+|       T1 Restart Hello Interval (Seconds) |               3 |
+|       Restart Request (RR) Sent           |               0 |
+|       Restart Acknowledge (RA) Received   |               0 |
+|       Restart Request (RR) Received       |               0 |
+|       Restart Acknowledge (RA) Sent       |               0 |
+|     Level 2                               |                 |
+|       Authentication                      |         Enabled |
+|       Authentication Type                 |        HMAC-MD5 |
+|       Authentication Send Only            |           False |
+|       Metric                              |              10 |
+|       Wide Metric                         |              10 |
+|       Admin Tag                           |               - |
+|       T1 Restart Hello Interval (Seconds) |               3 |
+|       Restart Request (RR) Sent           |               0 |
+|       Restart Acknowledge (RA) Received   |               0 |
+|       Restart Request (RR) Received       |               0 |
+|       Restart Acknowledge (RA) Sent       |               0 |
+|                                           |                 |
+|   Interface Name                          |             lb1 |
+|     Interface Type                        |  point-to-point |
+|     Level Type                            |       level-1-2 |
+|     Passive Interface                     |           False |
+|     IPv4 Unicast                          |            True |
+|     IPv6 Unicast                          |            True |
+|     Level 1                               |                 |
+|       Authentication                      |        Disabled |
+|       Authentication Type                 |               - |
+|       Authentication Send Only            |           False |
+|       Metric                              |              10 |
+|       Wide Metric                         |              10 |
+|       Admin Tag                           |               - |
+|       T1 Restart Hello Interval (Seconds) |               3 |
+|       Restart Request (RR) Sent           |               0 |
+|       Restart Acknowledge (RA) Received   |               0 |
+|       Restart Request (RR) Received       |               0 |
+|       Restart Acknowledge (RA) Sent       |               0 |
+|     Level 2                               |                 |
+|       Authentication                      |        Disabled |
+|       Authentication Type                 |               - |
+|       Authentication Send Only            |           False |
+|       Metric                              |              10 |
+|       Wide Metric                         |              10 |
+|       Admin Tag                           |               - |
+|       T1 Restart Hello Interval (Seconds) |               3 |
+|       Restart Request (RR) Sent           |               0 |
+|       Restart Acknowledge (RA) Received   |               0 |
+|       Restart Request (RR) Received       |               0 |
+|       Restart Acknowledge (RA) Sent       |               0 |
++-------------------------------------------+-----------------+
+</code></pre>
+
+
+</details>
+
+<!-- retry: 90s -->
+<p>On <strong>PE_1</strong>, run:</p>
+<pre><code class="language-saos">show isis neighbors
+</code></pre>
+<p>Pass: Output contains <code>0172.0016.0002</code> and <code>PE_1-PE_2-if</code> and <code>Up</code></p>
+<details><summary>Example output</summary>
+
+
+<pre><code>+-------------------------------------- ISIS NEIGHBOR STATE: Bootcamp ---------------------------------------+
+| Neighbor |                        |                  |                |       |   Hold   |      |          |
+|   Type   |       System ID        |    Interface     |      SNPA      | State | Time (s) | Type | Protocol |
++----------+------------------------+------------------+----------------+-------+----------+------+----------+
+|   P2P    |     0172.0016.0002     |   PE_1-PE_2-if   | 0c00.e1d6.83f6 |    Up |       23 |  L1  |  IS-IS   |
++----------+------------------------+------------------+----------------+-------+----------+------+----------+
+</code></pre>
+
+
+</details>
+
+<!-- retry: 90s -->
+<p>On <strong>PE_2</strong>, run:</p>
+<pre><code class="language-saos">show isis neighbors
+</code></pre>
+<p>Pass: Output contains <code>0172.0016.0001</code> and <code>PE_1-PE_2-if</code> and <code>Up</code></p>
+<details><summary>Example output</summary>
+
+
+<pre><code>+-------------------------------------- ISIS NEIGHBOR STATE: Bootcamp ---------------------------------------+
+| Neighbor |                        |                  |                |       |   Hold   |      |          |
+|   Type   |       System ID        |    Interface     |      SNPA      | State | Time (s) | Type | Protocol |
++----------+------------------------+------------------+----------------+-------+----------+------+----------+
+|   P2P    |     0172.0016.0001     |   PE_1-PE_2-if   | 0c00.2f0f.4af6 |    Up |       22 |  L1  |  IS-IS   |
++----------+------------------------+------------------+----------------+-------+----------+------+----------+
+</code></pre>
+
+
+</details>
+
+<!-- retry: 90s -->
+<p>On <strong>PE_1</strong>, run:</p>
+<pre><code class="language-saos">show ip routes
+</code></pre>
+<p>Pass: Output contains <code>172.16.0.2/32</code> and <code>172.16.1.2</code></p>
+<details><summary>Example output</summary>
+
+
+<pre><code>+---------------------------------------------------------------------------------------+
+| Codes: K - kernel, C - connected, S - static, B - BGP, O - OSPF, IA - OSPF inter area |
+|        E1 - OSPF external type 1, E2 - OSPF external type 2                           |
+|        I - IS-IS, L1 - IS-IS level-1, L2 - IS-IS level-2, ia - IS-IS inter area       |
+|        N1 - OSPF NSSA external type 1, N2 - OSPF NSSA external type 2                 |
+|        M - MPLS                                                                       |
+|        &gt; - selected route, * - FIB route, ~ - Anycast Prefix                          |
+|        S/T - Sub Type, RP/M - Route Preference/Metric                                 |
++---------------------------------------------------------------------------------------+
++------------------------------------------------------------------------------- RIB STATE: default -------------------------------------------------------------------------------+
+|       |      |     |                  |                    |           |                 |                           | Recursive...                                | Last Update |
+| State | Type | S/T | Instance         | Destination        | RP/M      | Next Hop        | Interface                 | Next Hop        | Interface                 | (hh:mm:ss)  |
++-------+------+-----+------------------+--------------------+-----------+-----------------+---------------------------+-----------------+---------------------------+-------------+
+| *&gt;    |  K   |  -  | -                | 0.0.0.0/0          | [254/0]   | 10.0.0.2        | mgmtbr0                   | -               | -                         | -           |
+| *&gt;    |  C   |  -  | -                | 10.0.0.0/24        | [0/0]     | -               | mgmtbr0                   | -               | -                         | -           |
+| *&gt;    |  C   |  -  | -                | 172.16.0.1/32      | [0/0]     | -               | lb1                       | -               | -                         | -           |
+| *&gt;    |  I   |  L1 | Bootcamp         | 172.16.0.2/32      | [115/20]  | 172.16.1.2      | PE_1-PE_2-if              | -               | -                         | 00:00:56    |
+| *&gt;    |  C   |  -  | -                | 172.16.1.0/30      | [0/0]     | -               | PE_1-PE_2-if              | -               | -                         | -           |
++-------+------+-----+------------------+--------------------+-----------+-----------------+---------------------------+-----------------+---------------------------+-------------+
+</code></pre>
+
+
+</details>
+
+<!-- retry: 90s -->
+<p>On <strong>PE_1</strong>, run:</p>
+<pre><code class="language-saos">ping ip destination 172.16.0.2 source 172.16.0.1 repeat-count 3
+</code></pre>
+<p>Pass: Output contains <code>100.00 percent</code></p>
+<details><summary>Example output</summary>
+
+
+<pre><code>Sending 3 ICMP Echos to 172.16.0.2, timeout is 1 second
+
+Codes: 
+'!' - Success, 'Q' - Request not sent, '.' - Timeout 
+
+ Type 'Ctrl+C' to abort
+
+! seq_num = 1  RTT = 2.58 ms  TTL = 255
+! seq_num = 2  RTT = 1.73 ms  TTL = 255
+! seq_num = 3  RTT = 2.33 ms  TTL = 255
+Success Rate is 100.00 percent (3/3)
+Round-trip min/avg/max = 1.73/2.21/2.58
+</code></pre>
+
+
+</details>
+
+<!-- retry: 90s -->
+<p>On <strong>PE_2</strong>, run:</p>
+<pre><code class="language-saos">show ip routes
+</code></pre>
+<p>Pass: Output contains <code>172.16.0.1/32</code> and <code>172.16.1.1</code></p>
+<details><summary>Example output</summary>
+
+
+<pre><code>+---------------------------------------------------------------------------------------+
+| Codes: K - kernel, C - connected, S - static, B - BGP, O - OSPF, IA - OSPF inter area |
+|        E1 - OSPF external type 1, E2 - OSPF external type 2                           |
+|        I - IS-IS, L1 - IS-IS level-1, L2 - IS-IS level-2, ia - IS-IS inter area       |
+|        N1 - OSPF NSSA external type 1, N2 - OSPF NSSA external type 2                 |
+|        M - MPLS                                                                       |
+|        &gt; - selected route, * - FIB route, ~ - Anycast Prefix                          |
+|        S/T - Sub Type, RP/M - Route Preference/Metric                                 |
++---------------------------------------------------------------------------------------+
++------------------------------------------------------------------------------- RIB STATE: default -------------------------------------------------------------------------------+
+|       |      |     |                  |                    |           |                 |                           | Recursive...                                | Last Update |
+| State | Type | S/T | Instance         | Destination        | RP/M      | Next Hop        | Interface                 | Next Hop        | Interface                 | (hh:mm:ss)  |
++-------+------+-----+------------------+--------------------+-----------+-----------------+---------------------------+-----------------+---------------------------+-------------+
+| *&gt;    |  K   |  -  | -                | 0.0.0.0/0          | [254/0]   | 10.0.0.2        | mgmtbr0                   | -               | -                         | -           |
+| *&gt;    |  C   |  -  | -                | 10.0.0.0/24        | [0/0]     | -               | mgmtbr0                   | -               | -                         | -           |
+| *&gt;    |  I   |  L1 | Bootcamp         | 172.16.0.1/32      | [115/20]  | 172.16.1.1      | PE_1-PE_2-if              | -               | -                         | 00:00:40    |
+| *&gt;    |  C   |  -  | -                | 172.16.0.2/32      | [0/0]     | -               | lb1                       | -               | -                         | -           |
+| *&gt;    |  C   |  -  | -                | 172.16.1.0/30      | [0/0]     | -               | PE_1-PE_2-if              | -               | -                         | -           |
++-------+------+-----+------------------+--------------------+-----------+-----------------+---------------------------+-----------------+---------------------------+-------------+
+</code></pre>
+
+
+</details>
+
+<!-- retry: 90s -->
+<p>On <strong>PE_2</strong>, run:</p>
+<pre><code class="language-saos">ping ip destination 172.16.0.1 source 172.16.0.2 repeat-count 3
+</code></pre>
+<p>Pass: Output contains <code>100.00 percent</code></p>
+<details><summary>Example output</summary>
+
+
+<pre><code>Sending 3 ICMP Echos to 172.16.0.1, timeout is 1 second
+
+Codes: 
+'!' - Success, 'Q' - Request not sent, '.' - Timeout 
+
+ Type 'Ctrl+C' to abort
+
+! seq_num = 1  RTT = 3.31 ms  TTL = 255
+! seq_num = 2  RTT = 1.93 ms  TTL = 255
+! seq_num = 3  RTT = 2.03 ms  TTL = 255
+Success Rate is 100.00 percent (3/3)
+Round-trip min/avg/max = 1.93/2.42/3.31
+</code></pre>
+
+
+</details>
+
+<h3 id="g3-task-6-add-the-ipv6-address-family-to-the-is-is-interfaces">G3: Task 6 — Add the ipv6 address-family to the IS-IS interfaces</h3>
+<p>On <strong>PE_1</strong>, run:</p>
+<pre><code class="language-saos">show isis interfaces
+</code></pre>
+<p>Pass: Output contains <code>PE_1-PE_2-if</code> and <code>lb1</code> and <code>IPv6</code></p>
+<details><summary>Example output</summary>
+
+
+<pre><code>+------------------------ ISIS INTERFACE STATE -----------------------+
+| Name                             |                            Value |
++----------------------------------+----------------------------------+
+| Interface                        |                     PE_1-PE_2-if |
+| Routing Protocol                 |                  ISIS (Bootcamp) |
+| Network Type                     |                   Point-to-Point |
+| Circuit Type                     |                          level-1 |
+| Local Circuit ID                 |                               02 |
+| Extended Local Circuit ID        |                         3FFFD8F2 |
+| Local SNPA                       |                                - |
+| Hello Padding                    |                             True |
+| LDP IGP SYNC Status              |                   Not Configured |
+| IP Interface Address(es)         |                    172.16.1.1/30 |
+| IPv6 Interface Address(es)       |                    fc00::600/127 |
+|                                  |      fe80::e00:2fff:fe0f:4af6/64 |
+| Level Index                      |                          level-1 |
+|    Circuit ID                    |                0172.0016.0001.02 |
+|    Active Adjacencies            |                                1 |
+|    LSP MTU                       |                             1492 |
+|    Metric (Narrow/Wide)          |                            10/10 |
+|    Admin Tag                     |                                - |
+|    Protocol Oper State           |                               up |
+|    Next Hello                    |                        5 seconds |
+|    Hello Interval                |                       10 seconds |
+|    Hello Multiplier              |                                3 |
+|    Authentication                |                              MD5 |
+|   Password                       |                             **** |
+| BFD                              |                         Disabled |
+| BFD IPv6                         |                         Disabled |
++----------------------------------+----------------------------------+
+| Interface                        |                              lb1 |
+| Routing Protocol                 |                  ISIS (Bootcamp) |
+| Network Type                     |                   Point-to-Point |
+| Circuit Type                     |                        level-1-2 |
+| Local Circuit ID                 |                               01 |
+| Extended Local Circuit ID        |                         3FFFE8F5 |
+| Local SNPA                       |                                - |
+| Hello Padding                    |                             True |
+| LDP IGP SYNC Status              |                   Not Configured |
+| IP Interface Address(es)         |                    172.16.0.1/32 |
+| IPv6 Interface Address(es)       |                      fc00::1/128 |
+|                                  |      fe80::e00:2fff:fe0f:4af6/64 |
+| Level Index                      |                          level-1 |
+|    Circuit ID                    |                0172.0016.0001.01 |
+|    Active Adjacencies            |                                0 |
+|    LSP MTU                       |                             1492 |
+|    Metric (Narrow/Wide)          |                            10/10 |
+|    Admin Tag                     |                                - |
+|    Protocol Oper State           |                               up |
+|    Next Hello                    |                        0 seconds |
+|    Hello Interval                |                       10 seconds |
+|    Hello Multiplier              |                                3 |
+|    Authentication                |                          Not Set |
+| BFD                              |                         Disabled |
+| BFD IPv6                         |                         Disabled |
++----------------------------------+----------------------------------+
+</code></pre>
+
+
+</details>
+
+<p>On <strong>PE_2</strong>, run:</p>
+<pre><code class="language-saos">show isis interfaces
+</code></pre>
+<p>Pass: Output contains <code>PE_1-PE_2-if</code> and <code>lb1</code> and <code>IPv6</code></p>
+<details><summary>Example output</summary>
+
+
+<pre><code>+------------------------ ISIS INTERFACE STATE -----------------------+
+| Name                             |                            Value |
++----------------------------------+----------------------------------+
+| Interface                        |                     PE_1-PE_2-if |
+| Routing Protocol                 |                  ISIS (Bootcamp) |
+| Network Type                     |                   Point-to-Point |
+| Circuit Type                     |                          level-1 |
+| Local Circuit ID                 |                               02 |
+| Extended Local Circuit ID        |                         3FFFD8F2 |
+| Local SNPA                       |                                - |
+| Hello Padding                    |                             True |
+| LDP IGP SYNC Status              |                   Not Configured |
+| IP Interface Address(es)         |                    172.16.1.2/30 |
+| IPv6 Interface Address(es)       |                    fc00::601/127 |
+|                                  |      fe80::e00:e1ff:fed6:83f6/64 |
+| Level Index                      |                          level-1 |
+|    Circuit ID                    |                0172.0016.0002.02 |
+|    Active Adjacencies            |                                1 |
+|    LSP MTU                       |                             1492 |
+|    Metric (Narrow/Wide)          |                            10/10 |
+|    Admin Tag                     |                                - |
+|    Protocol Oper State           |                               up |
+|    Next Hello                    |                        6 seconds |
+|    Hello Interval                |                       10 seconds |
+|    Hello Multiplier              |                                3 |
+|    Authentication                |                              MD5 |
+|   Password                       |                             **** |
+| BFD                              |                         Disabled |
+| BFD IPv6                         |                         Disabled |
++----------------------------------+----------------------------------+
+| Interface                        |                              lb1 |
+| Routing Protocol                 |                  ISIS (Bootcamp) |
+| Network Type                     |                   Point-to-Point |
+| Circuit Type                     |                        level-1-2 |
+| Local Circuit ID                 |                               01 |
+| Extended Local Circuit ID        |                         3FFFE8F5 |
+| Local SNPA                       |                                - |
+| Hello Padding                    |                             True |
+| LDP IGP SYNC Status              |                   Not Configured |
+| IP Interface Address(es)         |                    172.16.0.2/32 |
+| IPv6 Interface Address(es)       |                      fc00::2/128 |
+|                                  |      fe80::e00:e1ff:fed6:83f6/64 |
+| Level Index                      |                          level-1 |
+|    Circuit ID                    |                0172.0016.0002.01 |
+|    Active Adjacencies            |                                0 |
+|    LSP MTU                       |                             1492 |
+|    Metric (Narrow/Wide)          |                            10/10 |
+|    Admin Tag                     |                                - |
+|    Protocol Oper State           |                               up |
+|    Next Hello                    |                        0 seconds |
+|    Hello Interval                |                       10 seconds |
+|    Hello Multiplier              |                                3 |
+|    Authentication                |                          Not Set |
+| BFD                              |                         Disabled |
+| BFD IPv6                         |                         Disabled |
++----------------------------------+----------------------------------+
+</code></pre>
+
+
+</details>
+
+<!-- retry: 90s -->
+<p>On <strong>PE_1</strong>, run:</p>
+<pre><code class="language-saos">ping ip destination FC00::2 source FC00::1 repeat-count 3
+</code></pre>
+<p>Pass: Output contains <code>100.00 percent</code></p>
+<details><summary>Example output</summary>
+
+
+<pre><code>Sending 3 ICMP Echos to FC00::2, timeout is 1 second
+
+Codes: 
+'!' - Success, 'Q' - Request not sent, '.' - Timeout 
+
+ Type 'Ctrl+C' to abort
+
+! seq_num = 1  RTT = 1.87 ms  TTL = 255
+! seq_num = 2  RTT = 1.82 ms  TTL = 255
+! seq_num = 3  RTT = 2.05 ms  TTL = 255
+Success Rate is 100.00 percent (3/3)
+Round-trip min/avg/max = 1.82/1.91/2.05
+</code></pre>
+
+
+</details>
+
+<!-- retry: 90s -->
+<p>On <strong>PE_2</strong>, run:</p>
+<pre><code class="language-saos">ping ip destination FC00::1 source FC00::2 repeat-count 3
+</code></pre>
+<p>Pass: Output contains <code>100.00 percent</code></p>
+<details><summary>Example output</summary>
+
+
+<pre><code>Sending 3 ICMP Echos to FC00::1, timeout is 1 second
+
+Codes: 
+'!' - Success, 'Q' - Request not sent, '.' - Timeout 
+
+ Type 'Ctrl+C' to abort
+
+! seq_num = 1  RTT = 1.61 ms  TTL = 255
+! seq_num = 2  RTT = 2.37 ms  TTL = 255
+! seq_num = 3  RTT = 1.74 ms  TTL = 255
+Success Rate is 100.00 percent (3/3)
+Round-trip min/avg/max = 1.61/1.91/2.37
+</code></pre>
+
+
+</details>
+
+<h3 id="g4-task-8-add-md5-authentication-to-the-is-is-neighbor-association">G4: Task 8 — Add MD5 authentication to the IS-IS neighbor association</h3>
+<!-- retry: 90s -->
+<p>On <strong>PE_1</strong>, run:</p>
+<pre><code class="language-saos">show isis interfaces
+</code></pre>
+<p>Pass: Output contains <code>PE_1-PE_2-if</code> and <code>level-1</code> and <code>MD5</code></p>
+<details><summary>Example output</summary>
+
+
+<pre><code>+------------------------ ISIS INTERFACE STATE -----------------------+
+| Name                             |                            Value |
++----------------------------------+----------------------------------+
+| Interface                        |                     PE_1-PE_2-if |
+| Routing Protocol                 |                  ISIS (Bootcamp) |
+| Network Type                     |                   Point-to-Point |
+| Circuit Type                     |                          level-1 |
+| Local Circuit ID                 |                               02 |
+| Extended Local Circuit ID        |                         3FFFD8F2 |
+| Local SNPA                       |                                - |
+| Hello Padding                    |                             True |
+| LDP IGP SYNC Status              |                   Not Configured |
+| IP Interface Address(es)         |                    172.16.1.1/30 |
+| IPv6 Interface Address(es)       |                    fc00::600/127 |
+|                                  |      fe80::e00:2fff:fe0f:4af6/64 |
+| Level Index                      |                          level-1 |
+|    Circuit ID                    |                0172.0016.0001.02 |
+|    Active Adjacencies            |                                1 |
+|    LSP MTU                       |                             1492 |
+|    Metric (Narrow/Wide)          |                            10/10 |
+|    Admin Tag                     |                                - |
+|    Protocol Oper State           |                               up |
+|    Next Hello                    |                        8 seconds |
+|    Hello Interval                |                       10 seconds |
+|    Hello Multiplier              |                                3 |
+|    Authentication                |                              MD5 |
+|   Password                       |                             **** |
+| BFD                              |                         Disabled |
+| BFD IPv6                         |                         Disabled |
++----------------------------------+----------------------------------+
+| Interface                        |                              lb1 |
+| Routing Protocol                 |                  ISIS (Bootcamp) |
+| Network Type                     |                   Point-to-Point |
+| Circuit Type                     |                        level-1-2 |
+| Local Circuit ID                 |                               01 |
+| Extended Local Circuit ID        |                         3FFFE8F5 |
+| Local SNPA                       |                                - |
+| Hello Padding                    |                             True |
+| LDP IGP SYNC Status              |                   Not Configured |
+| IP Interface Address(es)         |                    172.16.0.1/32 |
+| IPv6 Interface Address(es)       |                      fc00::1/128 |
+|                                  |      fe80::e00:2fff:fe0f:4af6/64 |
+| Level Index                      |                          level-1 |
+|    Circuit ID                    |                0172.0016.0001.01 |
+|    Active Adjacencies            |                                0 |
+|    LSP MTU                       |                             1492 |
+|    Metric (Narrow/Wide)          |                            10/10 |
+|    Admin Tag                     |                                - |
+|    Protocol Oper State           |                               up |
+|    Next Hello                    |                        0 seconds |
+|    Hello Interval                |                       10 seconds |
+|    Hello Multiplier              |                                3 |
+|    Authentication                |                          Not Set |
+| BFD                              |                         Disabled |
+| BFD IPv6                         |                         Disabled |
++----------------------------------+----------------------------------+
+</code></pre>
+
+
+</details>
+
+<!-- retry: 90s -->
+<p>On <strong>PE_2</strong>, run:</p>
+<pre><code class="language-saos">show isis interfaces
+</code></pre>
+<p>Pass: Output contains <code>PE_1-PE_2-if</code> and <code>level-1</code> and <code>MD5</code></p>
+<details><summary>Example output</summary>
+
+
+<pre><code>+------------------------ ISIS INTERFACE STATE -----------------------+
+| Name                             |                            Value |
++----------------------------------+----------------------------------+
+| Interface                        |                     PE_1-PE_2-if |
+| Routing Protocol                 |                  ISIS (Bootcamp) |
+| Network Type                     |                   Point-to-Point |
+| Circuit Type                     |                          level-1 |
+| Local Circuit ID                 |                               02 |
+| Extended Local Circuit ID        |                         3FFFD8F2 |
+| Local SNPA                       |                                - |
+| Hello Padding                    |                             True |
+| LDP IGP SYNC Status              |                   Not Configured |
+| IP Interface Address(es)         |                    172.16.1.2/30 |
+| IPv6 Interface Address(es)       |                    fc00::601/127 |
+|                                  |      fe80::e00:e1ff:fed6:83f6/64 |
+| Level Index                      |                          level-1 |
+|    Circuit ID                    |                0172.0016.0002.02 |
+|    Active Adjacencies            |                                1 |
+|    LSP MTU                       |                             1492 |
+|    Metric (Narrow/Wide)          |                            10/10 |
+|    Admin Tag                     |                                - |
+|    Protocol Oper State           |                               up |
+|    Next Hello                    |                        9 seconds |
+|    Hello Interval                |                       10 seconds |
+|    Hello Multiplier              |                                3 |
+|    Authentication                |                              MD5 |
+|   Password                       |                             **** |
+| BFD                              |                         Disabled |
+| BFD IPv6                         |                         Disabled |
++----------------------------------+----------------------------------+
+| Interface                        |                              lb1 |
+| Routing Protocol                 |                  ISIS (Bootcamp) |
+| Network Type                     |                   Point-to-Point |
+| Circuit Type                     |                        level-1-2 |
+| Local Circuit ID                 |                               01 |
+| Extended Local Circuit ID        |                         3FFFE8F5 |
+| Local SNPA                       |                                - |
+| Hello Padding                    |                             True |
+| LDP IGP SYNC Status              |                   Not Configured |
+| IP Interface Address(es)         |                    172.16.0.2/32 |
+| IPv6 Interface Address(es)       |                      fc00::2/128 |
+|                                  |      fe80::e00:e1ff:fed6:83f6/64 |
+| Level Index                      |                          level-1 |
+|    Circuit ID                    |                0172.0016.0002.01 |
+|    Active Adjacencies            |                                0 |
+|    LSP MTU                       |                             1492 |
+|    Metric (Narrow/Wide)          |                            10/10 |
+|    Admin Tag                     |                                - |
+|    Protocol Oper State           |                               up |
+|    Next Hello                    |                        0 seconds |
+|    Hello Interval                |                       10 seconds |
+|    Hello Multiplier              |                                3 |
+|    Authentication                |                          Not Set |
+| BFD                              |                         Disabled |
+| BFD IPv6                         |                         Disabled |
++----------------------------------+----------------------------------+
+</code></pre>
+
+
+</details>
+
+<!-- retry: 90s -->
+<p>On <strong>PE_1</strong>, run:</p>
+<pre><code class="language-saos">show isis neighbors
+</code></pre>
+<p>Pass: Output contains <code>0172.0016.0002</code> and <code>Up</code></p>
+<details><summary>Example output</summary>
+
+
+<pre><code>+-------------------------------------- ISIS NEIGHBOR STATE: Bootcamp ---------------------------------------+
+| Neighbor |                        |                  |                |       |   Hold   |      |          |
+|   Type   |       System ID        |    Interface     |      SNPA      | State | Time (s) | Type | Protocol |
++----------+------------------------+------------------+----------------+-------+----------+------+----------+
+|   P2P    |     0172.0016.0002     |   PE_1-PE_2-if   | 0c00.e1d6.83f6 |    Up |       29 |  L1  |  IS-IS   |
++----------+------------------------+------------------+----------------+-------+----------+------+----------+
+</code></pre>
+
+
+</details>
+
+<!-- retry: 90s -->
+<p>On <strong>PE_2</strong>, run:</p>
+<pre><code class="language-saos">show isis neighbors
+</code></pre>
+<p>Pass: Output contains <code>0172.0016.0001</code> and <code>Up</code></p>
+<details><summary>Example output</summary>
+
+
+<pre><code>+-------------------------------------- ISIS NEIGHBOR STATE: Bootcamp ---------------------------------------+
+| Neighbor |                        |                  |                |       |   Hold   |      |          |
+|   Type   |       System ID        |    Interface     |      SNPA      | State | Time (s) | Type | Protocol |
++----------+------------------------+------------------+----------------+-------+----------+------+----------+
+|   P2P    |     0172.0016.0001     |   PE_1-PE_2-if   | 0c00.2f0f.4af6 |    Up |       27 |  L1  |  IS-IS   |
++----------+------------------------+------------------+----------------+-------+----------+------+----------+
+</code></pre>
+
+
+</details>
+
+<!-- retry: 90s -->
+<p>On <strong>PE_1</strong>, run:</p>
+<pre><code class="language-saos">ping ip destination FC00::2 source FC00::1 repeat-count 3
+</code></pre>
+<p>Pass: Output contains <code>100.00 percent</code></p>
+<details><summary>Example output</summary>
+
+
+<pre><code>Sending 3 ICMP Echos to FC00::2, timeout is 1 second
+
+Codes: 
+'!' - Success, 'Q' - Request not sent, '.' - Timeout 
+
+ Type 'Ctrl+C' to abort
+
+! seq_num = 1  RTT = 1.92 ms  TTL = 255
+! seq_num = 2  RTT = 2.87 ms  TTL = 255
+! seq_num = 3  RTT = 2.28 ms  TTL = 255
+Success Rate is 100.00 percent (3/3)
+Round-trip min/avg/max = 1.92/2.36/2.87
+</code></pre>
+
+
+</details>
+
+<!-- retry: 90s -->
+<p>On <strong>PE_2</strong>, run:</p>
+<pre><code class="language-saos">ping ip destination FC00::1 source FC00::2 repeat-count 3
+</code></pre>
+<p>Pass: Output contains <code>100.00 percent</code></p>
+<details><summary>Example output</summary>
+
+
+<pre><code>Sending 3 ICMP Echos to FC00::1, timeout is 1 second
+
+Codes: 
+'!' - Success, 'Q' - Request not sent, '.' - Timeout 
+
+ Type 'Ctrl+C' to abort
+
+! seq_num = 1  RTT = 2.00 ms  TTL = 255
+! seq_num = 2  RTT = 2.94 ms  TTL = 255
+! seq_num = 3  RTT = 2.04 ms  TTL = 255
+Success Rate is 100.00 percent (3/3)
+Round-trip min/avg/max = 2.00/2.33/2.94
+</code></pre>
+
+
+</details>
+
+<h2 id="solutions">Solutions</h2>
+<p>Use the preloaded baseline for context, then apply the learner solution blocks in task order.</p>
+<h3 id="preloaded-baseline">Preloaded baseline</h3>
+<h4 id="pe_1">PE_1</h4>
+<pre><code class="language-saos"># Preloaded start
+system config hostname PE_1
+fds fd PE_1-PE_2-FD mode vpls
+oc-if:interfaces interface lb1 config name lb1 type loopback
+oc-if:interfaces interface lb1 ipv4 addresses address 172.16.0.1 config ip 172.16.0.1 prefix-length 32
+oc-if:interfaces interface lb1 ipv6 addresses address FC00::1 config ip FC00::1 prefix-length 128
+oc-if:interfaces interface PE_1-PE_2-if config mtu 1500 name PE_1-PE_2-if type ip
+oc-if:interfaces interface PE_1-PE_2-if config underlay-binding config fd PE_1-PE_2-FD
+oc-if:interfaces interface PE_1-PE_2-if ipv4 addresses address 172.16.1.1 config ip 172.16.1.1 prefix-length 30
+oc-if:interfaces interface PE_1-PE_2-if ipv6 addresses address FC00::600 config ip FC00::600 prefix-length 127
+classifiers classifier CLASSIFIER-UNTAGGED filter-entry vtag-stack untagged-exclude-priority-tagged false
+fps fp PE_1-PE_2-FP classifier-list-precedence 7 fd-name PE_1-PE_2-FD logical-port 1 mtu-size 2000 stats-collection on classifier-list CLASSIFIER-UNTAGGED
+# Preloaded end
+</code></pre>
+<h4 id="pe_2">PE_2</h4>
+<pre><code class="language-saos"># Preloaded start
+system config hostname PE_2
+fds fd PE_1-PE_2-FD mode vpls
+oc-if:interfaces interface lb1 config name lb1 type loopback
+oc-if:interfaces interface lb1 ipv4 addresses address 172.16.0.2 config ip 172.16.0.2 prefix-length 32
+oc-if:interfaces interface lb1 ipv6 addresses address FC00::2 config ip FC00::2 prefix-length 128
+oc-if:interfaces interface PE_1-PE_2-if config mtu 1500 name PE_1-PE_2-if type ip
+oc-if:interfaces interface PE_1-PE_2-if config underlay-binding config fd PE_1-PE_2-FD
+oc-if:interfaces interface PE_1-PE_2-if ipv4 addresses address 172.16.1.2 config ip 172.16.1.2 prefix-length 30
+oc-if:interfaces interface PE_1-PE_2-if ipv6 addresses address FC00::601 config ip FC00::601 prefix-length 127
+classifiers classifier CLASSIFIER-UNTAGGED filter-entry vtag-stack untagged-exclude-priority-tagged false
+fps fp PE_1-PE_2-FP classifier-list-precedence 7 fd-name PE_1-PE_2-FD logical-port 1 mtu-size 2000 stats-collection on classifier-list CLASSIFIER-UNTAGGED
+# Preloaded end
+</code></pre>
+<h4 id="pe_3">PE_3</h4>
+<pre><code class="language-saos"># Preloaded start
+system config hostname PE_3
+# Preloaded end
+</code></pre>
+<h4 id="ce1">CE1</h4>
+<pre><code class="language-saos"># Preloaded start
+system config hostname CE1
+# Preloaded end
+</code></pre>
+<h4 id="ce2">CE2</h4>
+<pre><code class="language-saos"># Preloaded start
+system config hostname CE2
+# Preloaded end
+</code></pre>
+<h3 id="solution-for-task-1">Solution for Task 1</h3>
+<p>No configuration commands; this is a verification-only task.</p>
+<h3 id="solution-for-task-2">Solution for Task 2</h3>
+<h4 id="pe_4">PE_1</h4>
+<pre><code class="language-saos"># Task 2 start
+isis instance Bootcamp level-type level-1 net 49.0001.0172.0016.0001.00
+isis instance Bootcamp interfaces interface lb1 interface-type point-to-point
+isis instance Bootcamp interfaces interface PE_1-PE_2-if interface-type point-to-point level-type level-1
+# Task 2 end
+</code></pre>
+<h3 id="solution-for-task-3">Solution for Task 3</h3>
+<h4 id="pe_5">PE_2</h4>
+<pre><code class="language-saos"># Task 3 start
+isis instance Bootcamp level-type level-1 net 49.0001.0172.0016.0002.00
+isis instance Bootcamp interfaces interface lb1 interface-type point-to-point
+isis instance Bootcamp interfaces interface PE_1-PE_2-if interface-type point-to-point level-type level-1
+# Task 3 end
+</code></pre>
+<h3 id="solution-for-task-4">Solution for Task 4</h3>
+<p>No configuration commands; this is a verification-only task.</p>
+<h3 id="solution-for-task-5">Solution for Task 5</h3>
+<p>No configuration commands; this is a verification-only task.</p>
+<h3 id="solution-for-task-6">Solution for Task 6</h3>
+<h4 id="pe_6">PE_1</h4>
+<pre><code class="language-saos"># Task 6 start
+isis instance Bootcamp interfaces interface lb1 address-families address-family ipv6 unicast
+isis instance Bootcamp interfaces interface PE_1-PE_2-if address-families address-family ipv6 unicast
+# Task 6 end
+</code></pre>
+<h4 id="pe_7">PE_2</h4>
+<pre><code class="language-saos"># Task 6 start
+isis instance Bootcamp interfaces interface lb1 address-families address-family ipv6 unicast
+isis instance Bootcamp interfaces interface PE_1-PE_2-if address-families address-family ipv6 unicast
+# Task 6 end
+</code></pre>
+<h3 id="solution-for-task-7">Solution for Task 7</h3>
+<p>No configuration commands; this is a verification-only task.</p>
+<h3 id="solution-for-task-8">Solution for Task 8</h3>
+<h4 id="pe_8">PE_1</h4>
+<pre><code class="language-saos"># Task 8 start
+isis instance Bootcamp interfaces interface PE_1-PE_2-if level-1 password ciena123
+# Task 8 end
+</code></pre>
+<h4 id="pe_9">PE_2</h4>
+<pre><code class="language-saos"># Task 8 start
+isis instance Bootcamp interfaces interface PE_1-PE_2-if level-1 password ciena123
+# Task 8 end
+</code></pre>
+              
+            </div>
+          </div><footer>
+    <div class="rst-footer-buttons" role="navigation" aria-label="Footer Navigation">
+        <a href="../F1-Loopbacks-and-Interfaces/" class="btn btn-neutral float-left" title="F1 Loopbacks and Interfaces"><span class="icon icon-circle-arrow-left"></span> Previous</a>
+    </div>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <!-- Copyright etc -->
+  </div>
+
+  Built with <a href="https://www.mkdocs.org/">MkDocs</a> using a <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a> provided by <a href="https://readthedocs.org">Read the Docs</a>.
+</footer>
+          
+        </div>
+      </div>
+
+    </section>
+
+  </div>
+
+  <div class="rst-versions" role="note" aria-label="Versions">
+  <span class="rst-current-version" data-toggle="rst-current-version">
+    
+        <span>
+          <a href="https://github.com/ciena/saos-labs" class="fa fa-github" style="color: #fcfcfc"> GitHub</a>
+        </span>
+    
+    
+      <span><a href="../F1-Loopbacks-and-Interfaces/" style="color: #fcfcfc">&laquo; Previous</a></span>
+    
+    
+  </span>
+</div>
+    <script src="../js/jquery-3.6.0.min.js"></script>
+    <script>var base_url = "..";</script>
+    <script src="../js/theme_extra.js"></script>
+    <script src="../js/theme.js"></script>
+      <script src="../assets/js/lightbox.js"></script>
+      <script src="../search/main.js"></script>
+    <script>
+        jQuery(function () {
+            SphinxRtdTheme.Navigation.enable(true);
+        });
+    </script>
+
+</body>
+</html>

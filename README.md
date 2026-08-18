@@ -154,10 +154,10 @@ Set via `topology.defaults.labels.lab-mode` in the topology file:
 
 ## Topology Diagrams
 
-Each lab includes a `topo.clab.svg` topology diagram (and, for factory-built
-labs, a `topo.detail.svg`) generated natively from `topo.clab.yml`, plus a
-`topo.clab.yml.annotations.json` metadata file — no external rendering tooling
-is required.
+Each lab includes a `topo.clab.svg` physical topology diagram and a
+`topo.detail.svg` annotated view, plus a `topo.clab.yml.annotations.json`
+metadata file. The SVGs are hand-authored and validated in CI — no external
+rendering tooling is required to build the docs.
 
 ## License & Security
 

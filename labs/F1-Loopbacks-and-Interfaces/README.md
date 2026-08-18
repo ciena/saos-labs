@@ -21,10 +21,11 @@ shown in gray because F1 does not configure or test them.
 
 > **Resource note:** If you do not plan to continue into the Services track
 > and your host is resource constrained, you may comment out CE1, CE2, PE_3,
-> and every link except PE_1 `eth1` to PE_2 `eth1` in your local
+> and every link except `[ "PE_1:1", "PE_2:1" ]` in your local
 > `topo.clab.yml`.
 
-The generated topology diagrams are in `topo.clab.svg` and `topo.detail.svg`.
+The topology diagrams are `topo.clab.svg` (physical connectivity) and
+`topo.detail.svg` (annotated view with addressing).
 
 ### IP Address Table
 
