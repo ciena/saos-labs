@@ -79,7 +79,7 @@
     <li><a href="." class="icon icon-home" aria-label="Docs"></a></li>
       <li class="breadcrumb-item active">Home</li>
     <li class="wy-breadcrumbs-aside">
-          <a href="https://github.com/ciena/saos-labs/edit/master/docs/index.md" class="icon icon-github"> Edit on GitHub</a>
+          <a href="https://github.com/ciena/saos-labs/edit/main/labs/index.md" class="icon icon-github"> Edit on GitHub</a>
     </li>
   </ul>
   <hr/>
@@ -108,13 +108,9 @@ fetch just the lab you want from
 <pre><code class="language-bash">REPO_URL=&quot;https://github.com/ciena/saos-labs&quot;
 LAB=F1-Loopbacks-and-Interfaces   # the lab you want to run
 </code></pre>
-<p>Option A — shallow git clone (sparse checkout) limits the working tree to the
-single lab directory plus top-level files:</p>
-<pre><code class="language-bash">git clone --filter=blob:none --no-checkout &quot;${REPO_URL}.git&quot;
+<p>Option A — clone the repo, then deploy the lab you want:</p>
+<pre><code class="language-bash">git clone --depth 1 &quot;${REPO_URL}.git&quot;
 cd saos-labs
-git sparse-checkout init --cone
-git sparse-checkout set &quot;labs/${LAB}&quot;
-git checkout
 containerlab deploy -t &quot;labs/${LAB}/topo.clab.yml&quot;
 </code></pre>
 <p>Option B — download the archive (no git) unpacks only the lab directory you
@@ -262,5 +258,5 @@ lab will stay introductory and omit color-based policy.</p>
 
 <!--
 MkDocs version : 1.6.1
-Build Date UTC : 2026-08-17 16:49:03.690949+00:00
+Build Date UTC : 2026-08-18 15:34:10.080354+00:00
 -->

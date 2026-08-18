@@ -26,15 +26,11 @@ REPO_URL="https://github.com/ciena/saos-labs"
 LAB=F1-Loopbacks-and-Interfaces   # the lab you want to run
 ```
 
-Option A — shallow git clone (sparse checkout) limits the working tree to the
-single lab directory plus top-level files:
+Option A — clone the repo, then deploy the lab you want:
 
 ```bash
-git clone --filter=blob:none --no-checkout "${REPO_URL}.git"
+git clone --depth 1 "${REPO_URL}.git"
 cd saos-labs
-git sparse-checkout init --cone
-git sparse-checkout set "labs/${LAB}"
-git checkout
 containerlab deploy -t "labs/${LAB}/topo.clab.yml"
 ```
 
