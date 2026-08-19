@@ -1,0 +1,460 @@
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" >
+<head>
+    <meta charset="utf-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+      <link rel="shortcut icon" href="../../img/favicon.ico" />
+    <title>Tests - SAOS Labs</title>
+    <link rel="stylesheet" href="../../css/theme.css" />
+    <link rel="stylesheet" href="../../css/theme_extra.css" />
+        <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.8.0/styles/github.min.css" />
+        <link href="../../assets/css/ciena.css" rel="stylesheet" />
+    
+      <script>
+        // Current page data
+        var mkdocs_page_name = "Tests";
+        var mkdocs_page_input_path = "F3-SR-MPLS/tests.md";
+        var mkdocs_page_url = null;
+      </script>
+    
+    <!--[if lt IE 9]>
+      <script src="../../js/html5shiv.min.js"></script>
+    <![endif]-->
+      <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.8.0/highlight.min.js"></script>
+      <script>hljs.highlightAll();</script> 
+</head>
+
+<body class="wy-body-for-nav" role="document">
+
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side stickynav">
+    <div class="wy-side-scroll">
+      <div class="wy-side-nav-search">
+          <a href="../.." class="icon icon-home"> SAOS Labs
+        </a><div role="search">
+  <form id ="rtd-search-form" class="wy-form" action="../../search.html" method="get">
+      <input type="text" name="q" placeholder="Search docs" aria-label="Search docs" title="Type search term here" />
+  </form>
+</div>
+      </div>
+
+      <div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+              <ul>
+                <li class="toctree-l1"><a class="reference internal" href="../..">Home</a>
+                </li>
+              </ul>
+              <p class="caption"><span class="caption-text">Foundation</span></p>
+              <ul>
+                  <li class="toctree-l1"><a class="reference internal" href="../../F0-SAOS-Fundamentals/">F0 SAOS Fundamentals</a>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" href="../../F1-Loopbacks-and-Interfaces/">F1 Loopbacks and Interfaces</a>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" href="../../F2-IS-IS-Routing/">F2 IS-IS Routing</a>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" href="../">F3 SR-MPLS</a>
+                  </li>
+              </ul>
+      </div>
+    </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap">
+      <nav class="wy-nav-top" role="navigation" aria-label="Mobile navigation menu">
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../..">SAOS Labs</a>
+        
+      </nav>
+      <div class="wy-nav-content">
+        <div class="rst-content"><div role="navigation" aria-label="breadcrumbs navigation">
+  <ul class="wy-breadcrumbs">
+    <li><a href="../.." class="icon icon-home" aria-label="Docs"></a></li>
+      <li class="breadcrumb-item active">Tests</li>
+    <li class="wy-breadcrumbs-aside">
+          <a href="https://github.com/ciena/saos-labs/edit/main/labs/F3-SR-MPLS/tests.md" class="icon icon-github"> Edit on GitHub</a>
+    </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+            <div class="section" itemprop="articleBody">
+              
+                <p>Deploy <code>F3-SR-MPLS</code>, then run the following validation checks.</p>
+<h2 id="g1-task-1-verify-the-deployed-topology">G1: Task 1 — Verify the deployed topology</h2>
+<!-- retry: 120s -->
+<p>On <strong>PE_1</strong>, run:</p>
+<pre><code class="language-saos">ping ip destination FC00::2 source FC00::1 repeat-count 5
+</code></pre>
+<p>Pass: Output contains <code>100.00 percent</code></p>
+<details><summary>Example output</summary>
+
+
+<pre><code>Sending 5 ICMP Echos to FC00::2, timeout is 1 second
+
+Codes: 
+'!' - Success, 'Q' - Request not sent, '.' - Timeout 
+
+ Type 'Ctrl+C' to abort
+
+! seq_num = 1  RTT = 5.00 ms  TTL = 255
+! seq_num = 2  RTT = 2.87 ms  TTL = 255
+! seq_num = 3  RTT = 2.73 ms  TTL = 255
+! seq_num = 4  RTT = 3.12 ms  TTL = 255
+! seq_num = 5  RTT = 2.78 ms  TTL = 255
+Success Rate is 100.00 percent (5/5)
+Round-trip min/avg/max = 2.73/3.30/5.00
+</code></pre>
+
+
+</details>
+
+<!-- retry: 120s -->
+<p>On <strong>PE_2</strong>, run:</p>
+<pre><code class="language-saos">ping ip destination FC00::1 source FC00::2 repeat-count 5
+</code></pre>
+<p>Pass: Output contains <code>100.00 percent</code></p>
+<details><summary>Example output</summary>
+
+
+<pre><code>Sending 5 ICMP Echos to FC00::1, timeout is 1 second
+
+Codes: 
+'!' - Success, 'Q' - Request not sent, '.' - Timeout 
+
+ Type 'Ctrl+C' to abort
+
+! seq_num = 1  RTT = 2.49 ms  TTL = 255
+! seq_num = 2  RTT = 3.66 ms  TTL = 255
+! seq_num = 3  RTT = 3.91 ms  TTL = 255
+! seq_num = 4  RTT = 3.99 ms  TTL = 255
+! seq_num = 5  RTT = 3.20 ms  TTL = 255
+Success Rate is 100.00 percent (5/5)
+Round-trip min/avg/max = 2.49/3.45/3.99
+</code></pre>
+
+
+</details>
+
+<h2 id="g2-task-2-configure-sr-mpls-on-pe_1">G2: Task 2 — Configure SR-MPLS on PE_1</h2>
+<!-- retry: 60s -->
+<p>On <strong>PE_1</strong>, run:</p>
+<pre><code class="language-saos">show isis segment-routing
+</code></pre>
+<p>Pass: Output contains <code>Bootcamp</code> and <code>Enabled</code></p>
+<details><summary>Example output</summary>
+
+
+<pre><code>+----------- ISIS SEGMENT-ROUTING STATE -----------+
+| ISIS Tag | Config State | Oper State | Force PHP |
++----------+--------------+------------+-----------+
+| Bootcamp | Enabled      | Enabled    | Disabled  |
++----------+--------------+------------+-----------+
+</code></pre>
+
+
+</details>
+
+<p>On <strong>PE_1</strong>, run:</p>
+<pre><code class="language-saos">show segment-routing connected-prefix-sid-map
+</code></pre>
+<p>Pass: Output contains <code>172.16.0.1/32</code> and <code>lb1</code></p>
+<details><summary>Example output</summary>
+
+
+<pre><code>+----- SEGMENT-ROUTING SID MAP -----+
+|  Name             |  Value        |
++-------------------+---------------+
+| Prefix            | 172.16.0.1/32 |
+| Interface         | lb1           |
+| Value Type        | Index         |
+| Start SID         | 1             |
+| Range             | 1             |
+| Algorithm         | SPF           |
+| Last Hop Behavior | -             |
++-------------------+---------------+
+</code></pre>
+
+
+</details>
+
+<h2 id="g3-task-3-configure-sr-mpls-on-pe_2">G3: Task 3 — Configure SR-MPLS on PE_2</h2>
+<!-- retry: 60s -->
+<p>On <strong>PE_2</strong>, run:</p>
+<pre><code class="language-saos">show isis segment-routing
+</code></pre>
+<p>Pass: Output contains <code>Bootcamp</code> and <code>Enabled</code></p>
+<details><summary>Example output</summary>
+
+
+<pre><code>+----------- ISIS SEGMENT-ROUTING STATE -----------+
+| ISIS Tag | Config State | Oper State | Force PHP |
++----------+--------------+------------+-----------+
+| Bootcamp | Enabled      | Enabled    | Disabled  |
++----------+--------------+------------+-----------+
+</code></pre>
+
+
+</details>
+
+<p>On <strong>PE_2</strong>, run:</p>
+<pre><code class="language-saos">show segment-routing connected-prefix-sid-map
+</code></pre>
+<p>Pass: Output contains <code>172.16.0.2/32</code> and <code>lb1</code></p>
+<details><summary>Example output</summary>
+
+
+<pre><code>+----- SEGMENT-ROUTING SID MAP -----+
+|  Name             |  Value        |
++-------------------+---------------+
+| Prefix            | 172.16.0.2/32 |
+| Interface         | lb1           |
+| Value Type        | Index         |
+| Start SID         | 2             |
+| Range             | 1             |
+| Algorithm         | SPF           |
+| Last Hop Behavior | -             |
++-------------------+---------------+
+</code></pre>
+
+
+</details>
+
+<h2 id="g4-task-4-verify-the-primary-transport">G4: Task 4 — Verify the primary transport</h2>
+<!-- retry: 120s -->
+<p>On <strong>PE_1</strong>, run:</p>
+<pre><code class="language-saos">show isis segment-routing capability
+</code></pre>
+<p>Pass: Output contains <code>16000</code> and <code>23999</code> and <code>172.16.0.1</code> and <code>172.16.0.2</code></p>
+<details><summary>Example output</summary>
+
+
+<pre><code>+------------------------------- ISIS SEGMENT-ROUTING CAPABILITY --------------------------------+
+|          |            |       |       |    Total  | SID Range  |            |           |      |
+|          |            | SRGB  | SRGB  |      SID  |      List  |      SRMS  |           | Node |
+| Instance |  Router ID | Start |   End | Supported |      Count | Preference | Algorithm | MSD  |
++----------+------------+-------+-------+-----------+------------+------------+-----------+------+
+| Bootcamp | 172.16.0.1 | 16000 | 23999 |      8000 |          1 |        128 |       SPF | 0    |
++----------+------------+-------+-------+-----------+------------+------------+-----------+------+
+| Bootcamp | 172.16.0.2 | 16000 | 23999 |      8000 |          1 |        128 |       SPF | 0    |
++----------+------------+-------+-------+-----------+------------+------------+-----------+------+
+</code></pre>
+
+
+</details>
+
+<!-- retry: 120s -->
+<p>On <strong>PE_2</strong>, run:</p>
+<pre><code class="language-saos">show isis segment-routing capability
+</code></pre>
+<p>Pass: Output contains <code>16000</code> and <code>23999</code> and <code>172.16.0.1</code> and <code>172.16.0.2</code></p>
+<details><summary>Example output</summary>
+
+
+<pre><code>+------------------------------- ISIS SEGMENT-ROUTING CAPABILITY --------------------------------+
+|          |            |       |       |    Total  | SID Range  |            |           |      |
+|          |            | SRGB  | SRGB  |      SID  |      List  |      SRMS  |           | Node |
+| Instance |  Router ID | Start |   End | Supported |      Count | Preference | Algorithm | MSD  |
++----------+------------+-------+-------+-----------+------------+------------+-----------+------+
+| Bootcamp | 172.16.0.1 | 16000 | 23999 |      8000 |          1 |        128 |       SPF | 0    |
++----------+------------+-------+-------+-----------+------------+------------+-----------+------+
+| Bootcamp | 172.16.0.2 | 16000 | 23999 |      8000 |          1 |        128 |       SPF | 0    |
++----------+------------+-------+-------+-----------+------------+------------+-----------+------+
+</code></pre>
+
+
+</details>
+
+<!-- retry: 120s -->
+<p>On <strong>PE_1</strong>, run:</p>
+<pre><code class="language-saos">show isis segment-routing mapping-table status active
+</code></pre>
+<p>Pass: Output contains <code>172.16.0.1/32</code> and <code>172.16.0.2/32</code></p>
+<details><summary>Example output</summary>
+
+
+<pre><code>+---------- ISIS SEGMENT-ROUTING MAPPING TABLE ACTIVE -----------+
+| ISIS Instance |  Entry Prefix | SID Index | Range | Preference |
++---------------+---------------+-----------+-------+------------+
+|    Bootcamp   | 172.16.0.1/32 |         1 |     1 |        192 |
+|    Bootcamp   | 172.16.0.2/32 |         2 |     1 |        192 |
++---------------+---------------+-----------+-------+------------+
+</code></pre>
+
+
+</details>
+
+<!-- retry: 120s -->
+<p>On <strong>PE_2</strong>, run:</p>
+<pre><code class="language-saos">show isis segment-routing mapping-table status active
+</code></pre>
+<p>Pass: Output contains <code>172.16.0.1/32</code> and <code>172.16.0.2/32</code></p>
+<details><summary>Example output</summary>
+
+
+<pre><code>+---------- ISIS SEGMENT-ROUTING MAPPING TABLE ACTIVE -----------+
+| ISIS Instance |  Entry Prefix | SID Index | Range | Preference |
++---------------+---------------+-----------+-------+------------+
+|    Bootcamp   | 172.16.0.1/32 |         1 |     1 |        192 |
+|    Bootcamp   | 172.16.0.2/32 |         2 |     1 |        192 |
++---------------+---------------+-----------+-------+------------+
+</code></pre>
+
+
+</details>
+
+<!-- retry: 120s -->
+<p>On <strong>PE_1</strong>, run:</p>
+<pre><code class="language-saos">show mpls forwarding-table
+</code></pre>
+<p>Pass: Output contains <code>172.16.0.2/32</code> and <code>i &gt;</code></p>
+<details><summary>Example output</summary>
+
+
+<pre><code>+--------------------------------------------------------------------------------------------------------------------+
+| Codes: &gt; - installed FTN, * - selected FTN, p - stale FTN, b - backup route                                        |
+|        B - BGP FTN, K - CLI FTN, t - tunnel                                                                        |
+|        L - LDP FTN, R - RSVP-TE FTN, S - SNMP FTN, I - IGP-Shortcut,                                               |
+|        U - unknown FTN, O - SR-OSPF FTN, i - SR-ISIS FTN, k - SR-CLI FTN,                                          |
+|        s - SR-TE FTN,  ip - IP-ISIS FTN, io - IP-OSPF FTN, ib - IP-BGP FTN,                                        |
+|        M - MPLS-TP FTN, ias - IAS FTN, v - VPN FTN,                                                                |
+|        m - PW-MPLS FTN, e - EVPN FTN                                                                               |
+|        C - Color, Tn - Tunnel Name, f - Fallback, ML - Multicast LDP, IR - Ingress-Replication, F - Flex-Algorithm |
++--------------------------------------------------------------------------------------------------------------------+
++-------------------------------------- MPLS FORWARDING TABLE --------------------------------------+
+|      |                    | Opaque |          Label          |                  |                 |
+| Code |        FEC         |  ID    |     In     |    Out     |     Out Intf     |     Next Hop    |
++------+--------------------+--------+------------+------------+------------------+-----------------+
+| i &gt;  | 172.16.0.2/32      | 7      | -          | 3          | PE_1-PE_2-if     | 172.16.1.2      |
++------+--------------------+--------+------------+------------+------------------+-----------------+
+</code></pre>
+
+
+</details>
+
+<!-- retry: 120s -->
+<p>On <strong>PE_2</strong>, run:</p>
+<pre><code class="language-saos">show mpls forwarding-table
+</code></pre>
+<p>Pass: Output contains <code>172.16.0.1/32</code> and <code>i &gt;</code></p>
+<details><summary>Example output</summary>
+
+
+<pre><code>+--------------------------------------------------------------------------------------------------------------------+
+| Codes: &gt; - installed FTN, * - selected FTN, p - stale FTN, b - backup route                                        |
+|        B - BGP FTN, K - CLI FTN, t - tunnel                                                                        |
+|        L - LDP FTN, R - RSVP-TE FTN, S - SNMP FTN, I - IGP-Shortcut,                                               |
+|        U - unknown FTN, O - SR-OSPF FTN, i - SR-ISIS FTN, k - SR-CLI FTN,                                          |
+|        s - SR-TE FTN,  ip - IP-ISIS FTN, io - IP-OSPF FTN, ib - IP-BGP FTN,                                        |
+|        M - MPLS-TP FTN, ias - IAS FTN, v - VPN FTN,                                                                |
+|        m - PW-MPLS FTN, e - EVPN FTN                                                                               |
+|        C - Color, Tn - Tunnel Name, f - Fallback, ML - Multicast LDP, IR - Ingress-Replication, F - Flex-Algorithm |
++--------------------------------------------------------------------------------------------------------------------+
++-------------------------------------- MPLS FORWARDING TABLE --------------------------------------+
+|      |                    | Opaque |          Label          |                  |                 |
+| Code |        FEC         |  ID    |     In     |    Out     |     Out Intf     |     Next Hop    |
++------+--------------------+--------+------------+------------+------------------+-----------------+
+| i &gt;  | 172.16.0.1/32      | 8      | -          | 3          | PE_1-PE_2-if     | 172.16.1.1      |
++------+--------------------+--------+------------+------------+------------------+-----------------+
+</code></pre>
+
+
+</details>
+
+<!-- retry: 120s -->
+<p>On <strong>PE_1</strong>, run:</p>
+<pre><code class="language-saos">ping ip destination 172.16.0.2 source 172.16.0.1 repeat-count 5
+</code></pre>
+<p>Pass: Output contains <code>100.00 percent</code></p>
+<details><summary>Example output</summary>
+
+
+<pre><code>Sending 5 ICMP Echos to 172.16.0.2, timeout is 1 second
+
+Codes: 
+'!' - Success, 'Q' - Request not sent, '.' - Timeout 
+
+ Type 'Ctrl+C' to abort
+
+! seq_num = 1  RTT = 2.84 ms  TTL = 255
+! seq_num = 2  RTT = 3.69 ms  TTL = 255
+! seq_num = 3  RTT = 3.03 ms  TTL = 255
+! seq_num = 4  RTT = 3.16 ms  TTL = 255
+! seq_num = 5  RTT = 3.61 ms  TTL = 255
+Success Rate is 100.00 percent (5/5)
+Round-trip min/avg/max = 2.84/3.27/3.69
+</code></pre>
+
+
+</details>
+
+<!-- retry: 120s -->
+<p>On <strong>PE_2</strong>, run:</p>
+<pre><code class="language-saos">ping ip destination 172.16.0.1 source 172.16.0.2 repeat-count 5
+</code></pre>
+<p>Pass: Output contains <code>100.00 percent</code></p>
+<details><summary>Example output</summary>
+
+
+<pre><code>Sending 5 ICMP Echos to 172.16.0.1, timeout is 1 second
+
+Codes: 
+'!' - Success, 'Q' - Request not sent, '.' - Timeout 
+
+ Type 'Ctrl+C' to abort
+
+! seq_num = 1  RTT = 2.96 ms  TTL = 255
+! seq_num = 2  RTT = 2.94 ms  TTL = 255
+! seq_num = 3  RTT = 2.79 ms  TTL = 255
+! seq_num = 4  RTT = 3.10 ms  TTL = 255
+! seq_num = 5  RTT = 3.57 ms  TTL = 255
+Success Rate is 100.00 percent (5/5)
+Round-trip min/avg/max = 2.79/3.07/3.57
+</code></pre>
+
+
+</details>
+              
+            </div>
+          </div><footer>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <!-- Copyright etc -->
+  </div>
+
+  Built with <a href="https://www.mkdocs.org/">MkDocs</a> using a <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a> provided by <a href="https://readthedocs.org">Read the Docs</a>.
+</footer>
+          
+        </div>
+      </div>
+
+    </section>
+
+  </div>
+
+  <div class="rst-versions" role="note" aria-label="Versions">
+  <span class="rst-current-version" data-toggle="rst-current-version">
+    
+        <span>
+          <a href="https://github.com/ciena/saos-labs" class="fa fa-github" style="color: #fcfcfc"> GitHub</a>
+        </span>
+    
+    
+    
+  </span>
+</div>
+    <script src="../../js/jquery-3.6.0.min.js"></script>
+    <script>var base_url = "../..";</script>
+    <script src="../../js/theme_extra.js"></script>
+    <script src="../../js/theme.js"></script>
+      <script src="../../assets/js/lightbox.js"></script>
+      <script src="../../search/main.js"></script>
+    <script>
+        jQuery(function () {
+            SphinxRtdTheme.Navigation.enable(true);
+        });
+    </script>
+
+</body>
+</html>

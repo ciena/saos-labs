@@ -6,6 +6,18 @@ upstream authoring history.
 
 The format is based on [Keep a Changelog](https://keepachangelog.com/).
 
+## 2026-08-19
+
+### Added
+- **F3 — Segment Routing over IS-IS (SR-MPLS)** hands-on lab: build the MPLS
+  transport layer directly on the F2 IS-IS underlay — enable MPLS forwarding
+  with a shared SRGB, turn on segment routing and MPLS-TE under the IS-IS
+  instance, and assign a prefix-SID to each provider-edge loopback. Verify the
+  resulting SR label bindings and loopback-to-loopback forwarding across the
+  core. Neither LDP nor BGP is involved. Published with its rendered lab pages,
+  topology diagrams, and startup and solution configs, and added to the site
+  nav and search. F0 → F1 → F2 → F3 is now the recommended path.
+
 ## 2026-08-18
 
 ### Added
