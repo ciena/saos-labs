@@ -1,0 +1,1217 @@
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" >
+<head>
+    <meta charset="utf-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+      <link rel="shortcut icon" href="../img/favicon.ico" />
+    <title>F3 SR-MPLS - SAOS Labs</title>
+    <link rel="stylesheet" href="../css/theme.css" />
+    <link rel="stylesheet" href="../css/theme_extra.css" />
+        <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.8.0/styles/github.min.css" />
+        <link href="../assets/css/ciena.css" rel="stylesheet" />
+    
+      <script>
+        // Current page data
+        var mkdocs_page_name = "F3 SR-MPLS";
+        var mkdocs_page_input_path = "F3-SR-MPLS/README.md";
+        var mkdocs_page_url = null;
+      </script>
+    
+    <!--[if lt IE 9]>
+      <script src="../js/html5shiv.min.js"></script>
+    <![endif]-->
+      <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.8.0/highlight.min.js"></script>
+      <script>hljs.highlightAll();</script> 
+</head>
+
+<body class="wy-body-for-nav" role="document">
+
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side stickynav">
+    <div class="wy-side-scroll">
+      <div class="wy-side-nav-search">
+          <a href=".." class="icon icon-home"> SAOS Labs
+        </a><div role="search">
+  <form id ="rtd-search-form" class="wy-form" action="../search.html" method="get">
+      <input type="text" name="q" placeholder="Search docs" aria-label="Search docs" title="Type search term here" />
+  </form>
+</div>
+      </div>
+
+      <div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+              <ul>
+                <li class="toctree-l1"><a class="reference internal" href="..">Home</a>
+                </li>
+              </ul>
+              <p class="caption"><span class="caption-text">Foundation</span></p>
+              <ul class="current">
+                  <li class="toctree-l1"><a class="reference internal" href="../F0-SAOS-Fundamentals/">F0 SAOS Fundamentals</a>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" href="../F1-Loopbacks-and-Interfaces/">F1 Loopbacks and Interfaces</a>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" href="../F2-IS-IS-Routing/">F2 IS-IS Routing</a>
+                  </li>
+                  <li class="toctree-l1 current"><a class="reference internal current" href="#">F3 SR-MPLS</a>
+    <ul class="current">
+    <li class="toctree-l2"><a class="reference internal" href="#goals">Goals</a>
+    </li>
+    <li class="toctree-l2"><a class="reference internal" href="#topology">Topology</a>
+        <ul>
+    <li class="toctree-l3"><a class="reference internal" href="#addressing-and-sid-plan">Addressing and SID plan</a>
+    </li>
+        </ul>
+    </li>
+    <li class="toctree-l2"><a class="reference internal" href="#prerequisites">Prerequisites</a>
+    </li>
+    <li class="toctree-l2"><a class="reference internal" href="#startup-configs">Startup Configs</a>
+    </li>
+    <li class="toctree-l2"><a class="reference internal" href="#deploy">Deploy</a>
+        <ul>
+    <li class="toctree-l3"><a class="reference internal" href="#start-from-checkpoint">Start from checkpoint</a>
+    </li>
+        </ul>
+    </li>
+    <li class="toctree-l2"><a class="reference internal" href="#instructions">Instructions</a>
+        <ul>
+    <li class="toctree-l3"><a class="reference internal" href="#task-1-verify-the-deployed-topology">Task 1: Verify the deployed topology</a>
+    </li>
+    <li class="toctree-l3"><a class="reference internal" href="#task-2-configure-sr-mpls-on-pe_1">Task 2: Configure SR-MPLS on PE_1</a>
+    </li>
+    <li class="toctree-l3"><a class="reference internal" href="#task-3-configure-sr-mpls-on-pe_2">Task 3: Configure SR-MPLS on PE_2</a>
+    </li>
+    <li class="toctree-l3"><a class="reference internal" href="#task-4-verify-the-primary-transport">Task 4: Verify the primary transport</a>
+    </li>
+        </ul>
+    </li>
+    <li class="toctree-l2"><a class="reference internal" href="#tests">Tests</a>
+        <ul>
+    <li class="toctree-l3"><a class="reference internal" href="#g1-task-1-verify-the-deployed-topology">G1: Task 1 — Verify the deployed topology</a>
+    </li>
+    <li class="toctree-l3"><a class="reference internal" href="#g2-task-2-configure-sr-mpls-on-pe_1">G2: Task 2 — Configure SR-MPLS on PE_1</a>
+    </li>
+    <li class="toctree-l3"><a class="reference internal" href="#g3-task-3-configure-sr-mpls-on-pe_2">G3: Task 3 — Configure SR-MPLS on PE_2</a>
+    </li>
+    <li class="toctree-l3"><a class="reference internal" href="#g4-task-4-verify-the-primary-transport">G4: Task 4 — Verify the primary transport</a>
+    </li>
+        </ul>
+    </li>
+    <li class="toctree-l2"><a class="reference internal" href="#solutions">Solutions</a>
+        <ul>
+    <li class="toctree-l3"><a class="reference internal" href="#preloaded-baseline">Preloaded baseline</a>
+        <ul>
+    <li class="toctree-l4"><a class="reference internal" href="#pe_1">PE_1</a>
+    </li>
+    <li class="toctree-l4"><a class="reference internal" href="#pe_2">PE_2</a>
+    </li>
+    <li class="toctree-l4"><a class="reference internal" href="#pe_3">PE_3</a>
+    </li>
+    <li class="toctree-l4"><a class="reference internal" href="#ce1">CE1</a>
+    </li>
+    <li class="toctree-l4"><a class="reference internal" href="#ce2">CE2</a>
+    </li>
+        </ul>
+    </li>
+    <li class="toctree-l3"><a class="reference internal" href="#solution-for-task-1">Solution for Task 1</a>
+    </li>
+    <li class="toctree-l3"><a class="reference internal" href="#solution-for-task-2">Solution for Task 2</a>
+        <ul>
+    <li class="toctree-l4"><a class="reference internal" href="#pe_4">PE_1</a>
+    </li>
+        </ul>
+    </li>
+    <li class="toctree-l3"><a class="reference internal" href="#solution-for-task-3">Solution for Task 3</a>
+        <ul>
+    <li class="toctree-l4"><a class="reference internal" href="#pe_5">PE_2</a>
+    </li>
+        </ul>
+    </li>
+    <li class="toctree-l3"><a class="reference internal" href="#solution-for-task-4">Solution for Task 4</a>
+    </li>
+        </ul>
+    </li>
+    </ul>
+                  </li>
+              </ul>
+      </div>
+    </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap">
+      <nav class="wy-nav-top" role="navigation" aria-label="Mobile navigation menu">
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="..">SAOS Labs</a>
+        
+      </nav>
+      <div class="wy-nav-content">
+        <div class="rst-content"><div role="navigation" aria-label="breadcrumbs navigation">
+  <ul class="wy-breadcrumbs">
+    <li><a href=".." class="icon icon-home" aria-label="Docs"></a></li>
+          <li class="breadcrumb-item">Foundation</li>
+      <li class="breadcrumb-item active">F3 SR-MPLS</li>
+    <li class="wy-breadcrumbs-aside">
+          <a href="https://github.com/ciena/saos-labs/edit/main/labs/F3-SR-MPLS/README.md" class="icon icon-github"> Edit on GitHub</a>
+    </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+            <div class="section" itemprop="articleBody">
+              
+                <h1 id="f3-segment-routing-over-is-is-sr-mpls">F3 — Segment Routing over IS-IS (SR-MPLS)</h1>
+<h2 id="goals">Goals</h2>
+<p>Build the primary transport path directly on the F2 IS-IS underlay. This lab
+intentionally does not configure LDP or BGP.</p>
+<p>By the end of this lab you will be able to:</p>
+<ul>
+<li>Enable MPLS forwarding and define a shared SRGB</li>
+<li>Enable segment routing and MPLS-TE under the IS-IS instance</li>
+<li>Assign a prefix-SID to each PE loopback</li>
+<li>Verify the SR-MPLS transport labels and loopback-to-loopback forwarding</li>
+</ul>
+<h2 id="topology">Topology</h2>
+<p><img alt="topology" src="topo.clab.svg" /></p>
+<p><img alt="topology detail" src="topo.detail.svg" /></p>
+<p>PE_1 and PE_2 use port 1 for the active IS-IS and SR-MPLS core link. The other
+nodes and links are reserved for later Services labs.</p>
+<h3 id="addressing-and-sid-plan">Addressing and SID plan</h3>
+<table>
+<thead>
+<tr>
+<th>Node</th>
+<th>Loopback</th>
+<th>Core address</th>
+<th>Prefix-SID index</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>PE_1</td>
+<td>172.16.0.1/32</td>
+<td>172.16.1.1/30</td>
+<td>1</td>
+</tr>
+<tr>
+<td>PE_2</td>
+<td>172.16.0.2/32</td>
+<td>172.16.1.2/30</td>
+<td>2</td>
+</tr>
+</tbody>
+</table>
+<h2 id="prerequisites">Prerequisites</h2>
+<ul>
+<li>Complete F1 and F2, or deploy this lab with its included F2 baseline.</li>
+<li>Make the SAOS 10x image <code>vrnetlab/ciena_saos:10-12-00-0228</code> (release 10.12.00.0228) available to Containerlab.</li>
+<li>Activate the built-in trial license after deployment.</li>
+</ul>
+<h2 id="startup-configs">Startup Configs</h2>
+<p>The checkpoint baseline each node boots from. If you are assembling the lab by hand, create a <code>configs/</code> folder next to <code>topo.clab.yml</code> and copy each file into it before you deploy.</p>
+<ul>
+<li><a href="configs/PE_1.cfg.partial">PE_1.cfg.partial</a></li>
+<li><a href="configs/PE_2.cfg.partial">PE_2.cfg.partial</a></li>
+<li><a href="configs/PE_3.cfg.partial">PE_3.cfg.partial</a></li>
+<li><a href="configs/CE1.cfg.partial">CE1.cfg.partial</a></li>
+<li><a href="configs/CE2.cfg.partial">CE2.cfg.partial</a></li>
+</ul>
+<h2 id="deploy">Deploy</h2>
+<h3 id="start-from-checkpoint">Start from checkpoint</h3>
+<pre><code class="language-bash">LAB=F3-SR-MPLS
+cd labs/${LAB}            # from the repo root, or cd into the unpacked directory
+containerlab deploy -t topo.clab.yml
+</code></pre>
+<p>Equivalent invocation from the repo root:</p>
+<pre><code class="language-bash">containerlab deploy -t &quot;labs/${LAB}/topo.clab.yml&quot;
+</code></pre>
+<p>The lab topology (<code>topo.clab.yml</code>):</p>
+<pre><code class="language-yaml">name: F3-SR-MPLS
+topology:
+  defaults:
+    kind: ciena_saos
+    image: vrnetlab/ciena_saos:10-12-00-0228
+    labels:
+      lab-mode: hands-on
+  nodes:
+    PE_1:
+      type: '5162'
+      startup-config: configs/PE_1.cfg.partial
+    PE_2:
+      type: '5162'
+      startup-config: configs/PE_2.cfg.partial
+    PE_3:
+      type: '5162'
+      labels:
+        lab-state: unused
+      startup-config: configs/PE_3.cfg.partial
+    CE1:
+      type: '3984'
+      labels:
+        lab-state: unused
+      startup-config: configs/CE1.cfg.partial
+    CE2:
+      type: '3984'
+      labels:
+        lab-state: unused
+      startup-config: configs/CE2.cfg.partial
+  links:
+  - endpoints: [ &quot;PE_1:1&quot;, &quot;PE_2:1&quot; ]
+  - endpoints: [ &quot;PE_1:2&quot;, &quot;CE1:1&quot; ]
+  - endpoints: [ &quot;PE_2:2&quot;, &quot;CE2:1&quot; ]
+  - endpoints: [ &quot;PE_2:4&quot;, &quot;PE_3:1&quot; ]
+  - endpoints: [ &quot;PE_1:4&quot;, &quot;PE_3:3&quot; ]
+  - endpoints: [ &quot;CE2:2&quot;, &quot;PE_3:2&quot; ]
+</code></pre>
+<p>Connect to the active PEs:</p>
+<pre><code class="language-bash">ssh diag@clab-F3-SR-MPLS-PE_1
+ssh diag@clab-F3-SR-MPLS-PE_2
+</code></pre>
+<p>Default credentials: <code>diag</code> / <code>ciena123</code></p>
+<h2 id="instructions">Instructions</h2>
+<!-- task-index -->
+<ul>
+<li><a href="#task-1">Task 1: Verify the deployed topology</a></li>
+<li><a href="#task-2">Task 2: Configure SR-MPLS on PE_1</a></li>
+<li><a href="#task-3">Task 3: Configure SR-MPLS on PE_2</a></li>
+<li><a href="#task-4">Task 4: Verify the primary transport</a></li>
+</ul>
+<p><a id="task-1"></a></p>
+<h3 id="task-1-verify-the-deployed-topology">Task 1: Verify the deployed topology</h3>
+<p><a href="#task-1" title="Direct link to this task (right-click to copy)">🔗</a></p>
+<!-- prose: detailed -->
+
+<p><strong>Summary</strong> — This lab starts from the F2 IS-IS baseline, already preloaded
+in the startup configs. Before layering segment routing on top, confirm the
+IGP actually works: the loopbacks live on different prefixes than the shared
+link, so reaching a neighbor's loopback requires an established adjacency
+and exchanged routes, not just cable connectivity.</p>
+<p><strong>Implementation</strong> — Nothing to configure yet: inspect the preloaded
+baseline and ping across it. Each PE carries loopback <code>lb1</code>
+(<code>172.16.0.1</code>/<code>FC00::1</code> on <code>PE_1</code>, <code>172.16.0.2</code>/<code>FC00::2</code> on <code>PE_2</code>), the
+routed core link <code>PE_1-PE_2-if</code> on <code>172.16.1.0/30</code> and <code>FC00::600/127</code>, and
+IS-IS instance <code>Bootcamp</code> running level-1 with a shared interface password.
+<code>PE_3</code>, <code>CE1</code>, and <code>CE2</code> are deployed but carry only a hostname; they sit
+idle in this lab.</p>
+<!-- verify-prose -->
+
+<p>Healthy state is a clean <code>100.00 percent</code> success pinging <code>FC00::2</code> from
+<code>PE_1</code> and <code>FC00::1</code> from <code>PE_2</code> — each router reaching the other's loopback
+address. Because those loopbacks are /128s advertised only through IS-IS,
+success proves the <code>Bootcamp</code> adjacency formed (matching level-1 passwords
+included) and LSPs were flooded and installed. Adjacencies take a little
+time after deploy, so an initial failure right after boot is expected to
+clear on retry.</p>
+<p>Question to consider: why does pinging <code>FC00::2</code> prove more than pinging the
+far end of the <code>FC00::600/127</code> link would?</p>
+<!-- retry: 120s -->
+<p><strong>Verify</strong> (show mode) on <strong>PE_1</strong>:</p>
+<pre><code class="language-saos-show">ping ip destination FC00::2 source FC00::1 repeat-count 5
+</code></pre>
+<p>Pass: Output contains <code>100.00 percent</code></p>
+<details><summary>Example output</summary>
+
+
+<pre><code>Sending 5 ICMP Echos to FC00::2, timeout is 1 second
+
+Codes: 
+'!' - Success, 'Q' - Request not sent, '.' - Timeout 
+
+ Type 'Ctrl+C' to abort
+
+! seq_num = 1  RTT = 5.00 ms  TTL = 255
+! seq_num = 2  RTT = 2.87 ms  TTL = 255
+! seq_num = 3  RTT = 2.73 ms  TTL = 255
+! seq_num = 4  RTT = 3.12 ms  TTL = 255
+! seq_num = 5  RTT = 2.78 ms  TTL = 255
+Success Rate is 100.00 percent (5/5)
+Round-trip min/avg/max = 2.73/3.30/5.00
+</code></pre>
+
+
+</details>
+
+<!-- retry: 120s -->
+<p><strong>Verify</strong> (show mode) on <strong>PE_2</strong>:</p>
+<pre><code class="language-saos-show">ping ip destination FC00::1 source FC00::2 repeat-count 5
+</code></pre>
+<p>Pass: Output contains <code>100.00 percent</code></p>
+<details><summary>Example output</summary>
+
+
+<pre><code>Sending 5 ICMP Echos to FC00::1, timeout is 1 second
+
+Codes: 
+'!' - Success, 'Q' - Request not sent, '.' - Timeout 
+
+ Type 'Ctrl+C' to abort
+
+! seq_num = 1  RTT = 2.49 ms  TTL = 255
+! seq_num = 2  RTT = 3.66 ms  TTL = 255
+! seq_num = 3  RTT = 3.91 ms  TTL = 255
+! seq_num = 4  RTT = 3.99 ms  TTL = 255
+! seq_num = 5  RTT = 3.20 ms  TTL = 255
+Success Rate is 100.00 percent (5/5)
+Round-trip min/avg/max = 2.49/3.45/3.99
+</code></pre>
+
+
+</details>
+
+<p><a id="task-2"></a></p>
+<h3 id="task-2-configure-sr-mpls-on-pe_1">Task 2: Configure SR-MPLS on PE_1</h3>
+<p><a href="#task-2" title="Direct link to this task (right-click to copy)">🔗</a></p>
+<!-- prose: in-depth -->
+
+<p><strong>Summary</strong> — This task turns <code>PE_1</code> into a segment-routing MPLS node.
+Unlike LDP, SR needs no separate label-distribution protocol — labels are
+derived from information the IGP already floods.</p>
+<p><strong>Background</strong> — An index is not a label — it is an offset into a shared
+block. That block is the SRGB, <code>16000</code>–<code>23999</code> here. Label = SRGB base +
+index, so <code>PE_1</code>'s loopback should resolve to <code>16000 + 1 = 16001</code> on any
+router using this SRGB — which is why every router in the domain is given
+the same range.</p>
+<p><strong>Implementation</strong> — First, allow the box to switch labeled packets at all:
+enable MPLS label switching on the core-facing <code>PE_1-PE_2-if</code> and on <code>lb1</code>.
+Next, give the loopback an identity in the label space: map prefix
+<code>172.16.0.1/32</code> on <code>lb1</code> to prefix-SID index <code>1</code>, and enable segment
+routing with the SRGB <code>16000</code>–<code>23999</code> under IS-IS instance <code>Bootcamp</code>.
+Finally, anchor traffic engineering to the loopback: set the MPLS-TE
+router-id to <code>172.16.0.1</code>, enable CSPF, and turn on advertising and
+receiving of SID bindings so IS-IS carries the SR information.</p>
+<p><strong>Configure</strong> (config mode) on <strong>PE_1</strong>:</p>
+<pre><code class="language-saos-config">mpls interfaces interface PE_1-PE_2-if label-switching true
+mpls interfaces interface lb1 label-switching true
+segment-routing connected-prefix-sid-map 172.16.0.1/32 interface lb1 start-sid 1 value-type index
+isis instance Bootcamp cspf-flag true
+isis instance Bootcamp mpls-te level-type level-1 router-id 172.16.0.1
+isis instance Bootcamp segment-routing enabled true srgb 16000 23999
+isis instance Bootcamp segment-routing bindings advertise true receive true
+</code></pre>
+<!-- verify-prose -->
+
+<p>Healthy state: IS-IS instance <code>Bootcamp</code> reports segment routing <code>Enabled</code>,
+and the connected prefix-SID map shows <code>172.16.0.1/32</code> bound to <code>lb1</code>. Be
+clear about what this proves: these outputs largely echo local configuration
+back at you — <code>PE_2</code> has no SR yet, so there is no far-end state to observe,
+and no label-switched path exists at this point.</p>
+<p>Question: given index <code>1</code> and an SRGB starting at <code>16000</code>, what label do you
+expect the rest of the network to use for <code>PE_1</code>'s loopback once neighbors
+learn it?</p>
+<!-- retry: 60s -->
+<p><strong>Verify</strong> (show mode) on <strong>PE_1</strong>:</p>
+<pre><code class="language-saos-show">show isis segment-routing
+</code></pre>
+<p>Pass: Output contains <code>Bootcamp</code> and <code>Enabled</code></p>
+<details><summary>Example output</summary>
+
+
+<pre><code>+----------- ISIS SEGMENT-ROUTING STATE -----------+
+| ISIS Tag | Config State | Oper State | Force PHP |
++----------+--------------+------------+-----------+
+| Bootcamp | Enabled      | Enabled    | Disabled  |
++----------+--------------+------------+-----------+
+</code></pre>
+
+
+</details>
+
+<p><strong>Verify</strong> (show mode) on <strong>PE_1</strong>:</p>
+<pre><code class="language-saos-show">show segment-routing connected-prefix-sid-map
+</code></pre>
+<p>Pass: Output contains <code>172.16.0.1/32</code> and <code>lb1</code></p>
+<details><summary>Example output</summary>
+
+
+<pre><code>+----- SEGMENT-ROUTING SID MAP -----+
+|  Name             |  Value        |
++-------------------+---------------+
+| Prefix            | 172.16.0.1/32 |
+| Interface         | lb1           |
+| Value Type        | Index         |
+| Start SID         | 1             |
+| Range             | 1             |
+| Algorithm         | SPF           |
+| Last Hop Behavior | -             |
++-------------------+---------------+
+</code></pre>
+
+
+</details>
+
+<p><a id="task-3"></a></p>
+<h3 id="task-3-configure-sr-mpls-on-pe_2">Task 3: Configure SR-MPLS on PE_2</h3>
+<p><a href="#task-3" title="Direct link to this task (right-click to copy)">🔗</a></p>
+<!-- prose: simple -->
+
+<p>Mirror Task 2 on <code>PE_2</code> — label switching on <code>PE_1-PE_2-if</code> and <code>lb1</code>,
+CSPF, SID binding advertise/receive, and the same SRGB <code>16000</code>–<code>23999</code>
+under <code>Bootcamp</code>, with only its own values changed:</p>
+<ul>
+<li>prefix-SID: <code>172.16.0.2/32</code> on <code>lb1</code>, index <code>2</code> (<code>16000 + 2 = 16002</code>)</li>
+<li>MPLS-TE router-id: <code>172.16.0.2</code></li>
+</ul>
+<p><strong>Configure</strong> (config mode) on <strong>PE_2</strong>:</p>
+<pre><code class="language-saos-config">mpls interfaces interface PE_1-PE_2-if label-switching true
+mpls interfaces interface lb1 label-switching true
+segment-routing connected-prefix-sid-map 172.16.0.2/32 interface lb1 start-sid 2 value-type index
+isis instance Bootcamp cspf-flag true
+isis instance Bootcamp mpls-te level-type level-1 router-id 172.16.0.2
+isis instance Bootcamp segment-routing enabled true srgb 16000 23999
+isis instance Bootcamp segment-routing bindings advertise true receive true
+</code></pre>
+<!-- verify-prose -->
+
+<p>Healthy state matches Task 2's, viewed from <code>PE_2</code>: instance <code>Bootcamp</code>
+shows segment routing <code>Enabled</code>, and the sid-map shows <code>172.16.0.2/32</code> on
+<code>lb1</code>. Again these checks confirm local intent; whether the two routers have
+actually learned each other's SIDs and installed labels is the subject of
+the next task. A shared SRGB is what lets every router compute the same
+label for the same index without any per-hop label negotiation — once this
+side comes up, both ends of the link are SR-capable, and IS-IS can flood
+each router's SR capability and prefix-SIDs to the other.</p>
+<p>Question: what would go wrong if <code>PE_2</code> had been configured with a different
+SRGB, say starting at <code>20000</code>, while still advertising index <code>2</code>?</p>
+<!-- retry: 60s -->
+<p><strong>Verify</strong> (show mode) on <strong>PE_2</strong>:</p>
+<pre><code class="language-saos-show">show isis segment-routing
+</code></pre>
+<p>Pass: Output contains <code>Bootcamp</code> and <code>Enabled</code></p>
+<details><summary>Example output</summary>
+
+
+<pre><code>+----------- ISIS SEGMENT-ROUTING STATE -----------+
+| ISIS Tag | Config State | Oper State | Force PHP |
++----------+--------------+------------+-----------+
+| Bootcamp | Enabled      | Enabled    | Disabled  |
++----------+--------------+------------+-----------+
+</code></pre>
+
+
+</details>
+
+<p><strong>Verify</strong> (show mode) on <strong>PE_2</strong>:</p>
+<pre><code class="language-saos-show">show segment-routing connected-prefix-sid-map
+</code></pre>
+<p>Pass: Output contains <code>172.16.0.2/32</code> and <code>lb1</code></p>
+<details><summary>Example output</summary>
+
+
+<pre><code>+----- SEGMENT-ROUTING SID MAP -----+
+|  Name             |  Value        |
++-------------------+---------------+
+| Prefix            | 172.16.0.2/32 |
+| Interface         | lb1           |
+| Value Type        | Index         |
+| Start SID         | 2             |
+| Range             | 1             |
+| Algorithm         | SPF           |
+| Last Hop Behavior | -             |
++-------------------+---------------+
+</code></pre>
+
+
+</details>
+
+<p><a id="task-4"></a></p>
+<h3 id="task-4-verify-the-primary-transport">Task 4: Verify the primary transport</h3>
+<p><a href="#task-4" title="Direct link to this task (right-click to copy)">🔗</a></p>
+<!-- prose: detailed -->
+
+<p><strong>Summary</strong> — Nothing new is configured here. This task teaches you to read
+the evidence that SR transport is actually working, moving from
+control-plane learning to installed forwarding state.</p>
+<p><strong>Implementation</strong> — The SR capability view answers "who advertises what":
+each router should list both <code>172.16.0.1</code> and <code>172.16.0.2</code> with the shared
+<code>16000</code>–<code>23999</code>
+SRGB, proving the capability TLVs were flooded through IS-IS. The active
+mapping table answers "which prefix-SIDs did I learn": both /32 loopback
+prefixes should appear on both routers — remote SIDs learned purely from the
+IGP, with no LDP session anywhere. The MPLS forwarding table answers "did
+the data plane install it": unlike the config-echo checks earlier, an entry
+for the remote loopback marked <code>i &gt;</code> shows a selected, installed label-
+switched path — this is the table that proves packets can actually be
+forwarded on labels. A final loopback-to-loopback IPv4 ping, source pinned
+to the local loopback, exercises the transport end to end.</p>
+<!-- verify-prose -->
+
+<p>Healthy state on each PE: the capability output lists both router IDs
+against SRGB <code>16000</code>/<code>23999</code>; the active mapping table holds <code>172.16.0.1/32</code>
+and <code>172.16.0.2/32</code>; and the forwarding table shows the remote loopback
+(<code>172.16.0.2/32</code> from <code>PE_1</code>, <code>172.16.0.1/32</code> from <code>PE_2</code>) with an <code>i &gt;</code>
+entry. Pings between <code>172.16.0.1</code> and <code>172.16.0.2</code> should complete at
+<code>100.00 percent</code> in both directions; flooding and installation can lag, so
+allow the retry window to do its work.</p>
+<p>Questions: based on index-plus-base arithmetic, which outgoing label would
+you expect toward each loopback — and which single show output here would
+LDP have required a signaling protocol to populate?</p>
+<!-- retry: 120s -->
+<p><strong>Verify</strong> (show mode) on <strong>PE_1</strong>:</p>
+<pre><code class="language-saos-show">show isis segment-routing capability
+</code></pre>
+<p>Pass: Output contains <code>16000</code> and <code>23999</code> and <code>172.16.0.1</code> and <code>172.16.0.2</code></p>
+<details><summary>Example output</summary>
+
+
+<pre><code>+------------------------------- ISIS SEGMENT-ROUTING CAPABILITY --------------------------------+
+|          |            |       |       |    Total  | SID Range  |            |           |      |
+|          |            | SRGB  | SRGB  |      SID  |      List  |      SRMS  |           | Node |
+| Instance |  Router ID | Start |   End | Supported |      Count | Preference | Algorithm | MSD  |
++----------+------------+-------+-------+-----------+------------+------------+-----------+------+
+| Bootcamp | 172.16.0.1 | 16000 | 23999 |      8000 |          1 |        128 |       SPF | 0    |
++----------+------------+-------+-------+-----------+------------+------------+-----------+------+
+| Bootcamp | 172.16.0.2 | 16000 | 23999 |      8000 |          1 |        128 |       SPF | 0    |
++----------+------------+-------+-------+-----------+------------+------------+-----------+------+
+</code></pre>
+
+
+</details>
+
+<!-- retry: 120s -->
+<p><strong>Verify</strong> (show mode) on <strong>PE_2</strong>:</p>
+<pre><code class="language-saos-show">show isis segment-routing capability
+</code></pre>
+<p>Pass: Output contains <code>16000</code> and <code>23999</code> and <code>172.16.0.1</code> and <code>172.16.0.2</code></p>
+<details><summary>Example output</summary>
+
+
+<pre><code>+------------------------------- ISIS SEGMENT-ROUTING CAPABILITY --------------------------------+
+|          |            |       |       |    Total  | SID Range  |            |           |      |
+|          |            | SRGB  | SRGB  |      SID  |      List  |      SRMS  |           | Node |
+| Instance |  Router ID | Start |   End | Supported |      Count | Preference | Algorithm | MSD  |
++----------+------------+-------+-------+-----------+------------+------------+-----------+------+
+| Bootcamp | 172.16.0.1 | 16000 | 23999 |      8000 |          1 |        128 |       SPF | 0    |
++----------+------------+-------+-------+-----------+------------+------------+-----------+------+
+| Bootcamp | 172.16.0.2 | 16000 | 23999 |      8000 |          1 |        128 |       SPF | 0    |
++----------+------------+-------+-------+-----------+------------+------------+-----------+------+
+</code></pre>
+
+
+</details>
+
+<!-- retry: 120s -->
+<p><strong>Verify</strong> (show mode) on <strong>PE_1</strong>:</p>
+<pre><code class="language-saos-show">show isis segment-routing mapping-table status active
+</code></pre>
+<p>Pass: Output contains <code>172.16.0.1/32</code> and <code>172.16.0.2/32</code></p>
+<details><summary>Example output</summary>
+
+
+<pre><code>+---------- ISIS SEGMENT-ROUTING MAPPING TABLE ACTIVE -----------+
+| ISIS Instance |  Entry Prefix | SID Index | Range | Preference |
++---------------+---------------+-----------+-------+------------+
+|    Bootcamp   | 172.16.0.1/32 |         1 |     1 |        192 |
+|    Bootcamp   | 172.16.0.2/32 |         2 |     1 |        192 |
++---------------+---------------+-----------+-------+------------+
+</code></pre>
+
+
+</details>
+
+<!-- retry: 120s -->
+<p><strong>Verify</strong> (show mode) on <strong>PE_2</strong>:</p>
+<pre><code class="language-saos-show">show isis segment-routing mapping-table status active
+</code></pre>
+<p>Pass: Output contains <code>172.16.0.1/32</code> and <code>172.16.0.2/32</code></p>
+<details><summary>Example output</summary>
+
+
+<pre><code>+---------- ISIS SEGMENT-ROUTING MAPPING TABLE ACTIVE -----------+
+| ISIS Instance |  Entry Prefix | SID Index | Range | Preference |
++---------------+---------------+-----------+-------+------------+
+|    Bootcamp   | 172.16.0.1/32 |         1 |     1 |        192 |
+|    Bootcamp   | 172.16.0.2/32 |         2 |     1 |        192 |
++---------------+---------------+-----------+-------+------------+
+</code></pre>
+
+
+</details>
+
+<!-- retry: 120s -->
+<p><strong>Verify</strong> (show mode) on <strong>PE_1</strong>:</p>
+<pre><code class="language-saos-show">show mpls forwarding-table
+</code></pre>
+<p>Pass: Output contains <code>172.16.0.2/32</code> and <code>i &gt;</code></p>
+<details><summary>Example output</summary>
+
+
+<pre><code>+--------------------------------------------------------------------------------------------------------------------+
+| Codes: &gt; - installed FTN, * - selected FTN, p - stale FTN, b - backup route                                        |
+|        B - BGP FTN, K - CLI FTN, t - tunnel                                                                        |
+|        L - LDP FTN, R - RSVP-TE FTN, S - SNMP FTN, I - IGP-Shortcut,                                               |
+|        U - unknown FTN, O - SR-OSPF FTN, i - SR-ISIS FTN, k - SR-CLI FTN,                                          |
+|        s - SR-TE FTN,  ip - IP-ISIS FTN, io - IP-OSPF FTN, ib - IP-BGP FTN,                                        |
+|        M - MPLS-TP FTN, ias - IAS FTN, v - VPN FTN,                                                                |
+|        m - PW-MPLS FTN, e - EVPN FTN                                                                               |
+|        C - Color, Tn - Tunnel Name, f - Fallback, ML - Multicast LDP, IR - Ingress-Replication, F - Flex-Algorithm |
++--------------------------------------------------------------------------------------------------------------------+
++-------------------------------------- MPLS FORWARDING TABLE --------------------------------------+
+|      |                    | Opaque |          Label          |                  |                 |
+| Code |        FEC         |  ID    |     In     |    Out     |     Out Intf     |     Next Hop    |
++------+--------------------+--------+------------+------------+------------------+-----------------+
+| i &gt;  | 172.16.0.2/32      | 7      | -          | 3          | PE_1-PE_2-if     | 172.16.1.2      |
++------+--------------------+--------+------------+------------+------------------+-----------------+
+</code></pre>
+
+
+</details>
+
+<!-- retry: 120s -->
+<p><strong>Verify</strong> (show mode) on <strong>PE_2</strong>:</p>
+<pre><code class="language-saos-show">show mpls forwarding-table
+</code></pre>
+<p>Pass: Output contains <code>172.16.0.1/32</code> and <code>i &gt;</code></p>
+<details><summary>Example output</summary>
+
+
+<pre><code>+--------------------------------------------------------------------------------------------------------------------+
+| Codes: &gt; - installed FTN, * - selected FTN, p - stale FTN, b - backup route                                        |
+|        B - BGP FTN, K - CLI FTN, t - tunnel                                                                        |
+|        L - LDP FTN, R - RSVP-TE FTN, S - SNMP FTN, I - IGP-Shortcut,                                               |
+|        U - unknown FTN, O - SR-OSPF FTN, i - SR-ISIS FTN, k - SR-CLI FTN,                                          |
+|        s - SR-TE FTN,  ip - IP-ISIS FTN, io - IP-OSPF FTN, ib - IP-BGP FTN,                                        |
+|        M - MPLS-TP FTN, ias - IAS FTN, v - VPN FTN,                                                                |
+|        m - PW-MPLS FTN, e - EVPN FTN                                                                               |
+|        C - Color, Tn - Tunnel Name, f - Fallback, ML - Multicast LDP, IR - Ingress-Replication, F - Flex-Algorithm |
++--------------------------------------------------------------------------------------------------------------------+
++-------------------------------------- MPLS FORWARDING TABLE --------------------------------------+
+|      |                    | Opaque |          Label          |                  |                 |
+| Code |        FEC         |  ID    |     In     |    Out     |     Out Intf     |     Next Hop    |
++------+--------------------+--------+------------+------------+------------------+-----------------+
+| i &gt;  | 172.16.0.1/32      | 8      | -          | 3          | PE_1-PE_2-if     | 172.16.1.1      |
++------+--------------------+--------+------------+------------+------------------+-----------------+
+</code></pre>
+
+
+</details>
+
+<!-- retry: 120s -->
+<p><strong>Verify</strong> (show mode) on <strong>PE_1</strong>:</p>
+<pre><code class="language-saos-show">ping ip destination 172.16.0.2 source 172.16.0.1 repeat-count 5
+</code></pre>
+<p>Pass: Output contains <code>100.00 percent</code></p>
+<details><summary>Example output</summary>
+
+
+<pre><code>Sending 5 ICMP Echos to 172.16.0.2, timeout is 1 second
+
+Codes: 
+'!' - Success, 'Q' - Request not sent, '.' - Timeout 
+
+ Type 'Ctrl+C' to abort
+
+! seq_num = 1  RTT = 2.84 ms  TTL = 255
+! seq_num = 2  RTT = 3.69 ms  TTL = 255
+! seq_num = 3  RTT = 3.03 ms  TTL = 255
+! seq_num = 4  RTT = 3.16 ms  TTL = 255
+! seq_num = 5  RTT = 3.61 ms  TTL = 255
+Success Rate is 100.00 percent (5/5)
+Round-trip min/avg/max = 2.84/3.27/3.69
+</code></pre>
+
+
+</details>
+
+<!-- retry: 120s -->
+<p><strong>Verify</strong> (show mode) on <strong>PE_2</strong>:</p>
+<pre><code class="language-saos-show">ping ip destination 172.16.0.1 source 172.16.0.2 repeat-count 5
+</code></pre>
+<p>Pass: Output contains <code>100.00 percent</code></p>
+<details><summary>Example output</summary>
+
+
+<pre><code>Sending 5 ICMP Echos to 172.16.0.1, timeout is 1 second
+
+Codes: 
+'!' - Success, 'Q' - Request not sent, '.' - Timeout 
+
+ Type 'Ctrl+C' to abort
+
+! seq_num = 1  RTT = 2.96 ms  TTL = 255
+! seq_num = 2  RTT = 2.94 ms  TTL = 255
+! seq_num = 3  RTT = 2.79 ms  TTL = 255
+! seq_num = 4  RTT = 3.10 ms  TTL = 255
+! seq_num = 5  RTT = 3.57 ms  TTL = 255
+Success Rate is 100.00 percent (5/5)
+Round-trip min/avg/max = 2.79/3.07/3.57
+</code></pre>
+
+
+</details>
+
+<h2 id="tests">Tests</h2>
+<p>Deploy <code>F3-SR-MPLS</code>, then run the following validation checks.</p>
+<h3 id="g1-task-1-verify-the-deployed-topology">G1: Task 1 — Verify the deployed topology</h3>
+<!-- retry: 120s -->
+<p>On <strong>PE_1</strong>, run:</p>
+<pre><code class="language-saos">ping ip destination FC00::2 source FC00::1 repeat-count 5
+</code></pre>
+<p>Pass: Output contains <code>100.00 percent</code></p>
+<details><summary>Example output</summary>
+
+
+<pre><code>Sending 5 ICMP Echos to FC00::2, timeout is 1 second
+
+Codes: 
+'!' - Success, 'Q' - Request not sent, '.' - Timeout 
+
+ Type 'Ctrl+C' to abort
+
+! seq_num = 1  RTT = 5.00 ms  TTL = 255
+! seq_num = 2  RTT = 2.87 ms  TTL = 255
+! seq_num = 3  RTT = 2.73 ms  TTL = 255
+! seq_num = 4  RTT = 3.12 ms  TTL = 255
+! seq_num = 5  RTT = 2.78 ms  TTL = 255
+Success Rate is 100.00 percent (5/5)
+Round-trip min/avg/max = 2.73/3.30/5.00
+</code></pre>
+
+
+</details>
+
+<!-- retry: 120s -->
+<p>On <strong>PE_2</strong>, run:</p>
+<pre><code class="language-saos">ping ip destination FC00::1 source FC00::2 repeat-count 5
+</code></pre>
+<p>Pass: Output contains <code>100.00 percent</code></p>
+<details><summary>Example output</summary>
+
+
+<pre><code>Sending 5 ICMP Echos to FC00::1, timeout is 1 second
+
+Codes: 
+'!' - Success, 'Q' - Request not sent, '.' - Timeout 
+
+ Type 'Ctrl+C' to abort
+
+! seq_num = 1  RTT = 2.49 ms  TTL = 255
+! seq_num = 2  RTT = 3.66 ms  TTL = 255
+! seq_num = 3  RTT = 3.91 ms  TTL = 255
+! seq_num = 4  RTT = 3.99 ms  TTL = 255
+! seq_num = 5  RTT = 3.20 ms  TTL = 255
+Success Rate is 100.00 percent (5/5)
+Round-trip min/avg/max = 2.49/3.45/3.99
+</code></pre>
+
+
+</details>
+
+<h3 id="g2-task-2-configure-sr-mpls-on-pe_1">G2: Task 2 — Configure SR-MPLS on PE_1</h3>
+<!-- retry: 60s -->
+<p>On <strong>PE_1</strong>, run:</p>
+<pre><code class="language-saos">show isis segment-routing
+</code></pre>
+<p>Pass: Output contains <code>Bootcamp</code> and <code>Enabled</code></p>
+<details><summary>Example output</summary>
+
+
+<pre><code>+----------- ISIS SEGMENT-ROUTING STATE -----------+
+| ISIS Tag | Config State | Oper State | Force PHP |
++----------+--------------+------------+-----------+
+| Bootcamp | Enabled      | Enabled    | Disabled  |
++----------+--------------+------------+-----------+
+</code></pre>
+
+
+</details>
+
+<p>On <strong>PE_1</strong>, run:</p>
+<pre><code class="language-saos">show segment-routing connected-prefix-sid-map
+</code></pre>
+<p>Pass: Output contains <code>172.16.0.1/32</code> and <code>lb1</code></p>
+<details><summary>Example output</summary>
+
+
+<pre><code>+----- SEGMENT-ROUTING SID MAP -----+
+|  Name             |  Value        |
++-------------------+---------------+
+| Prefix            | 172.16.0.1/32 |
+| Interface         | lb1           |
+| Value Type        | Index         |
+| Start SID         | 1             |
+| Range             | 1             |
+| Algorithm         | SPF           |
+| Last Hop Behavior | -             |
++-------------------+---------------+
+</code></pre>
+
+
+</details>
+
+<h3 id="g3-task-3-configure-sr-mpls-on-pe_2">G3: Task 3 — Configure SR-MPLS on PE_2</h3>
+<!-- retry: 60s -->
+<p>On <strong>PE_2</strong>, run:</p>
+<pre><code class="language-saos">show isis segment-routing
+</code></pre>
+<p>Pass: Output contains <code>Bootcamp</code> and <code>Enabled</code></p>
+<details><summary>Example output</summary>
+
+
+<pre><code>+----------- ISIS SEGMENT-ROUTING STATE -----------+
+| ISIS Tag | Config State | Oper State | Force PHP |
++----------+--------------+------------+-----------+
+| Bootcamp | Enabled      | Enabled    | Disabled  |
++----------+--------------+------------+-----------+
+</code></pre>
+
+
+</details>
+
+<p>On <strong>PE_2</strong>, run:</p>
+<pre><code class="language-saos">show segment-routing connected-prefix-sid-map
+</code></pre>
+<p>Pass: Output contains <code>172.16.0.2/32</code> and <code>lb1</code></p>
+<details><summary>Example output</summary>
+
+
+<pre><code>+----- SEGMENT-ROUTING SID MAP -----+
+|  Name             |  Value        |
++-------------------+---------------+
+| Prefix            | 172.16.0.2/32 |
+| Interface         | lb1           |
+| Value Type        | Index         |
+| Start SID         | 2             |
+| Range             | 1             |
+| Algorithm         | SPF           |
+| Last Hop Behavior | -             |
++-------------------+---------------+
+</code></pre>
+
+
+</details>
+
+<h3 id="g4-task-4-verify-the-primary-transport">G4: Task 4 — Verify the primary transport</h3>
+<!-- retry: 120s -->
+<p>On <strong>PE_1</strong>, run:</p>
+<pre><code class="language-saos">show isis segment-routing capability
+</code></pre>
+<p>Pass: Output contains <code>16000</code> and <code>23999</code> and <code>172.16.0.1</code> and <code>172.16.0.2</code></p>
+<details><summary>Example output</summary>
+
+
+<pre><code>+------------------------------- ISIS SEGMENT-ROUTING CAPABILITY --------------------------------+
+|          |            |       |       |    Total  | SID Range  |            |           |      |
+|          |            | SRGB  | SRGB  |      SID  |      List  |      SRMS  |           | Node |
+| Instance |  Router ID | Start |   End | Supported |      Count | Preference | Algorithm | MSD  |
++----------+------------+-------+-------+-----------+------------+------------+-----------+------+
+| Bootcamp | 172.16.0.1 | 16000 | 23999 |      8000 |          1 |        128 |       SPF | 0    |
++----------+------------+-------+-------+-----------+------------+------------+-----------+------+
+| Bootcamp | 172.16.0.2 | 16000 | 23999 |      8000 |          1 |        128 |       SPF | 0    |
++----------+------------+-------+-------+-----------+------------+------------+-----------+------+
+</code></pre>
+
+
+</details>
+
+<!-- retry: 120s -->
+<p>On <strong>PE_2</strong>, run:</p>
+<pre><code class="language-saos">show isis segment-routing capability
+</code></pre>
+<p>Pass: Output contains <code>16000</code> and <code>23999</code> and <code>172.16.0.1</code> and <code>172.16.0.2</code></p>
+<details><summary>Example output</summary>
+
+
+<pre><code>+------------------------------- ISIS SEGMENT-ROUTING CAPABILITY --------------------------------+
+|          |            |       |       |    Total  | SID Range  |            |           |      |
+|          |            | SRGB  | SRGB  |      SID  |      List  |      SRMS  |           | Node |
+| Instance |  Router ID | Start |   End | Supported |      Count | Preference | Algorithm | MSD  |
++----------+------------+-------+-------+-----------+------------+------------+-----------+------+
+| Bootcamp | 172.16.0.1 | 16000 | 23999 |      8000 |          1 |        128 |       SPF | 0    |
++----------+------------+-------+-------+-----------+------------+------------+-----------+------+
+| Bootcamp | 172.16.0.2 | 16000 | 23999 |      8000 |          1 |        128 |       SPF | 0    |
++----------+------------+-------+-------+-----------+------------+------------+-----------+------+
+</code></pre>
+
+
+</details>
+
+<!-- retry: 120s -->
+<p>On <strong>PE_1</strong>, run:</p>
+<pre><code class="language-saos">show isis segment-routing mapping-table status active
+</code></pre>
+<p>Pass: Output contains <code>172.16.0.1/32</code> and <code>172.16.0.2/32</code></p>
+<details><summary>Example output</summary>
+
+
+<pre><code>+---------- ISIS SEGMENT-ROUTING MAPPING TABLE ACTIVE -----------+
+| ISIS Instance |  Entry Prefix | SID Index | Range | Preference |
++---------------+---------------+-----------+-------+------------+
+|    Bootcamp   | 172.16.0.1/32 |         1 |     1 |        192 |
+|    Bootcamp   | 172.16.0.2/32 |         2 |     1 |        192 |
++---------------+---------------+-----------+-------+------------+
+</code></pre>
+
+
+</details>
+
+<!-- retry: 120s -->
+<p>On <strong>PE_2</strong>, run:</p>
+<pre><code class="language-saos">show isis segment-routing mapping-table status active
+</code></pre>
+<p>Pass: Output contains <code>172.16.0.1/32</code> and <code>172.16.0.2/32</code></p>
+<details><summary>Example output</summary>
+
+
+<pre><code>+---------- ISIS SEGMENT-ROUTING MAPPING TABLE ACTIVE -----------+
+| ISIS Instance |  Entry Prefix | SID Index | Range | Preference |
++---------------+---------------+-----------+-------+------------+
+|    Bootcamp   | 172.16.0.1/32 |         1 |     1 |        192 |
+|    Bootcamp   | 172.16.0.2/32 |         2 |     1 |        192 |
++---------------+---------------+-----------+-------+------------+
+</code></pre>
+
+
+</details>
+
+<!-- retry: 120s -->
+<p>On <strong>PE_1</strong>, run:</p>
+<pre><code class="language-saos">show mpls forwarding-table
+</code></pre>
+<p>Pass: Output contains <code>172.16.0.2/32</code> and <code>i &gt;</code></p>
+<details><summary>Example output</summary>
+
+
+<pre><code>+--------------------------------------------------------------------------------------------------------------------+
+| Codes: &gt; - installed FTN, * - selected FTN, p - stale FTN, b - backup route                                        |
+|        B - BGP FTN, K - CLI FTN, t - tunnel                                                                        |
+|        L - LDP FTN, R - RSVP-TE FTN, S - SNMP FTN, I - IGP-Shortcut,                                               |
+|        U - unknown FTN, O - SR-OSPF FTN, i - SR-ISIS FTN, k - SR-CLI FTN,                                          |
+|        s - SR-TE FTN,  ip - IP-ISIS FTN, io - IP-OSPF FTN, ib - IP-BGP FTN,                                        |
+|        M - MPLS-TP FTN, ias - IAS FTN, v - VPN FTN,                                                                |
+|        m - PW-MPLS FTN, e - EVPN FTN                                                                               |
+|        C - Color, Tn - Tunnel Name, f - Fallback, ML - Multicast LDP, IR - Ingress-Replication, F - Flex-Algorithm |
++--------------------------------------------------------------------------------------------------------------------+
++-------------------------------------- MPLS FORWARDING TABLE --------------------------------------+
+|      |                    | Opaque |          Label          |                  |                 |
+| Code |        FEC         |  ID    |     In     |    Out     |     Out Intf     |     Next Hop    |
++------+--------------------+--------+------------+------------+------------------+-----------------+
+| i &gt;  | 172.16.0.2/32      | 7      | -          | 3          | PE_1-PE_2-if     | 172.16.1.2      |
++------+--------------------+--------+------------+------------+------------------+-----------------+
+</code></pre>
+
+
+</details>
+
+<!-- retry: 120s -->
+<p>On <strong>PE_2</strong>, run:</p>
+<pre><code class="language-saos">show mpls forwarding-table
+</code></pre>
+<p>Pass: Output contains <code>172.16.0.1/32</code> and <code>i &gt;</code></p>
+<details><summary>Example output</summary>
+
+
+<pre><code>+--------------------------------------------------------------------------------------------------------------------+
+| Codes: &gt; - installed FTN, * - selected FTN, p - stale FTN, b - backup route                                        |
+|        B - BGP FTN, K - CLI FTN, t - tunnel                                                                        |
+|        L - LDP FTN, R - RSVP-TE FTN, S - SNMP FTN, I - IGP-Shortcut,                                               |
+|        U - unknown FTN, O - SR-OSPF FTN, i - SR-ISIS FTN, k - SR-CLI FTN,                                          |
+|        s - SR-TE FTN,  ip - IP-ISIS FTN, io - IP-OSPF FTN, ib - IP-BGP FTN,                                        |
+|        M - MPLS-TP FTN, ias - IAS FTN, v - VPN FTN,                                                                |
+|        m - PW-MPLS FTN, e - EVPN FTN                                                                               |
+|        C - Color, Tn - Tunnel Name, f - Fallback, ML - Multicast LDP, IR - Ingress-Replication, F - Flex-Algorithm |
++--------------------------------------------------------------------------------------------------------------------+
++-------------------------------------- MPLS FORWARDING TABLE --------------------------------------+
+|      |                    | Opaque |          Label          |                  |                 |
+| Code |        FEC         |  ID    |     In     |    Out     |     Out Intf     |     Next Hop    |
++------+--------------------+--------+------------+------------+------------------+-----------------+
+| i &gt;  | 172.16.0.1/32      | 8      | -          | 3          | PE_1-PE_2-if     | 172.16.1.1      |
++------+--------------------+--------+------------+------------+------------------+-----------------+
+</code></pre>
+
+
+</details>
+
+<!-- retry: 120s -->
+<p>On <strong>PE_1</strong>, run:</p>
+<pre><code class="language-saos">ping ip destination 172.16.0.2 source 172.16.0.1 repeat-count 5
+</code></pre>
+<p>Pass: Output contains <code>100.00 percent</code></p>
+<details><summary>Example output</summary>
+
+
+<pre><code>Sending 5 ICMP Echos to 172.16.0.2, timeout is 1 second
+
+Codes: 
+'!' - Success, 'Q' - Request not sent, '.' - Timeout 
+
+ Type 'Ctrl+C' to abort
+
+! seq_num = 1  RTT = 2.84 ms  TTL = 255
+! seq_num = 2  RTT = 3.69 ms  TTL = 255
+! seq_num = 3  RTT = 3.03 ms  TTL = 255
+! seq_num = 4  RTT = 3.16 ms  TTL = 255
+! seq_num = 5  RTT = 3.61 ms  TTL = 255
+Success Rate is 100.00 percent (5/5)
+Round-trip min/avg/max = 2.84/3.27/3.69
+</code></pre>
+
+
+</details>
+
+<!-- retry: 120s -->
+<p>On <strong>PE_2</strong>, run:</p>
+<pre><code class="language-saos">ping ip destination 172.16.0.1 source 172.16.0.2 repeat-count 5
+</code></pre>
+<p>Pass: Output contains <code>100.00 percent</code></p>
+<details><summary>Example output</summary>
+
+
+<pre><code>Sending 5 ICMP Echos to 172.16.0.1, timeout is 1 second
+
+Codes: 
+'!' - Success, 'Q' - Request not sent, '.' - Timeout 
+
+ Type 'Ctrl+C' to abort
+
+! seq_num = 1  RTT = 2.96 ms  TTL = 255
+! seq_num = 2  RTT = 2.94 ms  TTL = 255
+! seq_num = 3  RTT = 2.79 ms  TTL = 255
+! seq_num = 4  RTT = 3.10 ms  TTL = 255
+! seq_num = 5  RTT = 3.57 ms  TTL = 255
+Success Rate is 100.00 percent (5/5)
+Round-trip min/avg/max = 2.79/3.07/3.57
+</code></pre>
+
+
+</details>
+
+<h2 id="solutions">Solutions</h2>
+<p>Use the preloaded baseline for context, then apply the learner solution blocks in task order.</p>
+<h3 id="preloaded-baseline">Preloaded baseline</h3>
+<h4 id="pe_1">PE_1</h4>
+<pre><code class="language-saos"># Preloaded start
+system config hostname PE_1
+fds fd PE_1-PE_2-FD mode vpls
+oc-if:interfaces interface lb1 config name lb1 type loopback
+oc-if:interfaces interface lb1 ipv4 addresses address 172.16.0.1 config ip 172.16.0.1 prefix-length 32
+oc-if:interfaces interface lb1 ipv6 addresses address FC00::1 config ip FC00::1 prefix-length 128
+oc-if:interfaces interface PE_1-PE_2-if config mtu 1500 name PE_1-PE_2-if type ip
+oc-if:interfaces interface PE_1-PE_2-if config underlay-binding config fd PE_1-PE_2-FD
+oc-if:interfaces interface PE_1-PE_2-if ipv4 addresses address 172.16.1.1 config ip 172.16.1.1 prefix-length 30
+oc-if:interfaces interface PE_1-PE_2-if ipv6 addresses address FC00::600 config ip FC00::600 prefix-length 127
+classifiers classifier CLASSIFIER-UNTAGGED filter-entry vtag-stack untagged-exclude-priority-tagged false
+fps fp PE_1-PE_2-FP classifier-list-precedence 7 fd-name PE_1-PE_2-FD logical-port 1 mtu-size 2000 stats-collection on classifier-list CLASSIFIER-UNTAGGED
+classifiers classifier CLASSIFIER-UNTAGGED filter-entry vtag-stack untagged-exclude-priority-tagged false
+fps fp PE_1-PE_2-FP classifier-list-precedence 7 fd-name PE_1-PE_2-FD logical-port 1 mtu-size 2000 stats-collection on classifier-list CLASSIFIER-UNTAGGED
+isis instance Bootcamp level-type level-1 net 49.0001.0172.0016.0001.00
+isis instance Bootcamp interfaces interface lb1 interface-type point-to-point
+isis instance Bootcamp interfaces interface lb1 address-families address-family ipv6 unicast
+isis instance Bootcamp interfaces interface PE_1-PE_2-if interface-type point-to-point level-type level-1
+isis instance Bootcamp interfaces interface PE_1-PE_2-if address-families address-family ipv6 unicast
+isis instance Bootcamp interfaces interface PE_1-PE_2-if level-1 password ciena123
+# Preloaded end
+</code></pre>
+<h4 id="pe_2">PE_2</h4>
+<pre><code class="language-saos"># Preloaded start
+system config hostname PE_2
+fds fd PE_1-PE_2-FD mode vpls
+oc-if:interfaces interface lb1 config name lb1 type loopback
+oc-if:interfaces interface lb1 ipv4 addresses address 172.16.0.2 config ip 172.16.0.2 prefix-length 32
+oc-if:interfaces interface lb1 ipv6 addresses address FC00::2 config ip FC00::2 prefix-length 128
+oc-if:interfaces interface PE_1-PE_2-if config mtu 1500 name PE_1-PE_2-if type ip
+oc-if:interfaces interface PE_1-PE_2-if config underlay-binding config fd PE_1-PE_2-FD
+oc-if:interfaces interface PE_1-PE_2-if ipv4 addresses address 172.16.1.2 config ip 172.16.1.2 prefix-length 30
+oc-if:interfaces interface PE_1-PE_2-if ipv6 addresses address FC00::601 config ip FC00::601 prefix-length 127
+classifiers classifier CLASSIFIER-UNTAGGED filter-entry vtag-stack untagged-exclude-priority-tagged false
+fps fp PE_1-PE_2-FP classifier-list-precedence 7 fd-name PE_1-PE_2-FD logical-port 1 mtu-size 2000 stats-collection on classifier-list CLASSIFIER-UNTAGGED
+classifiers classifier CLASSIFIER-UNTAGGED filter-entry vtag-stack untagged-exclude-priority-tagged false
+fps fp PE_1-PE_2-FP classifier-list-precedence 7 fd-name PE_1-PE_2-FD logical-port 1 mtu-size 2000 stats-collection on classifier-list CLASSIFIER-UNTAGGED
+isis instance Bootcamp level-type level-1 net 49.0001.0172.0016.0002.00
+isis instance Bootcamp interfaces interface lb1 interface-type point-to-point
+isis instance Bootcamp interfaces interface lb1 address-families address-family ipv6 unicast
+isis instance Bootcamp interfaces interface PE_1-PE_2-if interface-type point-to-point level-type level-1
+isis instance Bootcamp interfaces interface PE_1-PE_2-if address-families address-family ipv6 unicast
+isis instance Bootcamp interfaces interface PE_1-PE_2-if level-1 password ciena123
+# Preloaded end
+</code></pre>
+<h4 id="pe_3">PE_3</h4>
+<pre><code class="language-saos"># Preloaded start
+system config hostname PE_3
+# Preloaded end
+</code></pre>
+<h4 id="ce1">CE1</h4>
+<pre><code class="language-saos"># Preloaded start
+system config hostname CE1
+# Preloaded end
+</code></pre>
+<h4 id="ce2">CE2</h4>
+<pre><code class="language-saos"># Preloaded start
+system config hostname CE2
+# Preloaded end
+</code></pre>
+<h3 id="solution-for-task-1">Solution for Task 1</h3>
+<p>No configuration commands; this is a verification-only task.</p>
+<h3 id="solution-for-task-2">Solution for Task 2</h3>
+<h4 id="pe_4">PE_1</h4>
+<pre><code class="language-saos"># Task 2 start
+mpls interfaces interface PE_1-PE_2-if label-switching true
+mpls interfaces interface lb1 label-switching true
+segment-routing connected-prefix-sid-map 172.16.0.1/32 interface lb1 start-sid 1 value-type index
+isis instance Bootcamp cspf-flag true
+isis instance Bootcamp mpls-te level-type level-1 router-id 172.16.0.1
+isis instance Bootcamp segment-routing enabled true srgb 16000 23999
+isis instance Bootcamp segment-routing bindings advertise true receive true
+# Task 2 end
+</code></pre>
+<h3 id="solution-for-task-3">Solution for Task 3</h3>
+<h4 id="pe_5">PE_2</h4>
+<pre><code class="language-saos"># Task 3 start
+mpls interfaces interface PE_1-PE_2-if label-switching true
+mpls interfaces interface lb1 label-switching true
+segment-routing connected-prefix-sid-map 172.16.0.2/32 interface lb1 start-sid 2 value-type index
+isis instance Bootcamp cspf-flag true
+isis instance Bootcamp mpls-te level-type level-1 router-id 172.16.0.2
+isis instance Bootcamp segment-routing enabled true srgb 16000 23999
+isis instance Bootcamp segment-routing bindings advertise true receive true
+# Task 3 end
+</code></pre>
+<h3 id="solution-for-task-4">Solution for Task 4</h3>
+<p>No configuration commands; this is a verification-only task.</p>
+              
+            </div>
+          </div><footer>
+    <div class="rst-footer-buttons" role="navigation" aria-label="Footer Navigation">
+        <a href="../F2-IS-IS-Routing/" class="btn btn-neutral float-left" title="F2 IS-IS Routing"><span class="icon icon-circle-arrow-left"></span> Previous</a>
+    </div>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <!-- Copyright etc -->
+  </div>
+
+  Built with <a href="https://www.mkdocs.org/">MkDocs</a> using a <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a> provided by <a href="https://readthedocs.org">Read the Docs</a>.
+</footer>
+          
+        </div>
+      </div>
+
+    </section>
+
+  </div>
+
+  <div class="rst-versions" role="note" aria-label="Versions">
+  <span class="rst-current-version" data-toggle="rst-current-version">
+    
+        <span>
+          <a href="https://github.com/ciena/saos-labs" class="fa fa-github" style="color: #fcfcfc"> GitHub</a>
+        </span>
+    
+    
+      <span><a href="../F2-IS-IS-Routing/" style="color: #fcfcfc">&laquo; Previous</a></span>
+    
+    
+  </span>
+</div>
+    <script src="../js/jquery-3.6.0.min.js"></script>
+    <script>var base_url = "..";</script>
+    <script src="../js/theme_extra.js"></script>
+    <script src="../js/theme.js"></script>
+      <script src="../assets/js/lightbox.js"></script>
+      <script src="../search/main.js"></script>
+    <script>
+        jQuery(function () {
+            SphinxRtdTheme.Navigation.enable(true);
+        });
+    </script>
+
+</body>
+</html>
