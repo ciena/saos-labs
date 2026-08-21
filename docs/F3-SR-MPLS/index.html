@@ -132,6 +132,8 @@
     </li>
     </ul>
                   </li>
+                  <li class="toctree-l1"><a class="reference internal" href="../F4-BGP/">F4 BGP</a>
+                  </li>
               </ul>
       </div>
     </div>
@@ -1089,8 +1091,6 @@ oc-if:interfaces interface PE_1-PE_2-if ipv4 addresses address 172.16.1.1 config
 oc-if:interfaces interface PE_1-PE_2-if ipv6 addresses address FC00::600 config ip FC00::600 prefix-length 127
 classifiers classifier CLASSIFIER-UNTAGGED filter-entry vtag-stack untagged-exclude-priority-tagged false
 fps fp PE_1-PE_2-FP classifier-list-precedence 7 fd-name PE_1-PE_2-FD logical-port 1 mtu-size 2000 stats-collection on classifier-list CLASSIFIER-UNTAGGED
-classifiers classifier CLASSIFIER-UNTAGGED filter-entry vtag-stack untagged-exclude-priority-tagged false
-fps fp PE_1-PE_2-FP classifier-list-precedence 7 fd-name PE_1-PE_2-FD logical-port 1 mtu-size 2000 stats-collection on classifier-list CLASSIFIER-UNTAGGED
 isis instance Bootcamp level-type level-1 net 49.0001.0172.0016.0001.00
 isis instance Bootcamp interfaces interface lb1 interface-type point-to-point
 isis instance Bootcamp interfaces interface lb1 address-families address-family ipv6 unicast
@@ -1110,8 +1110,6 @@ oc-if:interfaces interface PE_1-PE_2-if config mtu 1500 name PE_1-PE_2-if type i
 oc-if:interfaces interface PE_1-PE_2-if config underlay-binding config fd PE_1-PE_2-FD
 oc-if:interfaces interface PE_1-PE_2-if ipv4 addresses address 172.16.1.2 config ip 172.16.1.2 prefix-length 30
 oc-if:interfaces interface PE_1-PE_2-if ipv6 addresses address FC00::601 config ip FC00::601 prefix-length 127
-classifiers classifier CLASSIFIER-UNTAGGED filter-entry vtag-stack untagged-exclude-priority-tagged false
-fps fp PE_1-PE_2-FP classifier-list-precedence 7 fd-name PE_1-PE_2-FD logical-port 1 mtu-size 2000 stats-collection on classifier-list CLASSIFIER-UNTAGGED
 classifiers classifier CLASSIFIER-UNTAGGED filter-entry vtag-stack untagged-exclude-priority-tagged false
 fps fp PE_1-PE_2-FP classifier-list-precedence 7 fd-name PE_1-PE_2-FD logical-port 1 mtu-size 2000 stats-collection on classifier-list CLASSIFIER-UNTAGGED
 isis instance Bootcamp level-type level-1 net 49.0001.0172.0016.0002.00
@@ -1170,6 +1168,7 @@ isis instance Bootcamp segment-routing bindings advertise true receive true
           </div><footer>
     <div class="rst-footer-buttons" role="navigation" aria-label="Footer Navigation">
         <a href="../F2-IS-IS-Routing/" class="btn btn-neutral float-left" title="F2 IS-IS Routing"><span class="icon icon-circle-arrow-left"></span> Previous</a>
+        <a href="../F4-BGP/" class="btn btn-neutral float-right" title="F4 BGP">Next <span class="icon icon-circle-arrow-right"></span></a>
     </div>
 
   <hr/>
@@ -1198,6 +1197,8 @@ isis instance Bootcamp segment-routing bindings advertise true receive true
     
       <span><a href="../F2-IS-IS-Routing/" style="color: #fcfcfc">&laquo; Previous</a></span>
     
+    
+      <span><a href="../F4-BGP/" style="color: #fcfcfc">Next &raquo;</a></span>
     
   </span>
 </div>

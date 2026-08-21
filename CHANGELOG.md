@@ -6,6 +6,33 @@ upstream authoring history.
 
 The format is based on [Keep a Changelog](https://keepachangelog.com/).
 
+## 2026-08-21
+
+### Added
+- **F4 — Border Gateway Protocol (BGP)** hands-on lab: bring up a
+  loopback-sourced iBGP session between the two provider-edge nodes with MD5
+  authentication, riding the F3 SR-MPLS transport; enable the IPv4, VPNv4,
+  EVPN, and labeled-unicast address families on that one session; redistribute
+  a loopback under a policy that sets a community; then verify the session,
+  the advertised routes, the applied policy, and BGP forwarding over SR-MPLS.
+  Published with its rendered lab pages, topology diagrams, and startup and
+  solution configs, and added to the site nav and search.
+  F0 → F1 → F2 → F3 → F4 is now the recommended path.
+
+### Fixed
+- **F3 and F4 no longer configure the same flow point twice.** Both labs'
+  startup configs and solutions declared the `CLASSIFIER-UNTAGGED` classifier
+  and the `PE_1-PE_2-FP` flow point a second time, so the published configs
+  showed a two-line block repeated back to back and the nodes were sent those
+  commands twice at boot. The repeat was inert — re-applying an identical
+  command changes nothing on the device — but it was confusing to read and to
+  copy by hand. Each block now appears once.
+
+### Changed
+- A `config-lint` check now runs on every push and pull request to this
+  repository, rejecting any lab config that declares the same command twice.
+  It is what keeps the fix above from regressing.
+
 ## 2026-08-19
 
 ### Added

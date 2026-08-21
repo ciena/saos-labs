@@ -1,0 +1,30 @@
+name: Config Lint
+
+# The mirror's slice of the private repo's validation CI. The full
+# lab-validation.yml is internal (it depends on scripts/ that never ship), but
+# this one gate is worth running here: it lints the lab configs the mirror
+# itself hosts, so a duplicated command cannot reach the published site even if
+# it is introduced by a direct edit in this repo rather than by a publish.
+#
+# Deliberately NOT path-filtered, for the same reason as changelog.yml: a
+# filtered workflow that never runs leaves a PR stuck on "Expected — waiting for
+# status to be reported".
+on:
+  push:
+  pull_request:
+
+permissions:
+  contents: read
+
+jobs:
+  config-lint:
+    name: config-lint
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.11"
+      # The gate is stdlib-only, so there is nothing to install.
+      - name: Forbid duplicated config lines
+        run: python scripts/validate_no_duplicate_config.py
