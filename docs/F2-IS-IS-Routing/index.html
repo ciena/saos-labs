@@ -114,9 +114,9 @@
     </li>
     <li class="toctree-l4"><a class="reference internal" href="#pe_3">PE_3</a>
     </li>
-    <li class="toctree-l4"><a class="reference internal" href="#ce1">CE1</a>
+    <li class="toctree-l4"><a class="reference internal" href="#ce_1">CE_1</a>
     </li>
-    <li class="toctree-l4"><a class="reference internal" href="#ce2">CE2</a>
+    <li class="toctree-l4"><a class="reference internal" href="#ce_2">CE_2</a>
     </li>
         </ul>
     </li>
@@ -203,12 +203,12 @@
 <h2 id="topology">Topology</h2>
 <p><img alt="topology" src="topo.clab.svg" /></p>
 <p><img alt="topology detail" src="topo.detail.svg" /></p>
-<p>The physical topology already matches S2. CE1, CE2, PE_3, and their future
+<p>The physical topology already matches S2. CE_1, CE_2, PE_3, and their future
 links are intentionally unused in F2, so the diagrams show them in gray. All
 tasks and checks remain scoped to PE_1 and PE_2.</p>
 <blockquote>
 <p><strong>Resource note:</strong> If you do not plan to continue into the Services track
-and your host is resource constrained, you may comment out CE1, CE2, PE_3,
+and your host is resource constrained, you may comment out CE_1, CE_2, PE_3,
 and every link except <code>[ "PE_1:1", "PE_2:1" ]</code> in your local
 <code>topo.clab.yml</code>.</p>
 </blockquote>
@@ -302,8 +302,8 @@ and every link except <code>[ "PE_1:1", "PE_2:1" ]</code> in your local
 <li><a href="configs/PE_1.cfg.partial">PE_1.cfg.partial</a></li>
 <li><a href="configs/PE_2.cfg.partial">PE_2.cfg.partial</a></li>
 <li><a href="configs/PE_3.cfg.partial">PE_3.cfg.partial</a></li>
-<li><a href="configs/CE1.cfg.partial">CE1.cfg.partial</a></li>
-<li><a href="configs/CE2.cfg.partial">CE2.cfg.partial</a></li>
+<li><a href="configs/CE_1.cfg.partial">CE_1.cfg.partial</a></li>
+<li><a href="configs/CE_2.cfg.partial">CE_2.cfg.partial</a></li>
 </ul>
 <h2 id="deploy">Deploy</h2>
 <h3 id="start-from-checkpoint">Start from checkpoint</h3>
@@ -334,23 +334,23 @@ topology:
       labels:
         lab-state: unused
       startup-config: configs/PE_3.cfg.partial
-    CE1:
+    CE_1:
       type: '3984'
       labels:
         lab-state: unused
-      startup-config: configs/CE1.cfg.partial
-    CE2:
+      startup-config: configs/CE_1.cfg.partial
+    CE_2:
       type: '3984'
       labels:
         lab-state: unused
-      startup-config: configs/CE2.cfg.partial
+      startup-config: configs/CE_2.cfg.partial
   links:
   - endpoints: [ &quot;PE_1:1&quot;, &quot;PE_2:1&quot; ]
-  - endpoints: [ &quot;PE_1:2&quot;, &quot;CE1:1&quot; ]
-  - endpoints: [ &quot;PE_2:2&quot;, &quot;CE2:1&quot; ]
+  - endpoints: [ &quot;PE_1:2&quot;, &quot;CE_1:1&quot; ]
+  - endpoints: [ &quot;PE_2:2&quot;, &quot;CE_2:1&quot; ]
   - endpoints: [ &quot;PE_2:4&quot;, &quot;PE_3:1&quot; ]
   - endpoints: [ &quot;PE_1:4&quot;, &quot;PE_3:3&quot; ]
-  - endpoints: [ &quot;CE2:2&quot;, &quot;PE_3:2&quot; ]
+  - endpoints: [ &quot;CE_2:2&quot;, &quot;PE_3:2&quot; ]
 </code></pre>
 <p>Wait for all five nodes to reach healthy state, then complete the F2 tasks on
 PE_1 and PE_2:</p>
@@ -2202,14 +2202,14 @@ fps fp PE_1-PE_2-FP classifier-list-precedence 7 fd-name PE_1-PE_2-FD logical-po
 system config hostname PE_3
 # Preloaded end
 </code></pre>
-<h4 id="ce1">CE1</h4>
+<h4 id="ce_1">CE_1</h4>
 <pre><code class="language-saos"># Preloaded start
-system config hostname CE1
+system config hostname CE_1
 # Preloaded end
 </code></pre>
-<h4 id="ce2">CE2</h4>
+<h4 id="ce_2">CE_2</h4>
 <pre><code class="language-saos"># Preloaded start
-system config hostname CE2
+system config hostname CE_2
 # Preloaded end
 </code></pre>
 <h3 id="solution-for-task-1">Solution for Task 1</h3>

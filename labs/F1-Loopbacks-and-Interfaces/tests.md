@@ -48,7 +48,7 @@ Pass: Output contains `system-name` and `PE_2`
 | system-capability-supported | bridge         |
 | system-capability-enabled   | bridge         |
 | system-description          | 3984           |
-| system-name                 | CE1            |
+| system-name                 | CE_1            |
 | auto-neg-supported          | True           |
 | auto-neg-enabled            | False          |
 | oper-mau-type               | 33             |
@@ -135,7 +135,7 @@ Pass: Output contains `system-name` and `PE_1`
 | system-capability-supported | bridge         |
 | system-capability-enabled   | bridge         |
 | system-description          | 3984           |
-| system-name                 | CE2            |
+| system-name                 | CE_2            |
 | auto-neg-supported          | True           |
 | auto-neg-enabled            | False          |
 | oper-mau-type               | 33             |

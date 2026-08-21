@@ -16,11 +16,11 @@ Build a lab network to learn the commands needed to add IP interfaces to SAOS 10
 ![topology detail](./topo.detail.svg)
 
 The physical topology already matches S2. PE_1 and PE_2 use the active
-foundation link; CE1, CE2, PE_3, and the future service/underlay links are
+foundation link; CE_1, CE_2, PE_3, and the future service/underlay links are
 shown in gray because F1 does not configure or test them.
 
 > **Resource note:** If you do not plan to continue into the Services track
-> and your host is resource constrained, you may comment out CE1, CE2, PE_3,
+> and your host is resource constrained, you may comment out CE_1, CE_2, PE_3,
 > and every link except `[ "PE_1:1", "PE_2:1" ]` in your local
 > `topo.clab.yml`.
 
@@ -65,8 +65,8 @@ The checkpoint baseline each node boots from. If you are assembling the lab by h
 - [PE_1.cfg.partial](./configs/PE_1.cfg.partial)
 - [PE_2.cfg.partial](./configs/PE_2.cfg.partial)
 - [PE_3.cfg.partial](./configs/PE_3.cfg.partial)
-- [CE1.cfg.partial](./configs/CE1.cfg.partial)
-- [CE2.cfg.partial](./configs/CE2.cfg.partial)
+- [CE_1.cfg.partial](./configs/CE_1.cfg.partial)
+- [CE_2.cfg.partial](./configs/CE_2.cfg.partial)
 
 ## Deploy
 
@@ -106,23 +106,23 @@ topology:
       labels:
         lab-state: unused
       startup-config: configs/PE_3.cfg.partial
-    CE1:
+    CE_1:
       type: '3984'
       labels:
         lab-state: unused
-      startup-config: configs/CE1.cfg.partial
-    CE2:
+      startup-config: configs/CE_1.cfg.partial
+    CE_2:
       type: '3984'
       labels:
         lab-state: unused
-      startup-config: configs/CE2.cfg.partial
+      startup-config: configs/CE_2.cfg.partial
   links:
   - endpoints: [ "PE_1:1", "PE_2:1" ]
-  - endpoints: [ "PE_1:2", "CE1:1" ]
-  - endpoints: [ "PE_2:2", "CE2:1" ]
+  - endpoints: [ "PE_1:2", "CE_1:1" ]
+  - endpoints: [ "PE_2:2", "CE_2:1" ]
   - endpoints: [ "PE_2:4", "PE_3:1" ]
   - endpoints: [ "PE_1:4", "PE_3:3" ]
-  - endpoints: [ "CE2:2", "PE_3:2" ]
+  - endpoints: [ "CE_2:2", "PE_3:2" ]
 ```
 
 Once all five nodes reach healthy state, complete the F1 tasks on PE_1 and
@@ -214,7 +214,7 @@ Pass: Output contains `system-name` and `PE_2`
 | system-capability-supported | bridge         |
 | system-capability-enabled   | bridge         |
 | system-description          | 3984           |
-| system-name                 | CE1            |
+| system-name                 | CE_1            |
 | auto-neg-supported          | True           |
 | auto-neg-enabled            | False          |
 | oper-mau-type               | 33             |
@@ -301,7 +301,7 @@ Pass: Output contains `system-name` and `PE_1`
 | system-capability-supported | bridge         |
 | system-capability-enabled   | bridge         |
 | system-description          | 3984           |
-| system-name                 | CE2            |
+| system-name                 | CE_2            |
 | auto-neg-supported          | True           |
 | auto-neg-enabled            | False          |
 | oper-mau-type               | 33             |
@@ -3033,7 +3033,7 @@ Pass: Output contains `system-name` and `PE_2`
 | system-capability-supported | bridge         |
 | system-capability-enabled   | bridge         |
 | system-description          | 3984           |
-| system-name                 | CE1            |
+| system-name                 | CE_1            |
 | auto-neg-supported          | True           |
 | auto-neg-enabled            | False          |
 | oper-mau-type               | 33             |
@@ -3120,7 +3120,7 @@ Pass: Output contains `system-name` and `PE_1`
 | system-capability-supported | bridge         |
 | system-capability-enabled   | bridge         |
 | system-description          | 3984           |
-| system-name                 | CE2            |
+| system-name                 | CE_2            |
 | auto-neg-supported          | True           |
 | auto-neg-enabled            | False          |
 | oper-mau-type               | 33             |
@@ -5641,19 +5641,19 @@ system config hostname PE_3
 # Preloaded end
 ```
 
-#### CE1
+#### CE_1
 
 ```saos
 # Preloaded start
-system config hostname CE1
+system config hostname CE_1
 # Preloaded end
 ```
 
-#### CE2
+#### CE_2
 
 ```saos
 # Preloaded start
-system config hostname CE2
+system config hostname CE_2
 # Preloaded end
 ```
 

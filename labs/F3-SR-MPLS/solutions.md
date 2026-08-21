@@ -60,19 +60,19 @@ system config hostname PE_3
 # Preloaded end
 ```
 
-### CE1
+### CE_1
 
 ```saos
 # Preloaded start
-system config hostname CE1
+system config hostname CE_1
 # Preloaded end
 ```
 
-### CE2
+### CE_2
 
 ```saos
 # Preloaded start
-system config hostname CE2
+system config hostname CE_2
 # Preloaded end
 ```
 
