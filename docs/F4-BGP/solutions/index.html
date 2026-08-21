@@ -14,7 +14,7 @@
       <script>
         // Current page data
         var mkdocs_page_name = "Solutions";
-        var mkdocs_page_input_path = "F3-SR-MPLS/solutions.md";
+        var mkdocs_page_input_path = "F4-BGP/solutions.md";
         var mkdocs_page_url = null;
       </script>
     
@@ -52,9 +52,9 @@
                   </li>
                   <li class="toctree-l1"><a class="reference internal" href="../../F2-IS-IS-Routing/">F2 IS-IS Routing</a>
                   </li>
-                  <li class="toctree-l1"><a class="reference internal" href="../">F3 SR-MPLS</a>
+                  <li class="toctree-l1"><a class="reference internal" href="../../F3-SR-MPLS/">F3 SR-MPLS</a>
                   </li>
-                  <li class="toctree-l1"><a class="reference internal" href="../../F4-BGP/">F4 BGP</a>
+                  <li class="toctree-l1"><a class="reference internal" href="../">F4 BGP</a>
                   </li>
               </ul>
       </div>
@@ -73,7 +73,7 @@
     <li><a href="../.." class="icon icon-home" aria-label="Docs"></a></li>
       <li class="breadcrumb-item active">Solutions</li>
     <li class="wy-breadcrumbs-aside">
-          <a href="https://github.com/ciena/saos-labs/edit/main/labs/F3-SR-MPLS/solutions.md" class="icon icon-github"> Edit on GitHub</a>
+          <a href="https://github.com/ciena/saos-labs/edit/main/labs/F4-BGP/solutions.md" class="icon icon-github"> Edit on GitHub</a>
     </li>
   </ul>
   <hr/>
@@ -105,6 +105,13 @@ isis instance Bootcamp interfaces interface lb1 address-families address-family 
 isis instance Bootcamp interfaces interface PE_1-PE_2-if interface-type point-to-point level-type level-1
 isis instance Bootcamp interfaces interface PE_1-PE_2-if address-families address-family ipv6 unicast
 isis instance Bootcamp interfaces interface PE_1-PE_2-if level-1 password ciena123
+mpls interfaces interface PE_1-PE_2-if label-switching true
+mpls interfaces interface lb1 label-switching true
+segment-routing connected-prefix-sid-map 172.16.0.1/32 interface lb1 start-sid 1 value-type index
+isis instance Bootcamp cspf-flag true
+isis instance Bootcamp mpls-te level-type level-1 router-id 172.16.0.1
+isis instance Bootcamp segment-routing enabled true srgb 16000 23999
+isis instance Bootcamp segment-routing bindings advertise true receive true
 # Preloaded end
 </code></pre>
 <h3 id="pe_2">PE_2</h3>
@@ -128,6 +135,13 @@ isis instance Bootcamp interfaces interface lb1 address-families address-family 
 isis instance Bootcamp interfaces interface PE_1-PE_2-if interface-type point-to-point level-type level-1
 isis instance Bootcamp interfaces interface PE_1-PE_2-if address-families address-family ipv6 unicast
 isis instance Bootcamp interfaces interface PE_1-PE_2-if level-1 password ciena123
+mpls interfaces interface PE_1-PE_2-if label-switching true
+mpls interfaces interface lb1 label-switching true
+segment-routing connected-prefix-sid-map 172.16.0.2/32 interface lb1 start-sid 2 value-type index
+isis instance Bootcamp cspf-flag true
+isis instance Bootcamp mpls-te level-type level-1 router-id 172.16.0.2
+isis instance Bootcamp segment-routing enabled true srgb 16000 23999
+isis instance Bootcamp segment-routing bindings advertise true receive true
 # Preloaded end
 </code></pre>
 <h3 id="pe_3">PE_3</h3>
@@ -146,32 +160,106 @@ system config hostname CE2
 # Preloaded end
 </code></pre>
 <h2 id="solution-for-task-1">Solution for Task 1</h2>
-<p>No configuration commands; this is a verification-only task.</p>
-<h2 id="solution-for-task-2">Solution for Task 2</h2>
 <h3 id="pe_4">PE_1</h3>
+<pre><code class="language-saos"># Task 1 start
+bgp instance 65032 router-id 172.16.0.1
+# Task 1 end
+</code></pre>
+<h3 id="pe_5">PE_2</h3>
+<pre><code class="language-saos"># Task 1 start
+bgp instance 65032 router-id 172.16.0.2
+# Task 1 end
+</code></pre>
+<h2 id="solution-for-task-2">Solution for Task 2</h2>
+<h3 id="pe_6">PE_1</h3>
 <pre><code class="language-saos"># Task 2 start
-mpls interfaces interface PE_1-PE_2-if label-switching true
-mpls interfaces interface lb1 label-switching true
-segment-routing connected-prefix-sid-map 172.16.0.1/32 interface lb1 start-sid 1 value-type index
-isis instance Bootcamp cspf-flag true
-isis instance Bootcamp mpls-te level-type level-1 router-id 172.16.0.1
-isis instance Bootcamp segment-routing enabled true srgb 16000 23999
-isis instance Bootcamp segment-routing bindings advertise true receive true
+bgp instance 65032 address-family ipv4 unicast
+    exit
+  exit
+exit
+bgp instance 65032 peer 172.16.0.2 remote-as 65032
+bgp instance 65032 peer 172.16.0.2 address-family ipv4 unicast activate true soft-reconfiguration-inbound true
+bgp instance 65032 peer 172.16.0.2 update-source-interface lb1
+bgp instance 65032 peer 172.16.0.2 password ciena123
+# Task 2 end
+</code></pre>
+<h3 id="pe_7">PE_2</h3>
+<pre><code class="language-saos"># Task 2 start
+bgp instance 65032 address-family ipv4 unicast
+    exit
+  exit
+exit
+bgp instance 65032 peer 172.16.0.1 remote-as 65032
+bgp instance 65032 peer 172.16.0.1 address-family ipv4 unicast activate true soft-reconfiguration-inbound true
+bgp instance 65032 peer 172.16.0.1 update-source-interface lb1
+bgp instance 65032 peer 172.16.0.1 password ciena123
 # Task 2 end
 </code></pre>
 <h2 id="solution-for-task-3">Solution for Task 3</h2>
-<h3 id="pe_5">PE_2</h3>
+<h3 id="pe_8">PE_1</h3>
 <pre><code class="language-saos"># Task 3 start
-mpls interfaces interface PE_1-PE_2-if label-switching true
-mpls interfaces interface lb1 label-switching true
-segment-routing connected-prefix-sid-map 172.16.0.2/32 interface lb1 start-sid 2 value-type index
-isis instance Bootcamp cspf-flag true
-isis instance Bootcamp mpls-te level-type level-1 router-id 172.16.0.2
-isis instance Bootcamp segment-routing enabled true srgb 16000 23999
-isis instance Bootcamp segment-routing bindings advertise true receive true
+bgp instance 65032 address-family vpnv4 unicast
+    exit
+  exit
+exit
+bgp instance 65032 address-family l2vpn evpn
+    exit
+  exit
+exit
+bgp instance 65032 address-family ipv4 labeled-unicast
+    exit
+  exit
+exit
+bgp instance 65032 peer 172.16.0.2 address-family vpnv4 unicast activate true
+bgp instance 65032 peer 172.16.0.2 address-family l2vpn evpn activate true
+bgp instance 65032 peer 172.16.0.2 address-family ipv4 labeled-unicast activate true
+# Task 3 end
+</code></pre>
+<h3 id="pe_9">PE_2</h3>
+<pre><code class="language-saos"># Task 3 start
+bgp instance 65032 address-family vpnv4 unicast
+    exit
+  exit
+exit
+bgp instance 65032 address-family l2vpn evpn
+    exit
+  exit
+exit
+bgp instance 65032 address-family ipv4 labeled-unicast
+    exit
+  exit
+exit
+bgp instance 65032 peer 172.16.0.1 address-family vpnv4 unicast activate true
+bgp instance 65032 peer 172.16.0.1 address-family l2vpn evpn activate true
+bgp instance 65032 peer 172.16.0.1 address-family ipv4 labeled-unicast activate true
 # Task 3 end
 </code></pre>
 <h2 id="solution-for-task-4">Solution for Task 4</h2>
+<h3 id="pe_10">PE_1</h3>
+<pre><code class="language-saos"># Task 4 start
+oc-if:interfaces interface lb10 config name lb10 type loopback
+oc-if:interfaces interface lb10 ipv4 addresses address 10.65.0.32 config ip 10.65.0.32 prefix-length 32
+routing-policy prefix-lists prefix-list lb10 mode ipv4 sequence 1 action permit ip-prefix 10.65.0.32/32
+routing-policy policies policy lb10 statement 1 action permit
+routing-policy policies policy lb10 statement 1 match route-entry lb10
+routing-policy policies policy lb10 statement 1 set community append standard 65032:100
+routing-policy policies policy lb10 statement 2 action deny
+bgp instance 65032 address-family ipv4 unicast redistribute connected policy lb10
+# Task 4 end
+</code></pre>
+<h3 id="pe_11">PE_2</h3>
+<pre><code class="language-saos"># Task 4 start
+oc-if:interfaces interface lb10 config name lb10 type loopback
+oc-if:interfaces interface lb10 ipv4 addresses address 10.65.0.33 config ip 10.65.0.33 prefix-length 32
+routing-policy prefix-lists prefix-list lb10 mode ipv4 sequence 1 action permit ip-prefix 10.65.0.33/32
+routing-policy policies policy lb10 statement 1 action permit
+routing-policy policies policy lb10 statement 1 match route-entry lb10
+routing-policy policies policy lb10 statement 1 set community append standard 65032:100
+routing-policy policies policy lb10 statement 2 action deny
+bgp instance 65032 address-family ipv4 unicast redistribute connected policy lb10
+# Task 4 end
+</code></pre>
+<h2 id="solution-for-task-5">Solution for Task 5</h2>
 <p>No configuration commands; this is a verification-only task.</p>
               
             </div>
