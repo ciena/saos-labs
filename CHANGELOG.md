@@ -19,7 +19,29 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/).
   solution configs, and added to the site nav and search.
   F0 → F1 → F2 → F3 → F4 is now the recommended path.
 
+### Changed
+- **The customer-edge nodes are renamed `CE1`/`CE2` → `CE_1`/`CE_2`**, so every
+  node in every lab now reads the same way alongside `PE_1`/`PE_2`/`PE_3`. This
+  also renames their containers (`clab-<lab>-CE_1`), their startup and solution
+  config files, and the SAOS objects that carry a node name — `CE_1-PE_1-if`,
+  `CE_2-PE_2-FD`, and so on. If you have a lab already running, destroy and
+  redeploy it; any notes referring to `clab-<lab>-CE1` need updating.
+- **Topology diagrams now label a link with just its port number, placed beside
+  the node that owns it.** A drawn link already runs between two labelled
+  nodes, so repeating their names in the label added nothing; the port each end
+  uses is the part the picture could not show. The annotated diagrams put each
+  end's IP address alongside its port number, and keep the link-wide detail
+  (`untagged`, `vlan 105`) centred on the link.
+
 ### Fixed
+- **Diagram link labels disagreed with the configs — and with each other.** The
+  `PE_1` ↔ `PE_2` core link was labelled `1 - 1` in the physical topology while
+  the annotated view spelled it out in full, and two access links named their
+  ends in the opposite order from the interface you actually configure
+  (`CE_2-PE_2-if`). The annotated diagrams also called the loopback `lo`, which
+  is not a valid SAOS interface name — it is `lb1`. Labelling each end
+  separately removes this class of mismatch, and the site build now checks
+  every port number in every diagram against the lab topology.
 - **F3 no longer configures the same flow point twice.** The lab's startup
   configs and solutions declared the `CLASSIFIER-UNTAGGED` classifier and the
   `PE_1-PE_2-FP` flow point a second time, so the published pages showed a

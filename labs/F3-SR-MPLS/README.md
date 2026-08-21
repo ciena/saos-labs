@@ -41,8 +41,8 @@ The checkpoint baseline each node boots from. If you are assembling the lab by h
 - [PE_1.cfg.partial](./configs/PE_1.cfg.partial)
 - [PE_2.cfg.partial](./configs/PE_2.cfg.partial)
 - [PE_3.cfg.partial](./configs/PE_3.cfg.partial)
-- [CE1.cfg.partial](./configs/CE1.cfg.partial)
-- [CE2.cfg.partial](./configs/CE2.cfg.partial)
+- [CE_1.cfg.partial](./configs/CE_1.cfg.partial)
+- [CE_2.cfg.partial](./configs/CE_2.cfg.partial)
 
 ## Deploy
 
@@ -82,23 +82,23 @@ topology:
       labels:
         lab-state: unused
       startup-config: configs/PE_3.cfg.partial
-    CE1:
+    CE_1:
       type: '3984'
       labels:
         lab-state: unused
-      startup-config: configs/CE1.cfg.partial
-    CE2:
+      startup-config: configs/CE_1.cfg.partial
+    CE_2:
       type: '3984'
       labels:
         lab-state: unused
-      startup-config: configs/CE2.cfg.partial
+      startup-config: configs/CE_2.cfg.partial
   links:
   - endpoints: [ "PE_1:1", "PE_2:1" ]
-  - endpoints: [ "PE_1:2", "CE1:1" ]
-  - endpoints: [ "PE_2:2", "CE2:1" ]
+  - endpoints: [ "PE_1:2", "CE_1:1" ]
+  - endpoints: [ "PE_2:2", "CE_2:1" ]
   - endpoints: [ "PE_2:4", "PE_3:1" ]
   - endpoints: [ "PE_1:4", "PE_3:3" ]
-  - endpoints: [ "CE2:2", "PE_3:2" ]
+  - endpoints: [ "CE_2:2", "PE_3:2" ]
 ```
 
 Connect to the active PEs:
@@ -135,7 +135,7 @@ baseline and ping across it. Each PE carries loopback `lb1`
 (`172.16.0.1`/`FC00::1` on `PE_1`, `172.16.0.2`/`FC00::2` on `PE_2`), the
 routed core link `PE_1-PE_2-if` on `172.16.1.0/30` and `FC00::600/127`, and
 IS-IS instance `Bootcamp` running level-1 with a shared interface password.
-`PE_3`, `CE1`, and `CE2` are deployed but carry only a hostname; they sit
+`PE_3`, `CE_1`, and `CE_2` are deployed but carry only a hostname; they sit
 idle in this lab.
 
 <!-- verify-prose -->
@@ -1094,19 +1094,19 @@ system config hostname PE_3
 # Preloaded end
 ```
 
-#### CE1
+#### CE_1
 
 ```saos
 # Preloaded start
-system config hostname CE1
+system config hostname CE_1
 # Preloaded end
 ```
 
-#### CE2
+#### CE_2
 
 ```saos
 # Preloaded start
-system config hostname CE2
+system config hostname CE_2
 # Preloaded end
 ```
 

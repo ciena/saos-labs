@@ -16,12 +16,12 @@ Enable IS-IS routing between the two SAOS 10x nodes addressed in F1 so their loo
 
 ![topology detail](./topo.detail.svg)
 
-The physical topology already matches S2. CE1, CE2, PE_3, and their future
+The physical topology already matches S2. CE_1, CE_2, PE_3, and their future
 links are intentionally unused in F2, so the diagrams show them in gray. All
 tasks and checks remain scoped to PE_1 and PE_2.
 
 > **Resource note:** If you do not plan to continue into the Services track
-> and your host is resource constrained, you may comment out CE1, CE2, PE_3,
+> and your host is resource constrained, you may comment out CE_1, CE_2, PE_3,
 > and every link except `[ "PE_1:1", "PE_2:1" ]` in your local
 > `topo.clab.yml`.
 
@@ -66,8 +66,8 @@ The checkpoint baseline each node boots from. If you are assembling the lab by h
 - [PE_1.cfg.partial](./configs/PE_1.cfg.partial)
 - [PE_2.cfg.partial](./configs/PE_2.cfg.partial)
 - [PE_3.cfg.partial](./configs/PE_3.cfg.partial)
-- [CE1.cfg.partial](./configs/CE1.cfg.partial)
-- [CE2.cfg.partial](./configs/CE2.cfg.partial)
+- [CE_1.cfg.partial](./configs/CE_1.cfg.partial)
+- [CE_2.cfg.partial](./configs/CE_2.cfg.partial)
 
 ## Deploy
 
@@ -107,23 +107,23 @@ topology:
       labels:
         lab-state: unused
       startup-config: configs/PE_3.cfg.partial
-    CE1:
+    CE_1:
       type: '3984'
       labels:
         lab-state: unused
-      startup-config: configs/CE1.cfg.partial
-    CE2:
+      startup-config: configs/CE_1.cfg.partial
+    CE_2:
       type: '3984'
       labels:
         lab-state: unused
-      startup-config: configs/CE2.cfg.partial
+      startup-config: configs/CE_2.cfg.partial
   links:
   - endpoints: [ "PE_1:1", "PE_2:1" ]
-  - endpoints: [ "PE_1:2", "CE1:1" ]
-  - endpoints: [ "PE_2:2", "CE2:1" ]
+  - endpoints: [ "PE_1:2", "CE_1:1" ]
+  - endpoints: [ "PE_2:2", "CE_2:1" ]
   - endpoints: [ "PE_2:4", "PE_3:1" ]
   - endpoints: [ "PE_1:4", "PE_3:3" ]
-  - endpoints: [ "CE2:2", "PE_3:2" ]
+  - endpoints: [ "CE_2:2", "PE_3:2" ]
 ```
 
 Wait for all five nodes to reach healthy state, then complete the F2 tasks on
@@ -2156,19 +2156,19 @@ system config hostname PE_3
 # Preloaded end
 ```
 
-#### CE1
+#### CE_1
 
 ```saos
 # Preloaded start
-system config hostname CE1
+system config hostname CE_1
 # Preloaded end
 ```
 
-#### CE2
+#### CE_2
 
 ```saos
 # Preloaded start
-system config hostname CE2
+system config hostname CE_2
 # Preloaded end
 ```
 

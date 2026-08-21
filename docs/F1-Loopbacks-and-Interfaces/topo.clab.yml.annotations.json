@@ -1,7 +1,7 @@
 {
   "nodeAnnotations": [
     {
-      "id": "CE1",
+      "id": "CE_1",
       "icon": "router",
       "iconColor": "#808080",
       "iconCornerRadius": 60,
@@ -31,7 +31,7 @@
       }
     },
     {
-      "id": "CE2",
+      "id": "CE_2",
       "icon": "router",
       "iconColor": "#808080",
       "iconCornerRadius": 60,
