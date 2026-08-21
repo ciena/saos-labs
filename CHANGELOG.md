@@ -8,6 +8,17 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/).
 
 ## 2026-08-21
 
+### Added
+- **F4 — Border Gateway Protocol (BGP)** hands-on lab: bring up a
+  loopback-sourced iBGP session between the two provider-edge nodes with MD5
+  authentication, riding the F3 SR-MPLS transport; enable the IPv4, VPNv4,
+  EVPN, and labeled-unicast address families on that one session; redistribute
+  a loopback under a policy that sets a community; then verify the session,
+  the advertised routes, the applied policy, and BGP forwarding over SR-MPLS.
+  Published with its rendered lab pages, topology diagrams, and startup and
+  solution configs, and added to the site nav and search.
+  F0 → F1 → F2 → F3 → F4 is now the recommended path.
+
 ### Fixed
 - **F3 no longer configures the same flow point twice.** The lab's startup
   configs and solutions declared the `CLASSIFIER-UNTAGGED` classifier and the
