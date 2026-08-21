@@ -6,6 +6,17 @@ upstream authoring history.
 
 The format is based on [Keep a Changelog](https://keepachangelog.com/).
 
+## 2026-08-21
+
+### Fixed
+- **F3 no longer configures the same flow point twice.** The lab's startup
+  configs and solutions declared the `CLASSIFIER-UNTAGGED` classifier and the
+  `PE_1-PE_2-FP` flow point a second time, so the published pages showed a
+  two-line block repeated back to back and the nodes were sent those commands
+  twice at boot. The repeat was inert — re-applying an identical command
+  changes nothing on the device — but it was confusing to read and to copy by
+  hand. Each block now appears once.
+
 ## 2026-08-19
 
 ### Added
