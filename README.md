@@ -133,9 +133,12 @@ labs/<lab-slug>/
   solutions/                          # full cumulative solution configs (.cfg)
 ```
 
-### Lab Modes
+### Lab Labels
 
-Set via `topology.defaults.labels.lab-mode` in the topology file:
+Set via `topology.defaults.labels` in the topology file. `prereq-lab` names the
+lab whose solution this lab's startup baseline replays (or `none` for the track
+root), which is what makes every lab a deployable checkpoint. `lab-mode` is one
+of:
 
 - **hands-on** — student follows the README to apply config manually; the
   `solutions/` configs are the reference answer.

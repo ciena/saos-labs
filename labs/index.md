@@ -44,6 +44,14 @@ cd "${LAB}"
 containerlab deploy -t topo.clab.yml
 ```
 
+### Checkpoint behavior
+
+Every hands-on lab is self-contained. When continuing through a track, destroy
+the previous topology and deploy the next lab directory; its startup partials
+provide the required predecessor state. Do not copy configuration between lab
+directories or keep the previous containers. The same checkpoint supports
+direct entry after completing the lab's documented conceptual prerequisites.
+
 ## Foundation Track
 
 Start with the F0 theory guide, then follow the recommended F1-F4 sequence.

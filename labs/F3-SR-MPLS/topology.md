@@ -14,6 +14,7 @@ topology:
     image: vrnetlab/ciena_saos:10-12-00-0228
     labels:
       lab-mode: hands-on
+      prereq-lab: F2-IS-IS-Routing
   nodes:
     PE_1:
       type: '5162'
