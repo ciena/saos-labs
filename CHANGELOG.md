@@ -6,6 +6,19 @@ upstream authoring history.
 
 The format is based on [Keep a Changelog](https://keepachangelog.com/).
 
+## 2026-08-24
+
+### Added
+- **F5 — Label Distribution Protocol (LDP)** hands-on lab: the alternative
+  MPLS transport branch off F2 IS-IS. Enable MPLS forwarding on the core
+  interfaces, configure an LDP instance with a loopback-based LSR ID on each
+  provider-edge node, bring up the LDP adjacency over the IS-IS core link, and
+  verify the session, the label bindings for the PE loopbacks, and the
+  resulting label-switched path. F3 SR-MPLS and F4 BGP are not prerequisites —
+  F5 branches from F2 so you can compare the two label-distribution mechanisms
+  side by side. Published with its rendered lab pages, topology diagrams, and
+  startup and solution configs, and added to the site nav and search.
+
 ## 2026-08-21
 
 ### Added
