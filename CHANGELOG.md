@@ -19,6 +19,20 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/).
   side by side. Published with its rendered lab pages, topology diagrams, and
   startup and solution configs, and added to the site nav and search.
 
+### Changed
+- **Every lab now states which checkpoint it starts from**, in its topology
+  file as `topology.defaults.labels.prereq-lab` — the lab whose solution that
+  lab's startup configs reproduce, or `none` for the start of the track. It is
+  the same fact each lab's Prerequisites section already gives you in prose,
+  now written where tooling can read it, and the lab pages and the embedded
+  topology on each lab's Topology tab show it.
+- The lab index gains a **Checkpoint behavior** note making the rule explicit:
+  to continue a track, destroy the previous topology and deploy the next lab
+  directory — its startup configs carry the state the previous lab left behind.
+  Do not copy configuration between lab directories or keep the previous
+  containers running. The same checkpoint is what lets you enter the track
+  directly at any lab.
+
 ## 2026-08-21
 
 ### Added

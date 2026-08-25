@@ -5,6 +5,7 @@ topology:
     image: vrnetlab/ciena_saos:10-12-00-0228
     labels:
       lab-mode: hands-on
+      prereq-lab: F1-Loopbacks-and-Interfaces
   nodes:
     PE_1:
       type: '5162'

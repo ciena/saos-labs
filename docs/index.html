@@ -47,6 +47,8 @@
         <ul>
     <li class="toctree-l3"><a class="reference internal" href="#advanced-git">Advanced (git)</a>
     </li>
+    <li class="toctree-l3"><a class="reference internal" href="#checkpoint-behavior">Checkpoint behavior</a>
+    </li>
         </ul>
     </li>
     <li class="toctree-l2"><a class="reference internal" href="#foundation-track">Foundation Track</a>
@@ -128,6 +130,12 @@ need:</p>
 cd &quot;${LAB}&quot;
 containerlab deploy -t topo.clab.yml
 </code></pre>
+<h3 id="checkpoint-behavior">Checkpoint behavior</h3>
+<p>Every hands-on lab is self-contained. When continuing through a track, destroy
+the previous topology and deploy the next lab directory; its startup partials
+provide the required predecessor state. Do not copy configuration between lab
+directories or keep the previous containers. The same checkpoint supports
+direct entry after completing the lab's documented conceptual prerequisites.</p>
 <h2 id="foundation-track">Foundation Track</h2>
 <p>Start with the F0 theory guide, then follow the recommended F1-F4 sequence.
 F5 is an alternative branch from F2 for learners who specifically need LDP.
@@ -266,5 +274,5 @@ lab will stay introductory and omit color-based policy.</p>
 
 <!--
 MkDocs version : 1.6.1
-Build Date UTC : 2026-08-24 14:34:42.880832+00:00
+Build Date UTC : 2026-08-24 18:27:11.919059+00:00
 -->
