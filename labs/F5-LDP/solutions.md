@@ -76,6 +76,14 @@ system config hostname CE_2
 # Preloaded end
 ```
 
+### CE_3
+
+```saos
+# Preloaded start
+system config hostname CE_3
+# Preloaded end
+```
+
 ## Solution for Task 1
 
 ### PE_1

@@ -131,6 +131,8 @@
     </li>
     <li class="toctree-l4"><a class="reference internal" href="#ce_2">CE_2</a>
     </li>
+    <li class="toctree-l4"><a class="reference internal" href="#ce_3">CE_3</a>
+    </li>
         </ul>
     </li>
     <li class="toctree-l3"><a class="reference internal" href="#solution-for-task-1">Solution for Task 1</a>
@@ -165,13 +167,13 @@
     </li>
     <li class="toctree-l3"><a class="reference internal" href="#solution-for-task-5">Solution for Task 5</a>
         <ul>
-    <li class="toctree-l4"><a class="reference internal" href="#ce_3">CE_1</a>
+    <li class="toctree-l4"><a class="reference internal" href="#ce_4">CE_1</a>
     </li>
         </ul>
     </li>
     <li class="toctree-l3"><a class="reference internal" href="#solution-for-task-6">Solution for Task 6</a>
         <ul>
-    <li class="toctree-l4"><a class="reference internal" href="#ce_4">CE_2</a>
+    <li class="toctree-l4"><a class="reference internal" href="#ce_5">CE_2</a>
     </li>
         </ul>
     </li>
@@ -274,6 +276,7 @@ VLAN 105 attachment circuits.</p>
 <li><a href="configs/PE_3.cfg.partial">PE_3.cfg.partial</a></li>
 <li><a href="configs/CE_1.cfg.partial">CE_1.cfg.partial</a></li>
 <li><a href="configs/CE_2.cfg.partial">CE_2.cfg.partial</a></li>
+<li><a href="configs/CE_3.cfg.partial">CE_3.cfg.partial</a></li>
 </ul>
 <h3 id="containerlab-topology">Containerlab topology</h3>
 <p>Download the topology file: <a href="topo.clab.yml"><code>topo.clab.yml</code></a></p>
@@ -301,13 +304,18 @@ topology:
     CE_2:
       type: '3984'
       startup-config: configs/CE_2.cfg.partial
+    CE_3:
+      type: '3984'
+      labels:
+        lab-state: unused
+      startup-config: configs/CE_3.cfg.partial
   links:
   - endpoints: [ &quot;PE_1:1&quot;, &quot;PE_2:1&quot; ]
   - endpoints: [ &quot;PE_1:2&quot;, &quot;CE_1:1&quot; ]
   - endpoints: [ &quot;PE_2:2&quot;, &quot;CE_2:1&quot; ]
   - endpoints: [ &quot;PE_2:4&quot;, &quot;PE_3:1&quot; ]
   - endpoints: [ &quot;PE_1:4&quot;, &quot;PE_3:3&quot; ]
-  - endpoints: [ &quot;CE_2:2&quot;, &quot;PE_3:2&quot; ]
+  - endpoints: [ &quot;CE_3:1&quot;, &quot;PE_3:2&quot; ]
 </code></pre>
 <h3 id="start-from-checkpoint">Start from checkpoint</h3>
 <pre><code class="language-bash">LAB=S2-EVPN-VPWS
@@ -1739,6 +1747,11 @@ system config hostname CE_1
 system config hostname CE_2
 # Preloaded end
 </code></pre>
+<h4 id="ce_3">CE_3</h4>
+<pre><code class="language-saos"># Preloaded start
+system config hostname CE_3
+# Preloaded end
+</code></pre>
 <h3 id="solution-for-task-1">Solution for Task 1</h3>
 <p>No configuration commands; this is a verification-only task.</p>
 <h3 id="solution-for-task-2">Solution for Task 2</h3>
@@ -1844,7 +1857,7 @@ evpn evpn-instances evpn-instance 102 vpn-target 0:102:102 route-target-type bot
 # Task 4 end
 </code></pre>
 <h3 id="solution-for-task-5">Solution for Task 5</h3>
-<h4 id="ce_3">CE_1</h4>
+<h4 id="ce_4">CE_1</h4>
 <pre><code class="language-saos"># Task 5 start
 fds fd CE_1-CE_2-FD mode vpls
 oc-if:interfaces interface CE_1-CE_2-if config mtu 1500 name CE_1-CE_2-if type ip
@@ -1856,7 +1869,7 @@ fps fp CE_1-CE_2-FP egress-l2-transform push-vid-105 vlan-stack 1 push-tpid tpid
 # Task 5 end
 </code></pre>
 <h3 id="solution-for-task-6">Solution for Task 6</h3>
-<h4 id="ce_4">CE_2</h4>
+<h4 id="ce_5">CE_2</h4>
 <pre><code class="language-saos"># Task 6 start
 fds fd CE_1-CE_2-FD mode vpls
 oc-if:interfaces interface CE_1-CE_2-if config mtu 1500 name CE_1-CE_2-if type ip

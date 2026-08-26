@@ -133,7 +133,7 @@ Pass: Output contains `172.16.0.2` and `Established`
 |                                             | Remote | Peer     | Time       | Table   | Pkt      | Pkt        | Reset      | Prefix   | Prefix |             |
 | Peer                                        | AS     | Type     | (hh:mm:ss) | Version | Count    | Count      | (hh:mm:ss) | Count    | Count  | State       |
 +---------------------------------------------+--------+----------+------------+---------+----------+------------+------------+----------+--------+-------------+
-| 172.16.0.2                                  | 65032  | internal | 00:00:21   | 2       | 5        | 5          | 00:00:21   | 1        | 1      | Established |
+| 172.16.0.2                                  | 65032  | internal | 00:00:19   | 2       | 6        | 7          | 00:00:24   | 1        | 1      | Established |
 +---------------------------------------------+--------+----------+------------+---------+----------+------------+------------+----------+--------+-------------+
 ```
 
@@ -157,24 +157,26 @@ Pass: Output contains `Established` and `Update Source` and `lb1`
 | Peer                                  | 172.16.0.2                                           |
 | Remote AS                             | 65032                                                |
 | Remote Router ID                      | 172.16.0.2                                           |
-| Received Pkt Count                    | 5                                                    |
-| Advertised Pkt Count                  | 5                                                    |
+| Received Pkt Count                    | 6                                                    |
+| Advertised Pkt Count                  | 7                                                    |
 | Next Hop                              | 172.16.0.1                                           |
 | Next Hop Global                       | fc00::1                                              |
 | Next Hop Local                        | ::                                                   |
-| Remote Port                           | 44183                                                |
+| Remote Port                           | 36005                                                |
 | Remote Address                        | 172.16.0.2                                           |
 | Local Port                            | 179                                                  |
 | Connections Established               | 2                                                    |
 | Connections Dropped                   | 1                                                    |
 | Open Msg Received                     | 1                                                    |
-| Open Msg Sent                         | 1                                                    |
+| Open Msg Sent                         | 2                                                    |
 | Update Msg Received                   | 4                                                    |
 | Update Msg Sent                       | 4                                                    |
-| Last Reset (hh:mm:ss)                 | 00:00:21                                             |
+| Keepalives Received                   | 1                                                    |
+| Keepalives Sent                       | 1                                                    |
+| Last Reset (hh:mm:ss)                 | 00:00:25                                             |
 | Connection                            | non shared network                                   |
-| Up Time (hh:mm:ss)                    | 00:00:21                                             |
-| Read Time (hh:mm:ss)                  | 00:00:21                                             |
+| Up Time (hh:mm:ss)                    | 00:00:20                                             |
+| Read Time (hh:mm:ss)                  | 00:00:20                                             |
 | Peer Type                             | internal                                             |
 | Notifications Sent                    | 1                                                    |
 | Notification Direction                | sent                                                 |
@@ -199,16 +201,16 @@ Pass: Output contains `Established` and `Update Source` and `lb1`
 | Peer Restarting                       | false                                                |
 | Connect Retry Interval (s)            | 120                                                  |
 | Last Reset Information                |                                                      |
-| Last Update Read (s)                  | 11                                                   |
-| Last Update Read Before Reset (s)     | 0                                                    |
-| Last Write (s)                        | 11                                                   |
+| Last Update Read (s)                  | 10                                                   |
+| Last Update Read Before Reset (s)     | 31                                                   |
+| Last Write (s)                        | 10                                                   |
 | Last Written (bytes)                  | 23                                                   |
-| Second Last Write (s)                 | 11                                                   |
+| Second Last Write (s)                 | 10                                                   |
 | Second Last Written (bytes)           | 56                                                   |
-| Last Write Before Reset (s)           | 21                                                   |
-| Second Last Write Before Reset (s)    | 32                                                   |
-| Current Holdtimer Reset (s)           | 11                                                   |
-| Last Holdtimer Reset (s)              | 0                                                    |
+| Last Write Before Reset (s)           | 31                                                   |
+| Second Last Write Before Reset (s)    | 42                                                   |
+| Current Holdtimer Reset (s)           | 10                                                   |
+| Last Holdtimer Reset (s)              | 31                                                   |
 | Lockout                               | Disabled                                             |
 | Local AS                              | -                                                    |
 | Last MD5 Failure Reason               | -                                                    |
@@ -379,7 +381,7 @@ Pass: Output contains `172.16.0.1` and `Established`
 |                                             | Remote | Peer     | Time       | Table   | Pkt      | Pkt        | Reset      | Prefix   | Prefix |             |
 | Peer                                        | AS     | Type     | (hh:mm:ss) | Version | Count    | Count      | (hh:mm:ss) | Count    | Count  | State       |
 +---------------------------------------------+--------+----------+------------+---------+----------+------------+------------+----------+--------+-------------+
-| 172.16.0.1                                  | 65032  | internal | 00:00:22   | 2       | 6        | 6          | 00:00:27   | 1        | 1      | Established |
+| 172.16.0.1                                  | 65032  | internal | 00:00:21   | 2       | 6        | 6          | 00:00:26   | 1        | 1      | Established |
 +---------------------------------------------+--------+----------+------------+---------+----------+------------+------------+----------+--------+-------------+
 ```
 
@@ -410,7 +412,7 @@ Pass: Output contains `Established` and `Update Source` and `lb1`
 | Next Hop Local                        | ::                                                   |
 | Remote Port                           | 179                                                  |
 | Remote Address                        | 172.16.0.1                                           |
-| Local Port                            | 44183                                                |
+| Local Port                            | 36005                                                |
 | Connections Established               | 2                                                    |
 | Connections Dropped                   | 1                                                    |
 | Open Msg Received                     | 1                                                    |
@@ -419,10 +421,10 @@ Pass: Output contains `Established` and `Update Source` and `lb1`
 | Update Msg Sent                       | 4                                                    |
 | Keepalives Received                   | 1                                                    |
 | Keepalives Sent                       | 1                                                    |
-| Last Reset (hh:mm:ss)                 | 00:00:27                                             |
+| Last Reset (hh:mm:ss)                 | 00:00:26                                             |
 | Connection                            | non shared network                                   |
-| Up Time (hh:mm:ss)                    | 00:00:22                                             |
-| Read Time (hh:mm:ss)                  | 00:00:22                                             |
+| Up Time (hh:mm:ss)                    | 00:00:21                                             |
+| Read Time (hh:mm:ss)                  | 00:00:21                                             |
 | Peer Type                             | internal                                             |
 | Notifications Received                | 1                                                    |
 | Notification Direction                | received                                             |
@@ -447,16 +449,16 @@ Pass: Output contains `Established` and `Update Source` and `lb1`
 | Peer Restarting                       | false                                                |
 | Connect Retry Interval (s)            | 120                                                  |
 | Last Reset Information                |                                                      |
-| Last Update Read (s)                  | 12                                                   |
-| Last Update Read Before Reset (s)     | 27                                                   |
-| Last Write (s)                        | 12                                                   |
+| Last Update Read (s)                  | 11                                                   |
+| Last Update Read Before Reset (s)     | 26                                                   |
+| Last Write (s)                        | 11                                                   |
 | Last Written (bytes)                  | 23                                                   |
-| Second Last Write (s)                 | 12                                                   |
+| Second Last Write (s)                 | 11                                                   |
 | Second Last Written (bytes)           | 56                                                   |
-| Last Write Before Reset (s)           | 34                                                   |
+| Last Write Before Reset (s)           | 32                                                   |
 | Second Last Write Before Reset (s)    | 0                                                    |
-| Current Holdtimer Reset (s)           | 12                                                   |
-| Last Holdtimer Reset (s)              | 27                                                   |
+| Current Holdtimer Reset (s)           | 11                                                   |
+| Last Holdtimer Reset (s)              | 26                                                   |
 | Lockout                               | Disabled                                             |
 | Local AS                              | -                                                    |
 | Last MD5 Failure Reason               | -                                                    |
@@ -630,24 +632,26 @@ Pass: Output contains `vpnv4` and `evpn` and `labeled-unicast`
 | Peer                                  | 172.16.0.2                                           |
 | Remote AS                             | 65032                                                |
 | Remote Router ID                      | 172.16.0.2                                           |
-| Received Pkt Count                    | 5                                                    |
-| Advertised Pkt Count                  | 5                                                    |
+| Received Pkt Count                    | 6                                                    |
+| Advertised Pkt Count                  | 7                                                    |
 | Next Hop                              | 172.16.0.1                                           |
 | Next Hop Global                       | fc00::1                                              |
 | Next Hop Local                        | ::                                                   |
-| Remote Port                           | 44183                                                |
+| Remote Port                           | 36005                                                |
 | Remote Address                        | 172.16.0.2                                           |
 | Local Port                            | 179                                                  |
 | Connections Established               | 2                                                    |
 | Connections Dropped                   | 1                                                    |
 | Open Msg Received                     | 1                                                    |
-| Open Msg Sent                         | 1                                                    |
+| Open Msg Sent                         | 2                                                    |
 | Update Msg Received                   | 4                                                    |
 | Update Msg Sent                       | 4                                                    |
-| Last Reset (hh:mm:ss)                 | 00:00:24                                             |
+| Keepalives Received                   | 1                                                    |
+| Keepalives Sent                       | 1                                                    |
+| Last Reset (hh:mm:ss)                 | 00:00:27                                             |
 | Connection                            | non shared network                                   |
-| Up Time (hh:mm:ss)                    | 00:00:24                                             |
-| Read Time (hh:mm:ss)                  | 00:00:24                                             |
+| Up Time (hh:mm:ss)                    | 00:00:22                                             |
+| Read Time (hh:mm:ss)                  | 00:00:22                                             |
 | Peer Type                             | internal                                             |
 | Notifications Sent                    | 1                                                    |
 | Notification Direction                | sent                                                 |
@@ -672,16 +676,16 @@ Pass: Output contains `vpnv4` and `evpn` and `labeled-unicast`
 | Peer Restarting                       | false                                                |
 | Connect Retry Interval (s)            | 120                                                  |
 | Last Reset Information                |                                                      |
-| Last Update Read (s)                  | 14                                                   |
-| Last Update Read Before Reset (s)     | 0                                                    |
-| Last Write (s)                        | 14                                                   |
+| Last Update Read (s)                  | 12                                                   |
+| Last Update Read Before Reset (s)     | 33                                                   |
+| Last Write (s)                        | 12                                                   |
 | Last Written (bytes)                  | 23                                                   |
-| Second Last Write (s)                 | 14                                                   |
+| Second Last Write (s)                 | 12                                                   |
 | Second Last Written (bytes)           | 56                                                   |
-| Last Write Before Reset (s)           | 24                                                   |
-| Second Last Write Before Reset (s)    | 35                                                   |
-| Current Holdtimer Reset (s)           | 14                                                   |
-| Last Holdtimer Reset (s)              | 0                                                    |
+| Last Write Before Reset (s)           | 33                                                   |
+| Second Last Write Before Reset (s)    | 44                                                   |
+| Current Holdtimer Reset (s)           | 12                                                   |
+| Last Holdtimer Reset (s)              | 33                                                   |
 | Lockout                               | Disabled                                             |
 | Local AS                              | -                                                    |
 | Last MD5 Failure Reason               | -                                                    |
@@ -860,7 +864,7 @@ Pass: Output contains `vpnv4` and `evpn` and `labeled-unicast`
 | Next Hop Local                        | ::                                                   |
 | Remote Port                           | 179                                                  |
 | Remote Address                        | 172.16.0.1                                           |
-| Local Port                            | 44183                                                |
+| Local Port                            | 36005                                                |
 | Connections Established               | 2                                                    |
 | Connections Dropped                   | 1                                                    |
 | Open Msg Received                     | 1                                                    |
@@ -869,10 +873,10 @@ Pass: Output contains `vpnv4` and `evpn` and `labeled-unicast`
 | Update Msg Sent                       | 4                                                    |
 | Keepalives Received                   | 1                                                    |
 | Keepalives Sent                       | 1                                                    |
-| Last Reset (hh:mm:ss)                 | 00:00:30                                             |
+| Last Reset (hh:mm:ss)                 | 00:00:29                                             |
 | Connection                            | non shared network                                   |
-| Up Time (hh:mm:ss)                    | 00:00:25                                             |
-| Read Time (hh:mm:ss)                  | 00:00:25                                             |
+| Up Time (hh:mm:ss)                    | 00:00:24                                             |
+| Read Time (hh:mm:ss)                  | 00:00:24                                             |
 | Peer Type                             | internal                                             |
 | Notifications Received                | 1                                                    |
 | Notification Direction                | received                                             |
@@ -897,16 +901,16 @@ Pass: Output contains `vpnv4` and `evpn` and `labeled-unicast`
 | Peer Restarting                       | false                                                |
 | Connect Retry Interval (s)            | 120                                                  |
 | Last Reset Information                |                                                      |
-| Last Update Read (s)                  | 15                                                   |
-| Last Update Read Before Reset (s)     | 30                                                   |
-| Last Write (s)                        | 15                                                   |
+| Last Update Read (s)                  | 14                                                   |
+| Last Update Read Before Reset (s)     | 29                                                   |
+| Last Write (s)                        | 14                                                   |
 | Last Written (bytes)                  | 23                                                   |
-| Second Last Write (s)                 | 15                                                   |
+| Second Last Write (s)                 | 14                                                   |
 | Second Last Written (bytes)           | 56                                                   |
-| Last Write Before Reset (s)           | 37                                                   |
+| Last Write Before Reset (s)           | 35                                                   |
 | Second Last Write Before Reset (s)    | 0                                                    |
-| Current Holdtimer Reset (s)           | 15                                                   |
-| Last Holdtimer Reset (s)              | 30                                                   |
+| Current Holdtimer Reset (s)           | 14                                                   |
+| Last Holdtimer Reset (s)              | 29                                                   |
 | Lockout                               | Disabled                                             |
 | Local AS                              | -                                                    |
 | Last MD5 Failure Reason               | -                                                    |

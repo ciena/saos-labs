@@ -112,6 +112,8 @@
     </li>
     <li class="toctree-l4"><a class="reference internal" href="#ce_2">CE_2</a>
     </li>
+    <li class="toctree-l4"><a class="reference internal" href="#ce_3">CE_3</a>
+    </li>
         </ul>
     </li>
     <li class="toctree-l3"><a class="reference internal" href="#solution-for-task-1">Solution for Task 1</a>
@@ -218,6 +220,7 @@ F2 IS-IS baseline and does not require F3 SR-MPLS or F4 BGP.</p>
 <li><a href="configs/PE_3.cfg.partial">PE_3.cfg.partial</a></li>
 <li><a href="configs/CE_1.cfg.partial">CE_1.cfg.partial</a></li>
 <li><a href="configs/CE_2.cfg.partial">CE_2.cfg.partial</a></li>
+<li><a href="configs/CE_3.cfg.partial">CE_3.cfg.partial</a></li>
 </ul>
 <h3 id="containerlab-topology">Containerlab topology</h3>
 <p>Download the topology file: <a href="topo.clab.yml"><code>topo.clab.yml</code></a></p>
@@ -251,13 +254,18 @@ topology:
       labels:
         lab-state: unused
       startup-config: configs/CE_2.cfg.partial
+    CE_3:
+      type: '3984'
+      labels:
+        lab-state: unused
+      startup-config: configs/CE_3.cfg.partial
   links:
   - endpoints: [ &quot;PE_1:1&quot;, &quot;PE_2:1&quot; ]
   - endpoints: [ &quot;PE_1:2&quot;, &quot;CE_1:1&quot; ]
   - endpoints: [ &quot;PE_2:2&quot;, &quot;CE_2:1&quot; ]
   - endpoints: [ &quot;PE_2:4&quot;, &quot;PE_3:1&quot; ]
   - endpoints: [ &quot;PE_1:4&quot;, &quot;PE_3:3&quot; ]
-  - endpoints: [ &quot;CE_2:2&quot;, &quot;PE_3:2&quot; ]
+  - endpoints: [ &quot;CE_3:1&quot;, &quot;PE_3:2&quot; ]
 </code></pre>
 <h3 id="start-from-checkpoint">Start from checkpoint</h3>
 <pre><code class="language-bash">LAB=F5-LDP
@@ -786,6 +794,11 @@ system config hostname CE_1
 <h4 id="ce_2">CE_2</h4>
 <pre><code class="language-saos"># Preloaded start
 system config hostname CE_2
+# Preloaded end
+</code></pre>
+<h4 id="ce_3">CE_3</h4>
+<pre><code class="language-saos"># Preloaded start
+system config hostname CE_3
 # Preloaded end
 </code></pre>
 <h3 id="solution-for-task-1">Solution for Task 1</h3>

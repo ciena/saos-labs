@@ -70,6 +70,7 @@ The checkpoint baseline each node boots from. If you are assembling the lab by h
 - [PE_3.cfg.partial](./configs/PE_3.cfg.partial)
 - [CE_1.cfg.partial](./configs/CE_1.cfg.partial)
 - [CE_2.cfg.partial](./configs/CE_2.cfg.partial)
+- [CE_3.cfg.partial](./configs/CE_3.cfg.partial)
 
 ### Containerlab topology
 
@@ -106,13 +107,18 @@ topology:
       labels:
         lab-state: unused
       startup-config: configs/CE_2.cfg.partial
+    CE_3:
+      type: '3984'
+      labels:
+        lab-state: unused
+      startup-config: configs/CE_3.cfg.partial
   links:
   - endpoints: [ "PE_1:1", "PE_2:1" ]
   - endpoints: [ "PE_1:2", "CE_1:1" ]
   - endpoints: [ "PE_2:2", "CE_2:1" ]
   - endpoints: [ "PE_2:4", "PE_3:1" ]
   - endpoints: [ "PE_1:4", "PE_3:3" ]
-  - endpoints: [ "CE_2:2", "PE_3:2" ]
+  - endpoints: [ "CE_3:1", "PE_3:2" ]
 ```
 
 ### Start from checkpoint
@@ -501,7 +507,7 @@ Pass: Output contains `0172.0016.0002` and `PE_1-PE_2-if` and `Up`
 | Neighbor |                        |                  |                |       |   Hold   |      |          |
 |   Type   |       System ID        |    Interface     |      SNPA      | State | Time (s) | Type | Protocol |
 +----------+------------------------+------------------+----------------+-------+----------+------+----------+
-|   P2P    |     0172.0016.0002     |   PE_1-PE_2-if   | 0c00.e1d6.83f6 |    Up |       23 |  L1  |  IS-IS   |
+|   P2P    |     0172.0016.0002     |   PE_1-PE_2-if   | 0c00.19a3.bff6 |    Up |       26 |  L1  |  IS-IS   |
 +----------+------------------------+------------------+----------------+-------+----------+------+----------+
 ```
 
@@ -523,7 +529,7 @@ Pass: Output contains `0172.0016.0001` and `PE_1-PE_2-if` and `Up`
 | Neighbor |                        |                  |                |       |   Hold   |      |          |
 |   Type   |       System ID        |    Interface     |      SNPA      | State | Time (s) | Type | Protocol |
 +----------+------------------------+------------------+----------------+-------+----------+------+----------+
-|   P2P    |     0172.0016.0001     |   PE_1-PE_2-if   | 0c00.2f0f.4af6 |    Up |       22 |  L1  |  IS-IS   |
+|   P2P    |     0172.0016.0001     |   PE_1-PE_2-if   | 0c00.e76e.d2f6 |    Up |       25 |  L1  |  IS-IS   |
 +----------+------------------------+------------------+----------------+-------+----------+------+----------+
 ```
 
@@ -557,7 +563,7 @@ Pass: Output contains `172.16.0.2/32` and `172.16.1.2`
 | *>    |  K   |  -  | -                | 0.0.0.0/0          | [254/0]   | 10.0.0.2        | mgmtbr0                   | -               | -                         | -           |
 | *>    |  C   |  -  | -                | 10.0.0.0/24        | [0/0]     | -               | mgmtbr0                   | -               | -                         | -           |
 | *>    |  C   |  -  | -                | 172.16.0.1/32      | [0/0]     | -               | lb1                       | -               | -                         | -           |
-| *>    |  I   |  L1 | Bootcamp         | 172.16.0.2/32      | [115/20]  | 172.16.1.2      | PE_1-PE_2-if              | -               | -                         | 00:00:56    |
+| *>    |  I   |  L1 | Bootcamp         | 172.16.0.2/32      | [115/20]  | 172.16.1.2      | PE_1-PE_2-if              | -               | -                         | 00:00:38    |
 | *>    |  C   |  -  | -                | 172.16.1.0/30      | [0/0]     | -               | PE_1-PE_2-if              | -               | -                         | -           |
 +-------+------+-----+------------------+--------------------+-----------+-----------------+---------------------------+-----------------+---------------------------+-------------+
 ```
@@ -583,11 +589,11 @@ Codes:
 
  Type 'Ctrl+C' to abort
 
-! seq_num = 1  RTT = 2.58 ms  TTL = 255
-! seq_num = 2  RTT = 1.73 ms  TTL = 255
-! seq_num = 3  RTT = 2.33 ms  TTL = 255
+! seq_num = 1  RTT = 1.82 ms  TTL = 255
+! seq_num = 2  RTT = 1.56 ms  TTL = 255
+! seq_num = 3  RTT = 1.48 ms  TTL = 255
 Success Rate is 100.00 percent (3/3)
-Round-trip min/avg/max = 1.73/2.21/2.58
+Round-trip min/avg/max = 1.48/1.62/1.82
 ```
 
 </details>
@@ -619,7 +625,7 @@ Pass: Output contains `172.16.0.1/32` and `172.16.1.1`
 +-------+------+-----+------------------+--------------------+-----------+-----------------+---------------------------+-----------------+---------------------------+-------------+
 | *>    |  K   |  -  | -                | 0.0.0.0/0          | [254/0]   | 10.0.0.2        | mgmtbr0                   | -               | -                         | -           |
 | *>    |  C   |  -  | -                | 10.0.0.0/24        | [0/0]     | -               | mgmtbr0                   | -               | -                         | -           |
-| *>    |  I   |  L1 | Bootcamp         | 172.16.0.1/32      | [115/20]  | 172.16.1.1      | PE_1-PE_2-if              | -               | -                         | 00:00:40    |
+| *>    |  I   |  L1 | Bootcamp         | 172.16.0.1/32      | [115/20]  | 172.16.1.1      | PE_1-PE_2-if              | -               | -                         | 00:00:47    |
 | *>    |  C   |  -  | -                | 172.16.0.2/32      | [0/0]     | -               | lb1                       | -               | -                         | -           |
 | *>    |  C   |  -  | -                | 172.16.1.0/30      | [0/0]     | -               | PE_1-PE_2-if              | -               | -                         | -           |
 +-------+------+-----+------------------+--------------------+-----------+-----------------+---------------------------+-----------------+---------------------------+-------------+
@@ -646,11 +652,11 @@ Codes:
 
  Type 'Ctrl+C' to abort
 
-! seq_num = 1  RTT = 3.31 ms  TTL = 255
-! seq_num = 2  RTT = 1.93 ms  TTL = 255
-! seq_num = 3  RTT = 2.03 ms  TTL = 255
+! seq_num = 1  RTT = 1.95 ms  TTL = 255
+! seq_num = 2  RTT = 1.69 ms  TTL = 255
+! seq_num = 3  RTT = 1.51 ms  TTL = 255
 Success Rate is 100.00 percent (3/3)
-Round-trip min/avg/max = 1.93/2.42/3.31
+Round-trip min/avg/max = 1.51/1.72/1.95
 ```
 
 </details>
@@ -772,7 +778,7 @@ Pass: Output contains `PE_1-PE_2-if` and `lb1` and `IPv6`
 | LDP IGP SYNC Status              |                   Not Configured |
 | IP Interface Address(es)         |                    172.16.1.1/30 |
 | IPv6 Interface Address(es)       |                    fc00::600/127 |
-|                                  |      fe80::e00:2fff:fe0f:4af6/64 |
+|                                  |      fe80::e00:e7ff:fe6e:d2f6/64 |
 | Level Index                      |                          level-1 |
 |    Circuit ID                    |                0172.0016.0001.02 |
 |    Active Adjacencies            |                                1 |
@@ -780,7 +786,7 @@ Pass: Output contains `PE_1-PE_2-if` and `lb1` and `IPv6`
 |    Metric (Narrow/Wide)          |                            10/10 |
 |    Admin Tag                     |                                - |
 |    Protocol Oper State           |                               up |
-|    Next Hello                    |                        5 seconds |
+|    Next Hello                    |                        8 seconds |
 |    Hello Interval                |                       10 seconds |
 |    Hello Multiplier              |                                3 |
 |    Authentication                |                              MD5 |
@@ -799,7 +805,7 @@ Pass: Output contains `PE_1-PE_2-if` and `lb1` and `IPv6`
 | LDP IGP SYNC Status              |                   Not Configured |
 | IP Interface Address(es)         |                    172.16.0.1/32 |
 | IPv6 Interface Address(es)       |                      fc00::1/128 |
-|                                  |      fe80::e00:2fff:fe0f:4af6/64 |
+|                                  |      fe80::e00:e7ff:fe6e:d2f6/64 |
 | Level Index                      |                          level-1 |
 |    Circuit ID                    |                0172.0016.0001.01 |
 |    Active Adjacencies            |                                0 |
@@ -843,7 +849,7 @@ Pass: Output contains `PE_1-PE_2-if` and `lb1` and `IPv6`
 | LDP IGP SYNC Status              |                   Not Configured |
 | IP Interface Address(es)         |                    172.16.1.2/30 |
 | IPv6 Interface Address(es)       |                    fc00::601/127 |
-|                                  |      fe80::e00:e1ff:fed6:83f6/64 |
+|                                  |      fe80::e00:19ff:fea3:bff6/64 |
 | Level Index                      |                          level-1 |
 |    Circuit ID                    |                0172.0016.0002.02 |
 |    Active Adjacencies            |                                1 |
@@ -851,7 +857,7 @@ Pass: Output contains `PE_1-PE_2-if` and `lb1` and `IPv6`
 |    Metric (Narrow/Wide)          |                            10/10 |
 |    Admin Tag                     |                                - |
 |    Protocol Oper State           |                               up |
-|    Next Hello                    |                        6 seconds |
+|    Next Hello                    |                        9 seconds |
 |    Hello Interval                |                       10 seconds |
 |    Hello Multiplier              |                                3 |
 |    Authentication                |                              MD5 |
@@ -870,7 +876,7 @@ Pass: Output contains `PE_1-PE_2-if` and `lb1` and `IPv6`
 | LDP IGP SYNC Status              |                   Not Configured |
 | IP Interface Address(es)         |                    172.16.0.2/32 |
 | IPv6 Interface Address(es)       |                      fc00::2/128 |
-|                                  |      fe80::e00:e1ff:fed6:83f6/64 |
+|                                  |      fe80::e00:19ff:fea3:bff6/64 |
 | Level Index                      |                          level-1 |
 |    Circuit ID                    |                0172.0016.0002.01 |
 |    Active Adjacencies            |                                0 |
@@ -908,11 +914,11 @@ Codes:
 
  Type 'Ctrl+C' to abort
 
-! seq_num = 1  RTT = 1.87 ms  TTL = 255
-! seq_num = 2  RTT = 1.82 ms  TTL = 255
-! seq_num = 3  RTT = 2.05 ms  TTL = 255
+! seq_num = 1  RTT = 1.70 ms  TTL = 255
+! seq_num = 2  RTT = 2.31 ms  TTL = 255
+! seq_num = 3  RTT = 1.65 ms  TTL = 255
 Success Rate is 100.00 percent (3/3)
-Round-trip min/avg/max = 1.82/1.91/2.05
+Round-trip min/avg/max = 1.65/1.89/2.31
 ```
 
 </details>
@@ -936,11 +942,11 @@ Codes:
 
  Type 'Ctrl+C' to abort
 
-! seq_num = 1  RTT = 1.61 ms  TTL = 255
-! seq_num = 2  RTT = 2.37 ms  TTL = 255
-! seq_num = 3  RTT = 1.74 ms  TTL = 255
+! seq_num = 1  RTT = 1.71 ms  TTL = 255
+! seq_num = 2  RTT = 2.31 ms  TTL = 255
+! seq_num = 3  RTT = 1.85 ms  TTL = 255
 Success Rate is 100.00 percent (3/3)
-Round-trip min/avg/max = 1.61/1.91/2.37
+Round-trip min/avg/max = 1.71/1.96/2.31
 ```
 
 </details>
@@ -1037,7 +1043,7 @@ Pass: Output contains `PE_1-PE_2-if` and `level-1` and `MD5`
 | LDP IGP SYNC Status              |                   Not Configured |
 | IP Interface Address(es)         |                    172.16.1.1/30 |
 | IPv6 Interface Address(es)       |                    fc00::600/127 |
-|                                  |      fe80::e00:2fff:fe0f:4af6/64 |
+|                                  |      fe80::e00:e7ff:fe6e:d2f6/64 |
 | Level Index                      |                          level-1 |
 |    Circuit ID                    |                0172.0016.0001.02 |
 |    Active Adjacencies            |                                1 |
@@ -1045,7 +1051,7 @@ Pass: Output contains `PE_1-PE_2-if` and `level-1` and `MD5`
 |    Metric (Narrow/Wide)          |                            10/10 |
 |    Admin Tag                     |                                - |
 |    Protocol Oper State           |                               up |
-|    Next Hello                    |                        8 seconds |
+|    Next Hello                    |                        1 seconds |
 |    Hello Interval                |                       10 seconds |
 |    Hello Multiplier              |                                3 |
 |    Authentication                |                              MD5 |
@@ -1064,7 +1070,7 @@ Pass: Output contains `PE_1-PE_2-if` and `level-1` and `MD5`
 | LDP IGP SYNC Status              |                   Not Configured |
 | IP Interface Address(es)         |                    172.16.0.1/32 |
 | IPv6 Interface Address(es)       |                      fc00::1/128 |
-|                                  |      fe80::e00:2fff:fe0f:4af6/64 |
+|                                  |      fe80::e00:e7ff:fe6e:d2f6/64 |
 | Level Index                      |                          level-1 |
 |    Circuit ID                    |                0172.0016.0001.01 |
 |    Active Adjacencies            |                                0 |
@@ -1109,7 +1115,7 @@ Pass: Output contains `PE_1-PE_2-if` and `level-1` and `MD5`
 | LDP IGP SYNC Status              |                   Not Configured |
 | IP Interface Address(es)         |                    172.16.1.2/30 |
 | IPv6 Interface Address(es)       |                    fc00::601/127 |
-|                                  |      fe80::e00:e1ff:fed6:83f6/64 |
+|                                  |      fe80::e00:19ff:fea3:bff6/64 |
 | Level Index                      |                          level-1 |
 |    Circuit ID                    |                0172.0016.0002.02 |
 |    Active Adjacencies            |                                1 |
@@ -1117,7 +1123,7 @@ Pass: Output contains `PE_1-PE_2-if` and `level-1` and `MD5`
 |    Metric (Narrow/Wide)          |                            10/10 |
 |    Admin Tag                     |                                - |
 |    Protocol Oper State           |                               up |
-|    Next Hello                    |                        9 seconds |
+|    Next Hello                    |                        2 seconds |
 |    Hello Interval                |                       10 seconds |
 |    Hello Multiplier              |                                3 |
 |    Authentication                |                              MD5 |
@@ -1136,7 +1142,7 @@ Pass: Output contains `PE_1-PE_2-if` and `level-1` and `MD5`
 | LDP IGP SYNC Status              |                   Not Configured |
 | IP Interface Address(es)         |                    172.16.0.2/32 |
 | IPv6 Interface Address(es)       |                      fc00::2/128 |
-|                                  |      fe80::e00:e1ff:fed6:83f6/64 |
+|                                  |      fe80::e00:19ff:fea3:bff6/64 |
 | Level Index                      |                          level-1 |
 |    Circuit ID                    |                0172.0016.0002.01 |
 |    Active Adjacencies            |                                0 |
@@ -1171,7 +1177,7 @@ Pass: Output contains `0172.0016.0002` and `Up`
 | Neighbor |                        |                  |                |       |   Hold   |      |          |
 |   Type   |       System ID        |    Interface     |      SNPA      | State | Time (s) | Type | Protocol |
 +----------+------------------------+------------------+----------------+-------+----------+------+----------+
-|   P2P    |     0172.0016.0002     |   PE_1-PE_2-if   | 0c00.e1d6.83f6 |    Up |       29 |  L1  |  IS-IS   |
+|   P2P    |     0172.0016.0002     |   PE_1-PE_2-if   | 0c00.19a3.bff6 |    Up |       21 |  L1  |  IS-IS   |
 +----------+------------------------+------------------+----------------+-------+----------+------+----------+
 ```
 
@@ -1193,7 +1199,7 @@ Pass: Output contains `0172.0016.0001` and `Up`
 | Neighbor |                        |                  |                |       |   Hold   |      |          |
 |   Type   |       System ID        |    Interface     |      SNPA      | State | Time (s) | Type | Protocol |
 +----------+------------------------+------------------+----------------+-------+----------+------+----------+
-|   P2P    |     0172.0016.0001     |   PE_1-PE_2-if   | 0c00.2f0f.4af6 |    Up |       27 |  L1  |  IS-IS   |
+|   P2P    |     0172.0016.0001     |   PE_1-PE_2-if   | 0c00.e76e.d2f6 |    Up |       20 |  L1  |  IS-IS   |
 +----------+------------------------+------------------+----------------+-------+----------+------+----------+
 ```
 
@@ -1218,11 +1224,11 @@ Codes:
 
  Type 'Ctrl+C' to abort
 
-! seq_num = 1  RTT = 1.92 ms  TTL = 255
-! seq_num = 2  RTT = 2.87 ms  TTL = 255
-! seq_num = 3  RTT = 2.28 ms  TTL = 255
+! seq_num = 1  RTT = 1.55 ms  TTL = 255
+! seq_num = 2  RTT = 2.47 ms  TTL = 255
+! seq_num = 3  RTT = 1.87 ms  TTL = 255
 Success Rate is 100.00 percent (3/3)
-Round-trip min/avg/max = 1.92/2.36/2.87
+Round-trip min/avg/max = 1.55/1.96/2.47
 ```
 
 </details>
@@ -1246,11 +1252,11 @@ Codes:
 
  Type 'Ctrl+C' to abort
 
-! seq_num = 1  RTT = 2.00 ms  TTL = 255
-! seq_num = 2  RTT = 2.94 ms  TTL = 255
-! seq_num = 3  RTT = 2.04 ms  TTL = 255
+! seq_num = 1  RTT = 1.45 ms  TTL = 255
+! seq_num = 2  RTT = 1.59 ms  TTL = 255
+! seq_num = 3  RTT = 2.29 ms  TTL = 255
 Success Rate is 100.00 percent (3/3)
-Round-trip min/avg/max = 2.00/2.33/2.94
+Round-trip min/avg/max = 1.45/1.78/2.29
 ```
 
 </details>
@@ -1509,7 +1515,7 @@ Pass: Output contains `0172.0016.0002` and `PE_1-PE_2-if` and `Up`
 | Neighbor |                        |                  |                |       |   Hold   |      |          |
 |   Type   |       System ID        |    Interface     |      SNPA      | State | Time (s) | Type | Protocol |
 +----------+------------------------+------------------+----------------+-------+----------+------+----------+
-|   P2P    |     0172.0016.0002     |   PE_1-PE_2-if   | 0c00.e1d6.83f6 |    Up |       23 |  L1  |  IS-IS   |
+|   P2P    |     0172.0016.0002     |   PE_1-PE_2-if   | 0c00.19a3.bff6 |    Up |       26 |  L1  |  IS-IS   |
 +----------+------------------------+------------------+----------------+-------+----------+------+----------+
 ```
 
@@ -1531,7 +1537,7 @@ Pass: Output contains `0172.0016.0001` and `PE_1-PE_2-if` and `Up`
 | Neighbor |                        |                  |                |       |   Hold   |      |          |
 |   Type   |       System ID        |    Interface     |      SNPA      | State | Time (s) | Type | Protocol |
 +----------+------------------------+------------------+----------------+-------+----------+------+----------+
-|   P2P    |     0172.0016.0001     |   PE_1-PE_2-if   | 0c00.2f0f.4af6 |    Up |       22 |  L1  |  IS-IS   |
+|   P2P    |     0172.0016.0001     |   PE_1-PE_2-if   | 0c00.e76e.d2f6 |    Up |       25 |  L1  |  IS-IS   |
 +----------+------------------------+------------------+----------------+-------+----------+------+----------+
 ```
 
@@ -1565,7 +1571,7 @@ Pass: Output contains `172.16.0.2/32` and `172.16.1.2`
 | *>    |  K   |  -  | -                | 0.0.0.0/0          | [254/0]   | 10.0.0.2        | mgmtbr0                   | -               | -                         | -           |
 | *>    |  C   |  -  | -                | 10.0.0.0/24        | [0/0]     | -               | mgmtbr0                   | -               | -                         | -           |
 | *>    |  C   |  -  | -                | 172.16.0.1/32      | [0/0]     | -               | lb1                       | -               | -                         | -           |
-| *>    |  I   |  L1 | Bootcamp         | 172.16.0.2/32      | [115/20]  | 172.16.1.2      | PE_1-PE_2-if              | -               | -                         | 00:00:56    |
+| *>    |  I   |  L1 | Bootcamp         | 172.16.0.2/32      | [115/20]  | 172.16.1.2      | PE_1-PE_2-if              | -               | -                         | 00:00:38    |
 | *>    |  C   |  -  | -                | 172.16.1.0/30      | [0/0]     | -               | PE_1-PE_2-if              | -               | -                         | -           |
 +-------+------+-----+------------------+--------------------+-----------+-----------------+---------------------------+-----------------+---------------------------+-------------+
 ```
@@ -1591,11 +1597,11 @@ Codes:
 
  Type 'Ctrl+C' to abort
 
-! seq_num = 1  RTT = 2.58 ms  TTL = 255
-! seq_num = 2  RTT = 1.73 ms  TTL = 255
-! seq_num = 3  RTT = 2.33 ms  TTL = 255
+! seq_num = 1  RTT = 1.82 ms  TTL = 255
+! seq_num = 2  RTT = 1.56 ms  TTL = 255
+! seq_num = 3  RTT = 1.48 ms  TTL = 255
 Success Rate is 100.00 percent (3/3)
-Round-trip min/avg/max = 1.73/2.21/2.58
+Round-trip min/avg/max = 1.48/1.62/1.82
 ```
 
 </details>
@@ -1627,7 +1633,7 @@ Pass: Output contains `172.16.0.1/32` and `172.16.1.1`
 +-------+------+-----+------------------+--------------------+-----------+-----------------+---------------------------+-----------------+---------------------------+-------------+
 | *>    |  K   |  -  | -                | 0.0.0.0/0          | [254/0]   | 10.0.0.2        | mgmtbr0                   | -               | -                         | -           |
 | *>    |  C   |  -  | -                | 10.0.0.0/24        | [0/0]     | -               | mgmtbr0                   | -               | -                         | -           |
-| *>    |  I   |  L1 | Bootcamp         | 172.16.0.1/32      | [115/20]  | 172.16.1.1      | PE_1-PE_2-if              | -               | -                         | 00:00:40    |
+| *>    |  I   |  L1 | Bootcamp         | 172.16.0.1/32      | [115/20]  | 172.16.1.1      | PE_1-PE_2-if              | -               | -                         | 00:00:47    |
 | *>    |  C   |  -  | -                | 172.16.0.2/32      | [0/0]     | -               | lb1                       | -               | -                         | -           |
 | *>    |  C   |  -  | -                | 172.16.1.0/30      | [0/0]     | -               | PE_1-PE_2-if              | -               | -                         | -           |
 +-------+------+-----+------------------+--------------------+-----------+-----------------+---------------------------+-----------------+---------------------------+-------------+
@@ -1654,11 +1660,11 @@ Codes:
 
  Type 'Ctrl+C' to abort
 
-! seq_num = 1  RTT = 3.31 ms  TTL = 255
-! seq_num = 2  RTT = 1.93 ms  TTL = 255
-! seq_num = 3  RTT = 2.03 ms  TTL = 255
+! seq_num = 1  RTT = 1.95 ms  TTL = 255
+! seq_num = 2  RTT = 1.69 ms  TTL = 255
+! seq_num = 3  RTT = 1.51 ms  TTL = 255
 Success Rate is 100.00 percent (3/3)
-Round-trip min/avg/max = 1.93/2.42/3.31
+Round-trip min/avg/max = 1.51/1.72/1.95
 ```
 
 </details>
@@ -1690,7 +1696,7 @@ Pass: Output contains `PE_1-PE_2-if` and `lb1` and `IPv6`
 | LDP IGP SYNC Status              |                   Not Configured |
 | IP Interface Address(es)         |                    172.16.1.1/30 |
 | IPv6 Interface Address(es)       |                    fc00::600/127 |
-|                                  |      fe80::e00:2fff:fe0f:4af6/64 |
+|                                  |      fe80::e00:e7ff:fe6e:d2f6/64 |
 | Level Index                      |                          level-1 |
 |    Circuit ID                    |                0172.0016.0001.02 |
 |    Active Adjacencies            |                                1 |
@@ -1698,7 +1704,7 @@ Pass: Output contains `PE_1-PE_2-if` and `lb1` and `IPv6`
 |    Metric (Narrow/Wide)          |                            10/10 |
 |    Admin Tag                     |                                - |
 |    Protocol Oper State           |                               up |
-|    Next Hello                    |                        5 seconds |
+|    Next Hello                    |                        8 seconds |
 |    Hello Interval                |                       10 seconds |
 |    Hello Multiplier              |                                3 |
 |    Authentication                |                              MD5 |
@@ -1717,7 +1723,7 @@ Pass: Output contains `PE_1-PE_2-if` and `lb1` and `IPv6`
 | LDP IGP SYNC Status              |                   Not Configured |
 | IP Interface Address(es)         |                    172.16.0.1/32 |
 | IPv6 Interface Address(es)       |                      fc00::1/128 |
-|                                  |      fe80::e00:2fff:fe0f:4af6/64 |
+|                                  |      fe80::e00:e7ff:fe6e:d2f6/64 |
 | Level Index                      |                          level-1 |
 |    Circuit ID                    |                0172.0016.0001.01 |
 |    Active Adjacencies            |                                0 |
@@ -1761,7 +1767,7 @@ Pass: Output contains `PE_1-PE_2-if` and `lb1` and `IPv6`
 | LDP IGP SYNC Status              |                   Not Configured |
 | IP Interface Address(es)         |                    172.16.1.2/30 |
 | IPv6 Interface Address(es)       |                    fc00::601/127 |
-|                                  |      fe80::e00:e1ff:fed6:83f6/64 |
+|                                  |      fe80::e00:19ff:fea3:bff6/64 |
 | Level Index                      |                          level-1 |
 |    Circuit ID                    |                0172.0016.0002.02 |
 |    Active Adjacencies            |                                1 |
@@ -1769,7 +1775,7 @@ Pass: Output contains `PE_1-PE_2-if` and `lb1` and `IPv6`
 |    Metric (Narrow/Wide)          |                            10/10 |
 |    Admin Tag                     |                                - |
 |    Protocol Oper State           |                               up |
-|    Next Hello                    |                        6 seconds |
+|    Next Hello                    |                        9 seconds |
 |    Hello Interval                |                       10 seconds |
 |    Hello Multiplier              |                                3 |
 |    Authentication                |                              MD5 |
@@ -1788,7 +1794,7 @@ Pass: Output contains `PE_1-PE_2-if` and `lb1` and `IPv6`
 | LDP IGP SYNC Status              |                   Not Configured |
 | IP Interface Address(es)         |                    172.16.0.2/32 |
 | IPv6 Interface Address(es)       |                      fc00::2/128 |
-|                                  |      fe80::e00:e1ff:fed6:83f6/64 |
+|                                  |      fe80::e00:19ff:fea3:bff6/64 |
 | Level Index                      |                          level-1 |
 |    Circuit ID                    |                0172.0016.0002.01 |
 |    Active Adjacencies            |                                0 |
@@ -1826,11 +1832,11 @@ Codes:
 
  Type 'Ctrl+C' to abort
 
-! seq_num = 1  RTT = 1.87 ms  TTL = 255
-! seq_num = 2  RTT = 1.82 ms  TTL = 255
-! seq_num = 3  RTT = 2.05 ms  TTL = 255
+! seq_num = 1  RTT = 1.70 ms  TTL = 255
+! seq_num = 2  RTT = 2.31 ms  TTL = 255
+! seq_num = 3  RTT = 1.65 ms  TTL = 255
 Success Rate is 100.00 percent (3/3)
-Round-trip min/avg/max = 1.82/1.91/2.05
+Round-trip min/avg/max = 1.65/1.89/2.31
 ```
 
 </details>
@@ -1854,11 +1860,11 @@ Codes:
 
  Type 'Ctrl+C' to abort
 
-! seq_num = 1  RTT = 1.61 ms  TTL = 255
-! seq_num = 2  RTT = 2.37 ms  TTL = 255
-! seq_num = 3  RTT = 1.74 ms  TTL = 255
+! seq_num = 1  RTT = 1.71 ms  TTL = 255
+! seq_num = 2  RTT = 2.31 ms  TTL = 255
+! seq_num = 3  RTT = 1.85 ms  TTL = 255
 Success Rate is 100.00 percent (3/3)
-Round-trip min/avg/max = 1.61/1.91/2.37
+Round-trip min/avg/max = 1.71/1.96/2.31
 ```
 
 </details>
@@ -1891,7 +1897,7 @@ Pass: Output contains `PE_1-PE_2-if` and `level-1` and `MD5`
 | LDP IGP SYNC Status              |                   Not Configured |
 | IP Interface Address(es)         |                    172.16.1.1/30 |
 | IPv6 Interface Address(es)       |                    fc00::600/127 |
-|                                  |      fe80::e00:2fff:fe0f:4af6/64 |
+|                                  |      fe80::e00:e7ff:fe6e:d2f6/64 |
 | Level Index                      |                          level-1 |
 |    Circuit ID                    |                0172.0016.0001.02 |
 |    Active Adjacencies            |                                1 |
@@ -1899,7 +1905,7 @@ Pass: Output contains `PE_1-PE_2-if` and `level-1` and `MD5`
 |    Metric (Narrow/Wide)          |                            10/10 |
 |    Admin Tag                     |                                - |
 |    Protocol Oper State           |                               up |
-|    Next Hello                    |                        8 seconds |
+|    Next Hello                    |                        1 seconds |
 |    Hello Interval                |                       10 seconds |
 |    Hello Multiplier              |                                3 |
 |    Authentication                |                              MD5 |
@@ -1918,7 +1924,7 @@ Pass: Output contains `PE_1-PE_2-if` and `level-1` and `MD5`
 | LDP IGP SYNC Status              |                   Not Configured |
 | IP Interface Address(es)         |                    172.16.0.1/32 |
 | IPv6 Interface Address(es)       |                      fc00::1/128 |
-|                                  |      fe80::e00:2fff:fe0f:4af6/64 |
+|                                  |      fe80::e00:e7ff:fe6e:d2f6/64 |
 | Level Index                      |                          level-1 |
 |    Circuit ID                    |                0172.0016.0001.01 |
 |    Active Adjacencies            |                                0 |
@@ -1963,7 +1969,7 @@ Pass: Output contains `PE_1-PE_2-if` and `level-1` and `MD5`
 | LDP IGP SYNC Status              |                   Not Configured |
 | IP Interface Address(es)         |                    172.16.1.2/30 |
 | IPv6 Interface Address(es)       |                    fc00::601/127 |
-|                                  |      fe80::e00:e1ff:fed6:83f6/64 |
+|                                  |      fe80::e00:19ff:fea3:bff6/64 |
 | Level Index                      |                          level-1 |
 |    Circuit ID                    |                0172.0016.0002.02 |
 |    Active Adjacencies            |                                1 |
@@ -1971,7 +1977,7 @@ Pass: Output contains `PE_1-PE_2-if` and `level-1` and `MD5`
 |    Metric (Narrow/Wide)          |                            10/10 |
 |    Admin Tag                     |                                - |
 |    Protocol Oper State           |                               up |
-|    Next Hello                    |                        9 seconds |
+|    Next Hello                    |                        2 seconds |
 |    Hello Interval                |                       10 seconds |
 |    Hello Multiplier              |                                3 |
 |    Authentication                |                              MD5 |
@@ -1990,7 +1996,7 @@ Pass: Output contains `PE_1-PE_2-if` and `level-1` and `MD5`
 | LDP IGP SYNC Status              |                   Not Configured |
 | IP Interface Address(es)         |                    172.16.0.2/32 |
 | IPv6 Interface Address(es)       |                      fc00::2/128 |
-|                                  |      fe80::e00:e1ff:fed6:83f6/64 |
+|                                  |      fe80::e00:19ff:fea3:bff6/64 |
 | Level Index                      |                          level-1 |
 |    Circuit ID                    |                0172.0016.0002.01 |
 |    Active Adjacencies            |                                0 |
@@ -2025,7 +2031,7 @@ Pass: Output contains `0172.0016.0002` and `Up`
 | Neighbor |                        |                  |                |       |   Hold   |      |          |
 |   Type   |       System ID        |    Interface     |      SNPA      | State | Time (s) | Type | Protocol |
 +----------+------------------------+------------------+----------------+-------+----------+------+----------+
-|   P2P    |     0172.0016.0002     |   PE_1-PE_2-if   | 0c00.e1d6.83f6 |    Up |       29 |  L1  |  IS-IS   |
+|   P2P    |     0172.0016.0002     |   PE_1-PE_2-if   | 0c00.19a3.bff6 |    Up |       21 |  L1  |  IS-IS   |
 +----------+------------------------+------------------+----------------+-------+----------+------+----------+
 ```
 
@@ -2047,7 +2053,7 @@ Pass: Output contains `0172.0016.0001` and `Up`
 | Neighbor |                        |                  |                |       |   Hold   |      |          |
 |   Type   |       System ID        |    Interface     |      SNPA      | State | Time (s) | Type | Protocol |
 +----------+------------------------+------------------+----------------+-------+----------+------+----------+
-|   P2P    |     0172.0016.0001     |   PE_1-PE_2-if   | 0c00.2f0f.4af6 |    Up |       27 |  L1  |  IS-IS   |
+|   P2P    |     0172.0016.0001     |   PE_1-PE_2-if   | 0c00.e76e.d2f6 |    Up |       20 |  L1  |  IS-IS   |
 +----------+------------------------+------------------+----------------+-------+----------+------+----------+
 ```
 
@@ -2072,11 +2078,11 @@ Codes:
 
  Type 'Ctrl+C' to abort
 
-! seq_num = 1  RTT = 1.92 ms  TTL = 255
-! seq_num = 2  RTT = 2.87 ms  TTL = 255
-! seq_num = 3  RTT = 2.28 ms  TTL = 255
+! seq_num = 1  RTT = 1.55 ms  TTL = 255
+! seq_num = 2  RTT = 2.47 ms  TTL = 255
+! seq_num = 3  RTT = 1.87 ms  TTL = 255
 Success Rate is 100.00 percent (3/3)
-Round-trip min/avg/max = 1.92/2.36/2.87
+Round-trip min/avg/max = 1.55/1.96/2.47
 ```
 
 </details>
@@ -2100,11 +2106,11 @@ Codes:
 
  Type 'Ctrl+C' to abort
 
-! seq_num = 1  RTT = 2.00 ms  TTL = 255
-! seq_num = 2  RTT = 2.94 ms  TTL = 255
-! seq_num = 3  RTT = 2.04 ms  TTL = 255
+! seq_num = 1  RTT = 1.45 ms  TTL = 255
+! seq_num = 2  RTT = 1.59 ms  TTL = 255
+! seq_num = 3  RTT = 2.29 ms  TTL = 255
 Success Rate is 100.00 percent (3/3)
-Round-trip min/avg/max = 2.00/2.33/2.94
+Round-trip min/avg/max = 1.45/1.78/2.29
 ```
 
 </details>
@@ -2172,6 +2178,14 @@ system config hostname CE_1
 ```saos
 # Preloaded start
 system config hostname CE_2
+# Preloaded end
+```
+
+#### CE_3
+
+```saos
+# Preloaded start
+system config hostname CE_3
 # Preloaded end
 ```
 

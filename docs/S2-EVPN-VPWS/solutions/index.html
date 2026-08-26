@@ -228,6 +228,11 @@ system config hostname CE_1
 system config hostname CE_2
 # Preloaded end
 </code></pre>
+<h3 id="ce_3">CE_3</h3>
+<pre><code class="language-saos"># Preloaded start
+system config hostname CE_3
+# Preloaded end
+</code></pre>
 <h2 id="solution-for-task-1">Solution for Task 1</h2>
 <p>No configuration commands; this is a verification-only task.</p>
 <h2 id="solution-for-task-2">Solution for Task 2</h2>
@@ -333,7 +338,7 @@ evpn evpn-instances evpn-instance 102 vpn-target 0:102:102 route-target-type bot
 # Task 4 end
 </code></pre>
 <h2 id="solution-for-task-5">Solution for Task 5</h2>
-<h3 id="ce_3">CE_1</h3>
+<h3 id="ce_4">CE_1</h3>
 <pre><code class="language-saos"># Task 5 start
 fds fd CE_1-CE_2-FD mode vpls
 oc-if:interfaces interface CE_1-CE_2-if config mtu 1500 name CE_1-CE_2-if type ip
@@ -345,7 +350,7 @@ fps fp CE_1-CE_2-FP egress-l2-transform push-vid-105 vlan-stack 1 push-tpid tpid
 # Task 5 end
 </code></pre>
 <h2 id="solution-for-task-6">Solution for Task 6</h2>
-<h3 id="ce_4">CE_2</h3>
+<h3 id="ce_5">CE_2</h3>
 <pre><code class="language-saos"># Task 6 start
 fds fd CE_1-CE_2-FD mode vpls
 oc-if:interfaces interface CE_1-CE_2-if config mtu 1500 name CE_1-CE_2-if type ip

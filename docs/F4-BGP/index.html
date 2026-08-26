@@ -114,6 +114,8 @@
     </li>
     <li class="toctree-l4"><a class="reference internal" href="#ce_2">CE_2</a>
     </li>
+    <li class="toctree-l4"><a class="reference internal" href="#ce_3">CE_3</a>
+    </li>
         </ul>
     </li>
     <li class="toctree-l3"><a class="reference internal" href="#solution-for-task-1">Solution for Task 1</a>
@@ -252,6 +254,7 @@ not add LDP. By the end of this lab you will be able to:</p>
 <li><a href="configs/PE_3.cfg.partial">PE_3.cfg.partial</a></li>
 <li><a href="configs/CE_1.cfg.partial">CE_1.cfg.partial</a></li>
 <li><a href="configs/CE_2.cfg.partial">CE_2.cfg.partial</a></li>
+<li><a href="configs/CE_3.cfg.partial">CE_3.cfg.partial</a></li>
 </ul>
 <h3 id="containerlab-topology">Containerlab topology</h3>
 <p>Download the topology file: <a href="topo.clab.yml"><code>topo.clab.yml</code></a></p>
@@ -285,13 +288,18 @@ topology:
       labels:
         lab-state: unused
       startup-config: configs/CE_2.cfg.partial
+    CE_3:
+      type: '3984'
+      labels:
+        lab-state: unused
+      startup-config: configs/CE_3.cfg.partial
   links:
   - endpoints: [ &quot;PE_1:1&quot;, &quot;PE_2:1&quot; ]
   - endpoints: [ &quot;PE_1:2&quot;, &quot;CE_1:1&quot; ]
   - endpoints: [ &quot;PE_2:2&quot;, &quot;CE_2:1&quot; ]
   - endpoints: [ &quot;PE_2:4&quot;, &quot;PE_3:1&quot; ]
   - endpoints: [ &quot;PE_1:4&quot;, &quot;PE_3:3&quot; ]
-  - endpoints: [ &quot;CE_2:2&quot;, &quot;PE_3:2&quot; ]
+  - endpoints: [ &quot;CE_3:1&quot;, &quot;PE_3:2&quot; ]
 </code></pre>
 <h3 id="start-from-checkpoint">Start from checkpoint</h3>
 <pre><code class="language-bash">LAB=F4-BGP
@@ -524,7 +532,7 @@ error, or nothing at all?</p>
 |                                             | Remote | Peer     | Time       | Table   | Pkt      | Pkt        | Reset      | Prefix   | Prefix |             |
 | Peer                                        | AS     | Type     | (hh:mm:ss) | Version | Count    | Count      | (hh:mm:ss) | Count    | Count  | State       |
 +---------------------------------------------+--------+----------+------------+---------+----------+------------+------------+----------+--------+-------------+
-| 172.16.0.2                                  | 65032  | internal | 00:00:21   | 2       | 5        | 5          | 00:00:21   | 1        | 1      | Established |
+| 172.16.0.2                                  | 65032  | internal | 00:00:19   | 2       | 6        | 7          | 00:00:24   | 1        | 1      | Established |
 +---------------------------------------------+--------+----------+------------+---------+----------+------------+------------+----------+--------+-------------+
 </code></pre>
 
@@ -545,24 +553,26 @@ error, or nothing at all?</p>
 | Peer                                  | 172.16.0.2                                           |
 | Remote AS                             | 65032                                                |
 | Remote Router ID                      | 172.16.0.2                                           |
-| Received Pkt Count                    | 5                                                    |
-| Advertised Pkt Count                  | 5                                                    |
+| Received Pkt Count                    | 6                                                    |
+| Advertised Pkt Count                  | 7                                                    |
 | Next Hop                              | 172.16.0.1                                           |
 | Next Hop Global                       | fc00::1                                              |
 | Next Hop Local                        | ::                                                   |
-| Remote Port                           | 44183                                                |
+| Remote Port                           | 36005                                                |
 | Remote Address                        | 172.16.0.2                                           |
 | Local Port                            | 179                                                  |
 | Connections Established               | 2                                                    |
 | Connections Dropped                   | 1                                                    |
 | Open Msg Received                     | 1                                                    |
-| Open Msg Sent                         | 1                                                    |
+| Open Msg Sent                         | 2                                                    |
 | Update Msg Received                   | 4                                                    |
 | Update Msg Sent                       | 4                                                    |
-| Last Reset (hh:mm:ss)                 | 00:00:21                                             |
+| Keepalives Received                   | 1                                                    |
+| Keepalives Sent                       | 1                                                    |
+| Last Reset (hh:mm:ss)                 | 00:00:25                                             |
 | Connection                            | non shared network                                   |
-| Up Time (hh:mm:ss)                    | 00:00:21                                             |
-| Read Time (hh:mm:ss)                  | 00:00:21                                             |
+| Up Time (hh:mm:ss)                    | 00:00:20                                             |
+| Read Time (hh:mm:ss)                  | 00:00:20                                             |
 | Peer Type                             | internal                                             |
 | Notifications Sent                    | 1                                                    |
 | Notification Direction                | sent                                                 |
@@ -587,16 +597,16 @@ error, or nothing at all?</p>
 | Peer Restarting                       | false                                                |
 | Connect Retry Interval (s)            | 120                                                  |
 | Last Reset Information                |                                                      |
-| Last Update Read (s)                  | 11                                                   |
-| Last Update Read Before Reset (s)     | 0                                                    |
-| Last Write (s)                        | 11                                                   |
+| Last Update Read (s)                  | 10                                                   |
+| Last Update Read Before Reset (s)     | 31                                                   |
+| Last Write (s)                        | 10                                                   |
 | Last Written (bytes)                  | 23                                                   |
-| Second Last Write (s)                 | 11                                                   |
+| Second Last Write (s)                 | 10                                                   |
 | Second Last Written (bytes)           | 56                                                   |
-| Last Write Before Reset (s)           | 21                                                   |
-| Second Last Write Before Reset (s)    | 32                                                   |
-| Current Holdtimer Reset (s)           | 11                                                   |
-| Last Holdtimer Reset (s)              | 0                                                    |
+| Last Write Before Reset (s)           | 31                                                   |
+| Second Last Write Before Reset (s)    | 42                                                   |
+| Current Holdtimer Reset (s)           | 10                                                   |
+| Last Holdtimer Reset (s)              | 31                                                   |
 | Lockout                               | Disabled                                             |
 | Local AS                              | -                                                    |
 | Last MD5 Failure Reason               | -                                                    |
@@ -764,7 +774,7 @@ error, or nothing at all?</p>
 |                                             | Remote | Peer     | Time       | Table   | Pkt      | Pkt        | Reset      | Prefix   | Prefix |             |
 | Peer                                        | AS     | Type     | (hh:mm:ss) | Version | Count    | Count      | (hh:mm:ss) | Count    | Count  | State       |
 +---------------------------------------------+--------+----------+------------+---------+----------+------------+------------+----------+--------+-------------+
-| 172.16.0.1                                  | 65032  | internal | 00:00:22   | 2       | 6        | 6          | 00:00:27   | 1        | 1      | Established |
+| 172.16.0.1                                  | 65032  | internal | 00:00:21   | 2       | 6        | 6          | 00:00:26   | 1        | 1      | Established |
 +---------------------------------------------+--------+----------+------------+---------+----------+------------+------------+----------+--------+-------------+
 </code></pre>
 
@@ -792,7 +802,7 @@ error, or nothing at all?</p>
 | Next Hop Local                        | ::                                                   |
 | Remote Port                           | 179                                                  |
 | Remote Address                        | 172.16.0.1                                           |
-| Local Port                            | 44183                                                |
+| Local Port                            | 36005                                                |
 | Connections Established               | 2                                                    |
 | Connections Dropped                   | 1                                                    |
 | Open Msg Received                     | 1                                                    |
@@ -801,10 +811,10 @@ error, or nothing at all?</p>
 | Update Msg Sent                       | 4                                                    |
 | Keepalives Received                   | 1                                                    |
 | Keepalives Sent                       | 1                                                    |
-| Last Reset (hh:mm:ss)                 | 00:00:27                                             |
+| Last Reset (hh:mm:ss)                 | 00:00:26                                             |
 | Connection                            | non shared network                                   |
-| Up Time (hh:mm:ss)                    | 00:00:22                                             |
-| Read Time (hh:mm:ss)                  | 00:00:22                                             |
+| Up Time (hh:mm:ss)                    | 00:00:21                                             |
+| Read Time (hh:mm:ss)                  | 00:00:21                                             |
 | Peer Type                             | internal                                             |
 | Notifications Received                | 1                                                    |
 | Notification Direction                | received                                             |
@@ -829,16 +839,16 @@ error, or nothing at all?</p>
 | Peer Restarting                       | false                                                |
 | Connect Retry Interval (s)            | 120                                                  |
 | Last Reset Information                |                                                      |
-| Last Update Read (s)                  | 12                                                   |
-| Last Update Read Before Reset (s)     | 27                                                   |
-| Last Write (s)                        | 12                                                   |
+| Last Update Read (s)                  | 11                                                   |
+| Last Update Read Before Reset (s)     | 26                                                   |
+| Last Write (s)                        | 11                                                   |
 | Last Written (bytes)                  | 23                                                   |
-| Second Last Write (s)                 | 12                                                   |
+| Second Last Write (s)                 | 11                                                   |
 | Second Last Written (bytes)           | 56                                                   |
-| Last Write Before Reset (s)           | 34                                                   |
+| Last Write Before Reset (s)           | 32                                                   |
 | Second Last Write Before Reset (s)    | 0                                                    |
-| Current Holdtimer Reset (s)           | 12                                                   |
-| Last Holdtimer Reset (s)              | 27                                                   |
+| Current Holdtimer Reset (s)           | 11                                                   |
+| Last Holdtimer Reset (s)              | 26                                                   |
 | Lockout                               | Disabled                                             |
 | Local AS                              | -                                                    |
 | Last MD5 Failure Reason               | -                                                    |
@@ -1069,24 +1079,26 @@ would the peer detail show on each side?</p>
 | Peer                                  | 172.16.0.2                                           |
 | Remote AS                             | 65032                                                |
 | Remote Router ID                      | 172.16.0.2                                           |
-| Received Pkt Count                    | 5                                                    |
-| Advertised Pkt Count                  | 5                                                    |
+| Received Pkt Count                    | 6                                                    |
+| Advertised Pkt Count                  | 7                                                    |
 | Next Hop                              | 172.16.0.1                                           |
 | Next Hop Global                       | fc00::1                                              |
 | Next Hop Local                        | ::                                                   |
-| Remote Port                           | 44183                                                |
+| Remote Port                           | 36005                                                |
 | Remote Address                        | 172.16.0.2                                           |
 | Local Port                            | 179                                                  |
 | Connections Established               | 2                                                    |
 | Connections Dropped                   | 1                                                    |
 | Open Msg Received                     | 1                                                    |
-| Open Msg Sent                         | 1                                                    |
+| Open Msg Sent                         | 2                                                    |
 | Update Msg Received                   | 4                                                    |
 | Update Msg Sent                       | 4                                                    |
-| Last Reset (hh:mm:ss)                 | 00:00:24                                             |
+| Keepalives Received                   | 1                                                    |
+| Keepalives Sent                       | 1                                                    |
+| Last Reset (hh:mm:ss)                 | 00:00:27                                             |
 | Connection                            | non shared network                                   |
-| Up Time (hh:mm:ss)                    | 00:00:24                                             |
-| Read Time (hh:mm:ss)                  | 00:00:24                                             |
+| Up Time (hh:mm:ss)                    | 00:00:22                                             |
+| Read Time (hh:mm:ss)                  | 00:00:22                                             |
 | Peer Type                             | internal                                             |
 | Notifications Sent                    | 1                                                    |
 | Notification Direction                | sent                                                 |
@@ -1111,16 +1123,16 @@ would the peer detail show on each side?</p>
 | Peer Restarting                       | false                                                |
 | Connect Retry Interval (s)            | 120                                                  |
 | Last Reset Information                |                                                      |
-| Last Update Read (s)                  | 14                                                   |
-| Last Update Read Before Reset (s)     | 0                                                    |
-| Last Write (s)                        | 14                                                   |
+| Last Update Read (s)                  | 12                                                   |
+| Last Update Read Before Reset (s)     | 33                                                   |
+| Last Write (s)                        | 12                                                   |
 | Last Written (bytes)                  | 23                                                   |
-| Second Last Write (s)                 | 14                                                   |
+| Second Last Write (s)                 | 12                                                   |
 | Second Last Written (bytes)           | 56                                                   |
-| Last Write Before Reset (s)           | 24                                                   |
-| Second Last Write Before Reset (s)    | 35                                                   |
-| Current Holdtimer Reset (s)           | 14                                                   |
-| Last Holdtimer Reset (s)              | 0                                                    |
+| Last Write Before Reset (s)           | 33                                                   |
+| Second Last Write Before Reset (s)    | 44                                                   |
+| Current Holdtimer Reset (s)           | 12                                                   |
+| Last Holdtimer Reset (s)              | 33                                                   |
 | Lockout                               | Disabled                                             |
 | Local AS                              | -                                                    |
 | Last MD5 Failure Reason               | -                                                    |
@@ -1296,7 +1308,7 @@ would the peer detail show on each side?</p>
 | Next Hop Local                        | ::                                                   |
 | Remote Port                           | 179                                                  |
 | Remote Address                        | 172.16.0.1                                           |
-| Local Port                            | 44183                                                |
+| Local Port                            | 36005                                                |
 | Connections Established               | 2                                                    |
 | Connections Dropped                   | 1                                                    |
 | Open Msg Received                     | 1                                                    |
@@ -1305,10 +1317,10 @@ would the peer detail show on each side?</p>
 | Update Msg Sent                       | 4                                                    |
 | Keepalives Received                   | 1                                                    |
 | Keepalives Sent                       | 1                                                    |
-| Last Reset (hh:mm:ss)                 | 00:00:30                                             |
+| Last Reset (hh:mm:ss)                 | 00:00:29                                             |
 | Connection                            | non shared network                                   |
-| Up Time (hh:mm:ss)                    | 00:00:25                                             |
-| Read Time (hh:mm:ss)                  | 00:00:25                                             |
+| Up Time (hh:mm:ss)                    | 00:00:24                                             |
+| Read Time (hh:mm:ss)                  | 00:00:24                                             |
 | Peer Type                             | internal                                             |
 | Notifications Received                | 1                                                    |
 | Notification Direction                | received                                             |
@@ -1333,16 +1345,16 @@ would the peer detail show on each side?</p>
 | Peer Restarting                       | false                                                |
 | Connect Retry Interval (s)            | 120                                                  |
 | Last Reset Information                |                                                      |
-| Last Update Read (s)                  | 15                                                   |
-| Last Update Read Before Reset (s)     | 30                                                   |
-| Last Write (s)                        | 15                                                   |
+| Last Update Read (s)                  | 14                                                   |
+| Last Update Read Before Reset (s)     | 29                                                   |
+| Last Write (s)                        | 14                                                   |
 | Last Written (bytes)                  | 23                                                   |
-| Second Last Write (s)                 | 15                                                   |
+| Second Last Write (s)                 | 14                                                   |
 | Second Last Written (bytes)           | 56                                                   |
-| Last Write Before Reset (s)           | 37                                                   |
+| Last Write Before Reset (s)           | 35                                                   |
 | Second Last Write Before Reset (s)    | 0                                                    |
-| Current Holdtimer Reset (s)           | 15                                                   |
-| Last Holdtimer Reset (s)              | 30                                                   |
+| Current Holdtimer Reset (s)           | 14                                                   |
+| Last Holdtimer Reset (s)              | 29                                                   |
 | Lockout                               | Disabled                                             |
 | Local AS                              | -                                                    |
 | Last MD5 Failure Reason               | -                                                    |
@@ -1868,7 +1880,7 @@ routes, the labels in use?</p>
 |                                             | Remote | Peer     | Time       | Table   | Pkt      | Pkt        | Reset      | Prefix   | Prefix |             |
 | Peer                                        | AS     | Type     | (hh:mm:ss) | Version | Count    | Count      | (hh:mm:ss) | Count    | Count  | State       |
 +---------------------------------------------+--------+----------+------------+---------+----------+------------+------------+----------+--------+-------------+
-| 172.16.0.2                                  | 65032  | internal | 00:00:21   | 2       | 5        | 5          | 00:00:21   | 1        | 1      | Established |
+| 172.16.0.2                                  | 65032  | internal | 00:00:19   | 2       | 6        | 7          | 00:00:24   | 1        | 1      | Established |
 +---------------------------------------------+--------+----------+------------+---------+----------+------------+------------+----------+--------+-------------+
 </code></pre>
 
@@ -1889,24 +1901,26 @@ routes, the labels in use?</p>
 | Peer                                  | 172.16.0.2                                           |
 | Remote AS                             | 65032                                                |
 | Remote Router ID                      | 172.16.0.2                                           |
-| Received Pkt Count                    | 5                                                    |
-| Advertised Pkt Count                  | 5                                                    |
+| Received Pkt Count                    | 6                                                    |
+| Advertised Pkt Count                  | 7                                                    |
 | Next Hop                              | 172.16.0.1                                           |
 | Next Hop Global                       | fc00::1                                              |
 | Next Hop Local                        | ::                                                   |
-| Remote Port                           | 44183                                                |
+| Remote Port                           | 36005                                                |
 | Remote Address                        | 172.16.0.2                                           |
 | Local Port                            | 179                                                  |
 | Connections Established               | 2                                                    |
 | Connections Dropped                   | 1                                                    |
 | Open Msg Received                     | 1                                                    |
-| Open Msg Sent                         | 1                                                    |
+| Open Msg Sent                         | 2                                                    |
 | Update Msg Received                   | 4                                                    |
 | Update Msg Sent                       | 4                                                    |
-| Last Reset (hh:mm:ss)                 | 00:00:21                                             |
+| Keepalives Received                   | 1                                                    |
+| Keepalives Sent                       | 1                                                    |
+| Last Reset (hh:mm:ss)                 | 00:00:25                                             |
 | Connection                            | non shared network                                   |
-| Up Time (hh:mm:ss)                    | 00:00:21                                             |
-| Read Time (hh:mm:ss)                  | 00:00:21                                             |
+| Up Time (hh:mm:ss)                    | 00:00:20                                             |
+| Read Time (hh:mm:ss)                  | 00:00:20                                             |
 | Peer Type                             | internal                                             |
 | Notifications Sent                    | 1                                                    |
 | Notification Direction                | sent                                                 |
@@ -1931,16 +1945,16 @@ routes, the labels in use?</p>
 | Peer Restarting                       | false                                                |
 | Connect Retry Interval (s)            | 120                                                  |
 | Last Reset Information                |                                                      |
-| Last Update Read (s)                  | 11                                                   |
-| Last Update Read Before Reset (s)     | 0                                                    |
-| Last Write (s)                        | 11                                                   |
+| Last Update Read (s)                  | 10                                                   |
+| Last Update Read Before Reset (s)     | 31                                                   |
+| Last Write (s)                        | 10                                                   |
 | Last Written (bytes)                  | 23                                                   |
-| Second Last Write (s)                 | 11                                                   |
+| Second Last Write (s)                 | 10                                                   |
 | Second Last Written (bytes)           | 56                                                   |
-| Last Write Before Reset (s)           | 21                                                   |
-| Second Last Write Before Reset (s)    | 32                                                   |
-| Current Holdtimer Reset (s)           | 11                                                   |
-| Last Holdtimer Reset (s)              | 0                                                    |
+| Last Write Before Reset (s)           | 31                                                   |
+| Second Last Write Before Reset (s)    | 42                                                   |
+| Current Holdtimer Reset (s)           | 10                                                   |
+| Last Holdtimer Reset (s)              | 31                                                   |
 | Lockout                               | Disabled                                             |
 | Local AS                              | -                                                    |
 | Last MD5 Failure Reason               | -                                                    |
@@ -2108,7 +2122,7 @@ routes, the labels in use?</p>
 |                                             | Remote | Peer     | Time       | Table   | Pkt      | Pkt        | Reset      | Prefix   | Prefix |             |
 | Peer                                        | AS     | Type     | (hh:mm:ss) | Version | Count    | Count      | (hh:mm:ss) | Count    | Count  | State       |
 +---------------------------------------------+--------+----------+------------+---------+----------+------------+------------+----------+--------+-------------+
-| 172.16.0.1                                  | 65032  | internal | 00:00:22   | 2       | 6        | 6          | 00:00:27   | 1        | 1      | Established |
+| 172.16.0.1                                  | 65032  | internal | 00:00:21   | 2       | 6        | 6          | 00:00:26   | 1        | 1      | Established |
 +---------------------------------------------+--------+----------+------------+---------+----------+------------+------------+----------+--------+-------------+
 </code></pre>
 
@@ -2136,7 +2150,7 @@ routes, the labels in use?</p>
 | Next Hop Local                        | ::                                                   |
 | Remote Port                           | 179                                                  |
 | Remote Address                        | 172.16.0.1                                           |
-| Local Port                            | 44183                                                |
+| Local Port                            | 36005                                                |
 | Connections Established               | 2                                                    |
 | Connections Dropped                   | 1                                                    |
 | Open Msg Received                     | 1                                                    |
@@ -2145,10 +2159,10 @@ routes, the labels in use?</p>
 | Update Msg Sent                       | 4                                                    |
 | Keepalives Received                   | 1                                                    |
 | Keepalives Sent                       | 1                                                    |
-| Last Reset (hh:mm:ss)                 | 00:00:27                                             |
+| Last Reset (hh:mm:ss)                 | 00:00:26                                             |
 | Connection                            | non shared network                                   |
-| Up Time (hh:mm:ss)                    | 00:00:22                                             |
-| Read Time (hh:mm:ss)                  | 00:00:22                                             |
+| Up Time (hh:mm:ss)                    | 00:00:21                                             |
+| Read Time (hh:mm:ss)                  | 00:00:21                                             |
 | Peer Type                             | internal                                             |
 | Notifications Received                | 1                                                    |
 | Notification Direction                | received                                             |
@@ -2173,16 +2187,16 @@ routes, the labels in use?</p>
 | Peer Restarting                       | false                                                |
 | Connect Retry Interval (s)            | 120                                                  |
 | Last Reset Information                |                                                      |
-| Last Update Read (s)                  | 12                                                   |
-| Last Update Read Before Reset (s)     | 27                                                   |
-| Last Write (s)                        | 12                                                   |
+| Last Update Read (s)                  | 11                                                   |
+| Last Update Read Before Reset (s)     | 26                                                   |
+| Last Write (s)                        | 11                                                   |
 | Last Written (bytes)                  | 23                                                   |
-| Second Last Write (s)                 | 12                                                   |
+| Second Last Write (s)                 | 11                                                   |
 | Second Last Written (bytes)           | 56                                                   |
-| Last Write Before Reset (s)           | 34                                                   |
+| Last Write Before Reset (s)           | 32                                                   |
 | Second Last Write Before Reset (s)    | 0                                                    |
-| Current Holdtimer Reset (s)           | 12                                                   |
-| Last Holdtimer Reset (s)              | 27                                                   |
+| Current Holdtimer Reset (s)           | 11                                                   |
+| Last Holdtimer Reset (s)              | 26                                                   |
 | Lockout                               | Disabled                                             |
 | Local AS                              | -                                                    |
 | Last MD5 Failure Reason               | -                                                    |
@@ -2352,24 +2366,26 @@ routes, the labels in use?</p>
 | Peer                                  | 172.16.0.2                                           |
 | Remote AS                             | 65032                                                |
 | Remote Router ID                      | 172.16.0.2                                           |
-| Received Pkt Count                    | 5                                                    |
-| Advertised Pkt Count                  | 5                                                    |
+| Received Pkt Count                    | 6                                                    |
+| Advertised Pkt Count                  | 7                                                    |
 | Next Hop                              | 172.16.0.1                                           |
 | Next Hop Global                       | fc00::1                                              |
 | Next Hop Local                        | ::                                                   |
-| Remote Port                           | 44183                                                |
+| Remote Port                           | 36005                                                |
 | Remote Address                        | 172.16.0.2                                           |
 | Local Port                            | 179                                                  |
 | Connections Established               | 2                                                    |
 | Connections Dropped                   | 1                                                    |
 | Open Msg Received                     | 1                                                    |
-| Open Msg Sent                         | 1                                                    |
+| Open Msg Sent                         | 2                                                    |
 | Update Msg Received                   | 4                                                    |
 | Update Msg Sent                       | 4                                                    |
-| Last Reset (hh:mm:ss)                 | 00:00:24                                             |
+| Keepalives Received                   | 1                                                    |
+| Keepalives Sent                       | 1                                                    |
+| Last Reset (hh:mm:ss)                 | 00:00:27                                             |
 | Connection                            | non shared network                                   |
-| Up Time (hh:mm:ss)                    | 00:00:24                                             |
-| Read Time (hh:mm:ss)                  | 00:00:24                                             |
+| Up Time (hh:mm:ss)                    | 00:00:22                                             |
+| Read Time (hh:mm:ss)                  | 00:00:22                                             |
 | Peer Type                             | internal                                             |
 | Notifications Sent                    | 1                                                    |
 | Notification Direction                | sent                                                 |
@@ -2394,16 +2410,16 @@ routes, the labels in use?</p>
 | Peer Restarting                       | false                                                |
 | Connect Retry Interval (s)            | 120                                                  |
 | Last Reset Information                |                                                      |
-| Last Update Read (s)                  | 14                                                   |
-| Last Update Read Before Reset (s)     | 0                                                    |
-| Last Write (s)                        | 14                                                   |
+| Last Update Read (s)                  | 12                                                   |
+| Last Update Read Before Reset (s)     | 33                                                   |
+| Last Write (s)                        | 12                                                   |
 | Last Written (bytes)                  | 23                                                   |
-| Second Last Write (s)                 | 14                                                   |
+| Second Last Write (s)                 | 12                                                   |
 | Second Last Written (bytes)           | 56                                                   |
-| Last Write Before Reset (s)           | 24                                                   |
-| Second Last Write Before Reset (s)    | 35                                                   |
-| Current Holdtimer Reset (s)           | 14                                                   |
-| Last Holdtimer Reset (s)              | 0                                                    |
+| Last Write Before Reset (s)           | 33                                                   |
+| Second Last Write Before Reset (s)    | 44                                                   |
+| Current Holdtimer Reset (s)           | 12                                                   |
+| Last Holdtimer Reset (s)              | 33                                                   |
 | Lockout                               | Disabled                                             |
 | Local AS                              | -                                                    |
 | Last MD5 Failure Reason               | -                                                    |
@@ -2579,7 +2595,7 @@ routes, the labels in use?</p>
 | Next Hop Local                        | ::                                                   |
 | Remote Port                           | 179                                                  |
 | Remote Address                        | 172.16.0.1                                           |
-| Local Port                            | 44183                                                |
+| Local Port                            | 36005                                                |
 | Connections Established               | 2                                                    |
 | Connections Dropped                   | 1                                                    |
 | Open Msg Received                     | 1                                                    |
@@ -2588,10 +2604,10 @@ routes, the labels in use?</p>
 | Update Msg Sent                       | 4                                                    |
 | Keepalives Received                   | 1                                                    |
 | Keepalives Sent                       | 1                                                    |
-| Last Reset (hh:mm:ss)                 | 00:00:30                                             |
+| Last Reset (hh:mm:ss)                 | 00:00:29                                             |
 | Connection                            | non shared network                                   |
-| Up Time (hh:mm:ss)                    | 00:00:25                                             |
-| Read Time (hh:mm:ss)                  | 00:00:25                                             |
+| Up Time (hh:mm:ss)                    | 00:00:24                                             |
+| Read Time (hh:mm:ss)                  | 00:00:24                                             |
 | Peer Type                             | internal                                             |
 | Notifications Received                | 1                                                    |
 | Notification Direction                | received                                             |
@@ -2616,16 +2632,16 @@ routes, the labels in use?</p>
 | Peer Restarting                       | false                                                |
 | Connect Retry Interval (s)            | 120                                                  |
 | Last Reset Information                |                                                      |
-| Last Update Read (s)                  | 15                                                   |
-| Last Update Read Before Reset (s)     | 30                                                   |
-| Last Write (s)                        | 15                                                   |
+| Last Update Read (s)                  | 14                                                   |
+| Last Update Read Before Reset (s)     | 29                                                   |
+| Last Write (s)                        | 14                                                   |
 | Last Written (bytes)                  | 23                                                   |
-| Second Last Write (s)                 | 15                                                   |
+| Second Last Write (s)                 | 14                                                   |
 | Second Last Written (bytes)           | 56                                                   |
-| Last Write Before Reset (s)           | 37                                                   |
+| Last Write Before Reset (s)           | 35                                                   |
 | Second Last Write Before Reset (s)    | 0                                                    |
-| Current Holdtimer Reset (s)           | 15                                                   |
-| Last Holdtimer Reset (s)              | 30                                                   |
+| Current Holdtimer Reset (s)           | 14                                                   |
+| Last Holdtimer Reset (s)              | 29                                                   |
 | Lockout                               | Disabled                                             |
 | Local AS                              | -                                                    |
 | Last MD5 Failure Reason               | -                                                    |
@@ -3015,6 +3031,11 @@ system config hostname CE_1
 <h4 id="ce_2">CE_2</h4>
 <pre><code class="language-saos"># Preloaded start
 system config hostname CE_2
+# Preloaded end
+</code></pre>
+<h4 id="ce_3">CE_3</h4>
+<pre><code class="language-saos"># Preloaded start
+system config hostname CE_3
 # Preloaded end
 </code></pre>
 <h3 id="solution-for-task-1">Solution for Task 1</h3>

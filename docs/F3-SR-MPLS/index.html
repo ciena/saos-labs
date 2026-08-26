@@ -112,6 +112,8 @@
     </li>
     <li class="toctree-l4"><a class="reference internal" href="#ce_2">CE_2</a>
     </li>
+    <li class="toctree-l4"><a class="reference internal" href="#ce_3">CE_3</a>
+    </li>
         </ul>
     </li>
     <li class="toctree-l3"><a class="reference internal" href="#solution-for-task-1">Solution for Task 1</a>
@@ -227,6 +229,7 @@ nodes and links are reserved for later Services labs.</p>
 <li><a href="configs/PE_3.cfg.partial">PE_3.cfg.partial</a></li>
 <li><a href="configs/CE_1.cfg.partial">CE_1.cfg.partial</a></li>
 <li><a href="configs/CE_2.cfg.partial">CE_2.cfg.partial</a></li>
+<li><a href="configs/CE_3.cfg.partial">CE_3.cfg.partial</a></li>
 </ul>
 <h3 id="containerlab-topology">Containerlab topology</h3>
 <p>Download the topology file: <a href="topo.clab.yml"><code>topo.clab.yml</code></a></p>
@@ -260,13 +263,18 @@ topology:
       labels:
         lab-state: unused
       startup-config: configs/CE_2.cfg.partial
+    CE_3:
+      type: '3984'
+      labels:
+        lab-state: unused
+      startup-config: configs/CE_3.cfg.partial
   links:
   - endpoints: [ &quot;PE_1:1&quot;, &quot;PE_2:1&quot; ]
   - endpoints: [ &quot;PE_1:2&quot;, &quot;CE_1:1&quot; ]
   - endpoints: [ &quot;PE_2:2&quot;, &quot;CE_2:1&quot; ]
   - endpoints: [ &quot;PE_2:4&quot;, &quot;PE_3:1&quot; ]
   - endpoints: [ &quot;PE_1:4&quot;, &quot;PE_3:3&quot; ]
-  - endpoints: [ &quot;CE_2:2&quot;, &quot;PE_3:2&quot; ]
+  - endpoints: [ &quot;CE_3:1&quot;, &quot;PE_3:2&quot; ]
 </code></pre>
 <h3 id="start-from-checkpoint">Start from checkpoint</h3>
 <pre><code class="language-bash">LAB=F3-SR-MPLS
@@ -332,13 +340,13 @@ Codes:
 
  Type 'Ctrl+C' to abort
 
-! seq_num = 1  RTT = 5.00 ms  TTL = 255
-! seq_num = 2  RTT = 2.87 ms  TTL = 255
-! seq_num = 3  RTT = 2.73 ms  TTL = 255
-! seq_num = 4  RTT = 3.12 ms  TTL = 255
-! seq_num = 5  RTT = 2.78 ms  TTL = 255
+! seq_num = 1  RTT = 2.42 ms  TTL = 255
+! seq_num = 2  RTT = 2.60 ms  TTL = 255
+! seq_num = 3  RTT = 2.38 ms  TTL = 255
+! seq_num = 4  RTT = 2.95 ms  TTL = 255
+! seq_num = 5  RTT = 3.27 ms  TTL = 255
 Success Rate is 100.00 percent (5/5)
-Round-trip min/avg/max = 2.73/3.30/5.00
+Round-trip min/avg/max = 2.38/2.72/3.27
 </code></pre>
 
 
@@ -359,13 +367,13 @@ Codes:
 
  Type 'Ctrl+C' to abort
 
-! seq_num = 1  RTT = 2.49 ms  TTL = 255
-! seq_num = 2  RTT = 3.66 ms  TTL = 255
-! seq_num = 3  RTT = 3.91 ms  TTL = 255
-! seq_num = 4  RTT = 3.99 ms  TTL = 255
-! seq_num = 5  RTT = 3.20 ms  TTL = 255
+! seq_num = 1  RTT = 3.13 ms  TTL = 255
+! seq_num = 2  RTT = 2.88 ms  TTL = 255
+! seq_num = 3  RTT = 3.63 ms  TTL = 255
+! seq_num = 4  RTT = 3.43 ms  TTL = 255
+! seq_num = 5  RTT = 4.32 ms  TTL = 255
 Success Rate is 100.00 percent (5/5)
-Round-trip min/avg/max = 2.49/3.45/3.99
+Round-trip min/avg/max = 2.88/3.48/4.32
 </code></pre>
 
 
@@ -662,7 +670,7 @@ LDP have required a signaling protocol to populate?</p>
 |      |                    | Opaque |          Label          |                  |                 |
 | Code |        FEC         |  ID    |     In     |    Out     |     Out Intf     |     Next Hop    |
 +------+--------------------+--------+------------+------------+------------------+-----------------+
-| i &gt;  | 172.16.0.2/32      | 7      | -          | 3          | PE_1-PE_2-if     | 172.16.1.2      |
+| i &gt;  | 172.16.0.2/32      | 8      | -          | 3          | PE_1-PE_2-if     | 172.16.1.2      |
 +------+--------------------+--------+------------+------------+------------------+-----------------+
 </code></pre>
 
@@ -691,7 +699,7 @@ LDP have required a signaling protocol to populate?</p>
 |      |                    | Opaque |          Label          |                  |                 |
 | Code |        FEC         |  ID    |     In     |    Out     |     Out Intf     |     Next Hop    |
 +------+--------------------+--------+------------+------------+------------------+-----------------+
-| i &gt;  | 172.16.0.1/32      | 8      | -          | 3          | PE_1-PE_2-if     | 172.16.1.1      |
+| i &gt;  | 172.16.0.1/32      | 10     | -          | 3          | PE_1-PE_2-if     | 172.16.1.1      |
 +------+--------------------+--------+------------+------------+------------------+-----------------+
 </code></pre>
 
@@ -713,13 +721,13 @@ Codes:
 
  Type 'Ctrl+C' to abort
 
-! seq_num = 1  RTT = 2.84 ms  TTL = 255
-! seq_num = 2  RTT = 3.69 ms  TTL = 255
-! seq_num = 3  RTT = 3.03 ms  TTL = 255
-! seq_num = 4  RTT = 3.16 ms  TTL = 255
-! seq_num = 5  RTT = 3.61 ms  TTL = 255
+! seq_num = 1  RTT = 2.55 ms  TTL = 255
+! seq_num = 2  RTT = 3.18 ms  TTL = 255
+! seq_num = 3  RTT = 3.04 ms  TTL = 255
+! seq_num = 4  RTT = 2.13 ms  TTL = 255
+! seq_num = 5  RTT = 2.90 ms  TTL = 255
 Success Rate is 100.00 percent (5/5)
-Round-trip min/avg/max = 2.84/3.27/3.69
+Round-trip min/avg/max = 2.13/2.76/3.18
 </code></pre>
 
 
@@ -740,13 +748,13 @@ Codes:
 
  Type 'Ctrl+C' to abort
 
-! seq_num = 1  RTT = 2.96 ms  TTL = 255
-! seq_num = 2  RTT = 2.94 ms  TTL = 255
-! seq_num = 3  RTT = 2.79 ms  TTL = 255
-! seq_num = 4  RTT = 3.10 ms  TTL = 255
-! seq_num = 5  RTT = 3.57 ms  TTL = 255
+! seq_num = 1  RTT = 3.94 ms  TTL = 255
+! seq_num = 2  RTT = 2.60 ms  TTL = 255
+! seq_num = 3  RTT = 2.31 ms  TTL = 255
+! seq_num = 4  RTT = 3.24 ms  TTL = 255
+! seq_num = 5  RTT = 2.42 ms  TTL = 255
 Success Rate is 100.00 percent (5/5)
-Round-trip min/avg/max = 2.79/3.07/3.57
+Round-trip min/avg/max = 2.31/2.90/3.94
 </code></pre>
 
 
@@ -770,13 +778,13 @@ Codes:
 
  Type 'Ctrl+C' to abort
 
-! seq_num = 1  RTT = 5.00 ms  TTL = 255
-! seq_num = 2  RTT = 2.87 ms  TTL = 255
-! seq_num = 3  RTT = 2.73 ms  TTL = 255
-! seq_num = 4  RTT = 3.12 ms  TTL = 255
-! seq_num = 5  RTT = 2.78 ms  TTL = 255
+! seq_num = 1  RTT = 2.42 ms  TTL = 255
+! seq_num = 2  RTT = 2.60 ms  TTL = 255
+! seq_num = 3  RTT = 2.38 ms  TTL = 255
+! seq_num = 4  RTT = 2.95 ms  TTL = 255
+! seq_num = 5  RTT = 3.27 ms  TTL = 255
 Success Rate is 100.00 percent (5/5)
-Round-trip min/avg/max = 2.73/3.30/5.00
+Round-trip min/avg/max = 2.38/2.72/3.27
 </code></pre>
 
 
@@ -797,13 +805,13 @@ Codes:
 
  Type 'Ctrl+C' to abort
 
-! seq_num = 1  RTT = 2.49 ms  TTL = 255
-! seq_num = 2  RTT = 3.66 ms  TTL = 255
-! seq_num = 3  RTT = 3.91 ms  TTL = 255
-! seq_num = 4  RTT = 3.99 ms  TTL = 255
-! seq_num = 5  RTT = 3.20 ms  TTL = 255
+! seq_num = 1  RTT = 3.13 ms  TTL = 255
+! seq_num = 2  RTT = 2.88 ms  TTL = 255
+! seq_num = 3  RTT = 3.63 ms  TTL = 255
+! seq_num = 4  RTT = 3.43 ms  TTL = 255
+! seq_num = 5  RTT = 4.32 ms  TTL = 255
 Success Rate is 100.00 percent (5/5)
-Round-trip min/avg/max = 2.49/3.45/3.99
+Round-trip min/avg/max = 2.88/3.48/4.32
 </code></pre>
 
 
@@ -998,7 +1006,7 @@ Round-trip min/avg/max = 2.49/3.45/3.99
 |      |                    | Opaque |          Label          |                  |                 |
 | Code |        FEC         |  ID    |     In     |    Out     |     Out Intf     |     Next Hop    |
 +------+--------------------+--------+------------+------------+------------------+-----------------+
-| i &gt;  | 172.16.0.2/32      | 7      | -          | 3          | PE_1-PE_2-if     | 172.16.1.2      |
+| i &gt;  | 172.16.0.2/32      | 8      | -          | 3          | PE_1-PE_2-if     | 172.16.1.2      |
 +------+--------------------+--------+------------+------------+------------------+-----------------+
 </code></pre>
 
@@ -1027,7 +1035,7 @@ Round-trip min/avg/max = 2.49/3.45/3.99
 |      |                    | Opaque |          Label          |                  |                 |
 | Code |        FEC         |  ID    |     In     |    Out     |     Out Intf     |     Next Hop    |
 +------+--------------------+--------+------------+------------+------------------+-----------------+
-| i &gt;  | 172.16.0.1/32      | 8      | -          | 3          | PE_1-PE_2-if     | 172.16.1.1      |
+| i &gt;  | 172.16.0.1/32      | 10     | -          | 3          | PE_1-PE_2-if     | 172.16.1.1      |
 +------+--------------------+--------+------------+------------+------------------+-----------------+
 </code></pre>
 
@@ -1049,13 +1057,13 @@ Codes:
 
  Type 'Ctrl+C' to abort
 
-! seq_num = 1  RTT = 2.84 ms  TTL = 255
-! seq_num = 2  RTT = 3.69 ms  TTL = 255
-! seq_num = 3  RTT = 3.03 ms  TTL = 255
-! seq_num = 4  RTT = 3.16 ms  TTL = 255
-! seq_num = 5  RTT = 3.61 ms  TTL = 255
+! seq_num = 1  RTT = 2.55 ms  TTL = 255
+! seq_num = 2  RTT = 3.18 ms  TTL = 255
+! seq_num = 3  RTT = 3.04 ms  TTL = 255
+! seq_num = 4  RTT = 2.13 ms  TTL = 255
+! seq_num = 5  RTT = 2.90 ms  TTL = 255
 Success Rate is 100.00 percent (5/5)
-Round-trip min/avg/max = 2.84/3.27/3.69
+Round-trip min/avg/max = 2.13/2.76/3.18
 </code></pre>
 
 
@@ -1076,13 +1084,13 @@ Codes:
 
  Type 'Ctrl+C' to abort
 
-! seq_num = 1  RTT = 2.96 ms  TTL = 255
-! seq_num = 2  RTT = 2.94 ms  TTL = 255
-! seq_num = 3  RTT = 2.79 ms  TTL = 255
-! seq_num = 4  RTT = 3.10 ms  TTL = 255
-! seq_num = 5  RTT = 3.57 ms  TTL = 255
+! seq_num = 1  RTT = 3.94 ms  TTL = 255
+! seq_num = 2  RTT = 2.60 ms  TTL = 255
+! seq_num = 3  RTT = 2.31 ms  TTL = 255
+! seq_num = 4  RTT = 3.24 ms  TTL = 255
+! seq_num = 5  RTT = 2.42 ms  TTL = 255
 Success Rate is 100.00 percent (5/5)
-Round-trip min/avg/max = 2.79/3.07/3.57
+Round-trip min/avg/max = 2.31/2.90/3.94
 </code></pre>
 
 
@@ -1146,6 +1154,11 @@ system config hostname CE_1
 <h4 id="ce_2">CE_2</h4>
 <pre><code class="language-saos"># Preloaded start
 system config hostname CE_2
+# Preloaded end
+</code></pre>
+<h4 id="ce_3">CE_3</h4>
+<pre><code class="language-saos"># Preloaded start
+system config hostname CE_3
 # Preloaded end
 </code></pre>
 <h3 id="solution-for-task-1">Solution for Task 1</h3>
