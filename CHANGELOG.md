@@ -9,7 +9,7 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/).
 ## 2026-08-26
 
 ### Added
-- **S1 — L3VPN Route Leaking** hands-on lab, the first lab of the Services
+- **S1 — L3VPN** hands-on lab, the first lab of the Services
   track: it starts from the F4 checkpoint (SR-MPLS transport, iBGP with the
   VPNv4 address family) and puts a second L3VPN on the same pair of PEs. Stand
   up `L3VPN_2-vrf` on `PE_1` and `PE_2` as an in-VRF loopback plus its own BGP
