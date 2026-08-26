@@ -12,6 +12,12 @@ By the end of this lab you will be able to:
 - Assign a prefix-SID to each PE loopback
 - Verify the SR-MPLS transport labels and loopback-to-loopback forwarding
 
+## Prerequisites
+
+- Complete F1 and F2, or deploy this lab with its included F2 baseline.
+- Make the SAOS 10x image `vrnetlab/ciena_saos:10-12-00-0228` (release 10.12.00.0228) available to Containerlab.
+- Activate the built-in trial license after deployment.
+
 ## Topology
 
 ![topology](./topo.clab.svg)
@@ -28,15 +34,11 @@ nodes and links are reserved for later Services labs.
 | PE_1 | 172.16.0.1/32 | 172.16.1.1/30 | 1 |
 | PE_2 | 172.16.0.2/32 | 172.16.1.2/30 | 2 |
 
-## Prerequisites
+## Deploy
 
-- Complete F1 and F2, or deploy this lab with its included F2 baseline.
-- Make the SAOS 10x image `vrnetlab/ciena_saos:10-12-00-0228` (release 10.12.00.0228) available to Containerlab.
-- Activate the built-in trial license after deployment.
+### Startup Configs
 
-## Startup Configs
-
-The checkpoint baseline each node boots from. If you are assembling the lab by hand, create a `configs/` folder next to `topo.clab.yml` and copy each file into it before you deploy.
+The checkpoint baseline each node boots from. If you are assembling the lab by hand, create a `configs/` folder next to [`topo.clab.yml`](./topo.clab.yml) and copy each file into it before you deploy.
 
 - [PE_1.cfg.partial](./configs/PE_1.cfg.partial)
 - [PE_2.cfg.partial](./configs/PE_2.cfg.partial)
@@ -44,23 +46,9 @@ The checkpoint baseline each node boots from. If you are assembling the lab by h
 - [CE_1.cfg.partial](./configs/CE_1.cfg.partial)
 - [CE_2.cfg.partial](./configs/CE_2.cfg.partial)
 
-## Deploy
+### Containerlab topology
 
-### Start from checkpoint
-
-```bash
-LAB=F3-SR-MPLS
-cd labs/${LAB}            # from the repo root, or cd into the unpacked directory
-containerlab deploy -t topo.clab.yml
-```
-
-Equivalent invocation from the repo root:
-
-```bash
-containerlab deploy -t "labs/${LAB}/topo.clab.yml"
-```
-
-The lab topology (`topo.clab.yml`):
+Download the topology file: [`topo.clab.yml`](./topo.clab.yml)
 
 ```yaml
 name: F3-SR-MPLS
@@ -100,6 +88,20 @@ topology:
   - endpoints: [ "PE_2:4", "PE_3:1" ]
   - endpoints: [ "PE_1:4", "PE_3:3" ]
   - endpoints: [ "CE_2:2", "PE_3:2" ]
+```
+
+### Start from checkpoint
+
+```bash
+LAB=F3-SR-MPLS
+cd labs/${LAB}            # from the repo root, or cd into the unpacked directory
+containerlab deploy -t topo.clab.yml
+```
+
+Equivalent invocation from the repo root:
+
+```bash
+containerlab deploy -t "labs/${LAB}/topo.clab.yml"
 ```
 
 Connect to the active PEs:

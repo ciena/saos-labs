@@ -10,9 +10,9 @@ Every lab is self-contained and can be followed straight from this guide — no
 repository checkout required. Pick a lab from the menu on the left, then:
 
 1. Read its **Goals**, **Topology**, and **Prerequisites**.
-2. Under **Startup Configs**, copy each linked `*.cfg.partial` into a local
-   `configs/` folder, and save the `topo.clab.yml` shown under **Deploy** next
-   to it.
+2. Under **Deploy**, download the lab's `topo.clab.yml` and each linked
+   `*.cfg.partial`; put the partials in a `configs/` folder next to the
+   topology file.
 3. Run the command in **Deploy**, then work through **Instructions**.
 
 ### Advanced (git)

@@ -60,18 +60,20 @@
     <ul class="current">
     <li class="toctree-l2"><a class="reference internal" href="#goals">Goals</a>
     </li>
+    <li class="toctree-l2"><a class="reference internal" href="#prerequisites">Prerequisites</a>
+    </li>
     <li class="toctree-l2"><a class="reference internal" href="#topology">Topology</a>
         <ul>
     <li class="toctree-l3"><a class="reference internal" href="#ldp-addressing">LDP addressing</a>
     </li>
         </ul>
     </li>
-    <li class="toctree-l2"><a class="reference internal" href="#prerequisites">Prerequisites</a>
-    </li>
-    <li class="toctree-l2"><a class="reference internal" href="#startup-configs">Startup Configs</a>
-    </li>
     <li class="toctree-l2"><a class="reference internal" href="#deploy">Deploy</a>
         <ul>
+    <li class="toctree-l3"><a class="reference internal" href="#startup-configs">Startup Configs</a>
+    </li>
+    <li class="toctree-l3"><a class="reference internal" href="#containerlab-topology">Containerlab topology</a>
+    </li>
     <li class="toctree-l3"><a class="reference internal" href="#start-from-checkpoint">Start from checkpoint</a>
     </li>
         </ul>
@@ -172,6 +174,13 @@ F2 IS-IS baseline and does not require F3 SR-MPLS or F4 BGP.</p>
 <li>Form and verify the LDP adjacency over the IS-IS core link</li>
 <li>Verify label bindings for the PE loopbacks</li>
 </ul>
+<h2 id="prerequisites">Prerequisites</h2>
+<ul>
+<li>Complete F1 and F2, or deploy this lab with its included F2 baseline.</li>
+<li>F3 and F4 are not prerequisites; F5 is the alternative LDP branch.</li>
+<li>Make the SAOS 10x image <code>vrnetlab/ciena_saos:10-12-00-0228</code> (release 10.12.00.0228) available to Containerlab.</li>
+<li>Activate the built-in trial license after deployment.</li>
+</ul>
 <h2 id="topology">Topology</h2>
 <p><img alt="topology" src="topo.clab.svg" /></p>
 <p><img alt="topology detail" src="topo.detail.svg" /></p>
@@ -198,15 +207,9 @@ F2 IS-IS baseline and does not require F3 SR-MPLS or F4 BGP.</p>
 </tr>
 </tbody>
 </table>
-<h2 id="prerequisites">Prerequisites</h2>
-<ul>
-<li>Complete F1 and F2, or deploy this lab with its included F2 baseline.</li>
-<li>F3 and F4 are not prerequisites; F5 is the alternative LDP branch.</li>
-<li>Make the SAOS 10x image <code>vrnetlab/ciena_saos:10-12-00-0228</code> (release 10.12.00.0228) available to Containerlab.</li>
-<li>Activate the built-in trial license after deployment.</li>
-</ul>
-<h2 id="startup-configs">Startup Configs</h2>
-<p>The checkpoint baseline each node boots from. If you are assembling the lab by hand, create a <code>configs/</code> folder next to <code>topo.clab.yml</code> and copy each file into it before you deploy.</p>
+<h2 id="deploy">Deploy</h2>
+<h3 id="startup-configs">Startup Configs</h3>
+<p>The checkpoint baseline each node boots from. If you are assembling the lab by hand, create a <code>configs/</code> folder next to <a href="topo.clab.yml"><code>topo.clab.yml</code></a> and copy each file into it before you deploy.</p>
 <ul>
 <li><a href="configs/PE_1.cfg.partial">PE_1.cfg.partial</a></li>
 <li><a href="configs/PE_2.cfg.partial">PE_2.cfg.partial</a></li>
@@ -214,16 +217,8 @@ F2 IS-IS baseline and does not require F3 SR-MPLS or F4 BGP.</p>
 <li><a href="configs/CE_1.cfg.partial">CE_1.cfg.partial</a></li>
 <li><a href="configs/CE_2.cfg.partial">CE_2.cfg.partial</a></li>
 </ul>
-<h2 id="deploy">Deploy</h2>
-<h3 id="start-from-checkpoint">Start from checkpoint</h3>
-<pre><code class="language-bash">LAB=F5-LDP
-cd labs/${LAB}            # from the repo root, or cd into the unpacked directory
-containerlab deploy -t topo.clab.yml
-</code></pre>
-<p>Equivalent invocation from the repo root:</p>
-<pre><code class="language-bash">containerlab deploy -t &quot;labs/${LAB}/topo.clab.yml&quot;
-</code></pre>
-<p>The lab topology (<code>topo.clab.yml</code>):</p>
+<h3 id="containerlab-topology">Containerlab topology</h3>
+<p>Download the topology file: <a href="topo.clab.yml"><code>topo.clab.yml</code></a></p>
 <pre><code class="language-yaml">name: F5-LDP
 topology:
   defaults:
@@ -261,6 +256,14 @@ topology:
   - endpoints: [ &quot;PE_2:4&quot;, &quot;PE_3:1&quot; ]
   - endpoints: [ &quot;PE_1:4&quot;, &quot;PE_3:3&quot; ]
   - endpoints: [ &quot;CE_2:2&quot;, &quot;PE_3:2&quot; ]
+</code></pre>
+<h3 id="start-from-checkpoint">Start from checkpoint</h3>
+<pre><code class="language-bash">LAB=F5-LDP
+cd labs/${LAB}            # from the repo root, or cd into the unpacked directory
+containerlab deploy -t topo.clab.yml
+</code></pre>
+<p>Equivalent invocation from the repo root:</p>
+<pre><code class="language-bash">containerlab deploy -t &quot;labs/${LAB}/topo.clab.yml&quot;
 </code></pre>
 <p>Connect to the active PEs:</p>
 <pre><code class="language-bash">ssh diag@clab-F5-LDP-PE_1

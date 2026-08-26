@@ -23,6 +23,23 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/).
   removing it does. Published with its rendered lab pages, topology diagrams,
   and startup and solution configs, and added to the site nav and search.
 
+### Changed
+- **Everything you download to bring a lab up now lives under Deploy.** The
+  lab pages gain a sub-menu there: **Startup Configs** (the per-node
+  checkpoint baselines), **Containerlab topology** (the topology file and its
+  YAML), then **Start from checkpoint** (the deploy command and the ssh
+  lines). Startup Configs used to be its own section ahead of Deploy, and the
+  topology file had no entry at all — so the two files you need sat on
+  opposite sides of a section break. The page now reads as the procedure it
+  is: collect the two artifacts, then run the command.
+- **The topology file is a link, not just a code block.** Every page that
+  shows the `topo.clab.yml` YAML now links the file itself, the way Startup
+  Configs already links each `*.cfg.partial`, so you can save it instead of
+  copying it out of the page. The Getting Started steps point at **Deploy**
+  for both.
+- **Prerequisites now comes before Topology**, so what you need in place is
+  settled before you read the addressing tables.
+
 ## 2026-08-24
 
 ### Added

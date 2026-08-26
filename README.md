@@ -33,9 +33,9 @@ Every lab is self-contained and can be followed straight from the published
 guide — no repository checkout required. Pick a lab, then:
 
 1. Read its **Goals**, **Topology**, and **Prerequisites**.
-2. Under **Startup Configs**, copy each linked `*.cfg.partial` into a local
-   `configs/` folder, and save the `topo.clab.yml` shown under **Deploy** next
-   to it.
+2. Under **Deploy**, download the lab's `topo.clab.yml` and each linked
+   `*.cfg.partial`; put the partials in a `configs/` folder next to the
+   topology file.
 3. Run the command in **Deploy**, then work through **Instructions**.
 
 ### Advanced (git)
@@ -150,8 +150,10 @@ of:
 - **Naming** — classifiers, FDs, FPs, interfaces, and VRFs follow a consistent
   scheme; see the per-lab READMEs for the concrete names in context.
 - **Overview structure** — lab READMEs carry a fixed section set in order
-  (Goals, Topology, Prerequisites, Startup Configs, Deploy, Instructions,
-  Tests, Solutions), with labeled callouts and embedded diagrams.
+  (Goals, Prerequisites, Topology, Deploy, Instructions, Tests, Solutions),
+  with labeled callouts and embedded diagrams. Deploy holds the lab's
+  downloadable artifacts — the startup configs and the topology file — ahead
+  of the command that consumes them.
 - **Checks bind to tasks** — every `tests.md` check maps to a numbered task,
   and a Task *n* check depends only on the preloaded baseline and Tasks ≤ *n*.
 

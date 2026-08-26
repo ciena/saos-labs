@@ -10,6 +10,13 @@ Enable IS-IS routing between the two SAOS 10x nodes addressed in F1 so their loo
 - Secure the IS-IS adjacency with MD5 authentication
 - Verify adjacencies, learned routes, and loopback-to-loopback reachability
 
+## Prerequisites
+
+- Complete [F1 — IP Interfaces](../F1-Loopbacks-and-Interfaces/README.md), or deploy this lab with its included F1 baseline
+- ContainerLab installed and accessible
+- SAOS 10x image `vrnetlab/ciena_saos:10-12-00-0228` (release 10.12.00.0228) available in the container registry
+- Activate the built-in trial license after deployment
+
 ## Topology
 
 ![topology](./topo.clab.svg)
@@ -52,16 +59,11 @@ See `topo.clab.svg` for the physical connectivity diagram, and
 
 The NET encodes: area `49.0001`, system ID derived from the loopback address, and NSEL `00`.
 
-## Prerequisites
+## Deploy
 
-- Complete [F1 — IP Interfaces](../F1-Loopbacks-and-Interfaces/README.md), or deploy this lab with its included F1 baseline
-- ContainerLab installed and accessible
-- SAOS 10x image `vrnetlab/ciena_saos:10-12-00-0228` (release 10.12.00.0228) available in the container registry
-- Activate the built-in trial license after deployment
+### Startup Configs
 
-## Startup Configs
-
-The checkpoint baseline each node boots from. If you are assembling the lab by hand, create a `configs/` folder next to `topo.clab.yml` and copy each file into it before you deploy.
+The checkpoint baseline each node boots from. If you are assembling the lab by hand, create a `configs/` folder next to [`topo.clab.yml`](./topo.clab.yml) and copy each file into it before you deploy.
 
 - [PE_1.cfg.partial](./configs/PE_1.cfg.partial)
 - [PE_2.cfg.partial](./configs/PE_2.cfg.partial)
@@ -69,23 +71,9 @@ The checkpoint baseline each node boots from. If you are assembling the lab by h
 - [CE_1.cfg.partial](./configs/CE_1.cfg.partial)
 - [CE_2.cfg.partial](./configs/CE_2.cfg.partial)
 
-## Deploy
+### Containerlab topology
 
-### Start from checkpoint
-
-```bash
-LAB=F2-IS-IS-Routing
-cd labs/${LAB}            # from the repo root, or cd into the unpacked directory
-containerlab deploy -t topo.clab.yml
-```
-
-Equivalent invocation from the repo root:
-
-```bash
-containerlab deploy -t "labs/${LAB}/topo.clab.yml"
-```
-
-The lab topology (`topo.clab.yml`):
+Download the topology file: [`topo.clab.yml`](./topo.clab.yml)
 
 ```yaml
 name: F2-IS-IS-Routing
@@ -125,6 +113,20 @@ topology:
   - endpoints: [ "PE_2:4", "PE_3:1" ]
   - endpoints: [ "PE_1:4", "PE_3:3" ]
   - endpoints: [ "CE_2:2", "PE_3:2" ]
+```
+
+### Start from checkpoint
+
+```bash
+LAB=F2-IS-IS-Routing
+cd labs/${LAB}            # from the repo root, or cd into the unpacked directory
+containerlab deploy -t topo.clab.yml
+```
+
+Equivalent invocation from the repo root:
+
+```bash
+containerlab deploy -t "labs/${LAB}/topo.clab.yml"
 ```
 
 Wait for all five nodes to reach healthy state, then complete the F2 tasks on
