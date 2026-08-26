@@ -1,0 +1,50 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="154 140 1072 658" width="100%" font-family="Consolas, Monaco, monospace">
+<style>.node-name{font-size:12px;font-weight:bold;fill:#2d3436;text-anchor:middle;paint-order:stroke;stroke:#fff;stroke-width:3}.node-sub{font-size:9px;fill:#00b894;text-anchor:middle;paint-order:stroke;stroke:#fff;stroke-width:3}.node-rt{font-size:8px;fill:#6c5ce7;text-anchor:middle;paint-order:stroke;stroke:#fff;stroke-width:3}.l2{font-size:8px;fill:#0984e3;font-style:italic;paint-order:stroke;stroke:#fff;stroke-width:3}.l3{font-size:9px;fill:#00b894;font-weight:bold;paint-order:stroke;stroke:#fff;stroke-width:3}.unused{stroke:#808080;stroke-width:1.5;stroke-dasharray:5 4}
+.link{stroke:#2d3436;stroke-width:1.5}.lg{font-size:9px;fill:#636e72;paint-order:stroke;stroke:#fff;stroke-width:3}.lg-h{font-size:10px;font-weight:bold;fill:#2d3436;paint-order:stroke;stroke:#fff;stroke-width:3}.lg-p{fill:#fff;stroke:#dfe4e6;stroke-width:1}.pd{fill:#f4f6f7;stroke:#dfe4e6;stroke-width:1.5}.pd-t{font-size:10px;font-weight:bold;fill:#95a0a4;paint-order:stroke;stroke:#fff;stroke-width:3}</style>
+<defs><symbol id="active" viewBox="0 0 36 36"><circle cx="18" cy="18" r="17" fill="#900000" stroke="#fff" stroke-width="2"/></symbol><symbol id="inactive" viewBox="0 0 36 36"><circle cx="18" cy="18" r="17" fill="#808080" stroke="#fff" stroke-width="2"/></symbol></defs>
+<rect x="377" y="154" width="586" height="410" rx="10" class="pd"/><text x="389" y="170" class="pd-t">Provider domain</text>
+<text x="340" y="188" class="l2" text-anchor="middle">vlan 106</text>
+<text x="720" y="188" class="l2" text-anchor="middle">untagged</text>
+<text x="1070" y="188" class="l2" text-anchor="middle">vlan 106</text>
+<text x="846" y="364" class="l2" text-anchor="middle">untagged</text>
+<text x="548" y="384" class="l2" text-anchor="middle">untagged</text>
+<text x="784" y="545" class="l2" text-anchor="middle">vlan 106</text>
+<use href="#active" x="192" y="182" width="36" height="36"/><text x="210" y="236" class="node-name">CE_1</text><text x="210" y="250" class="node-sub">172.16.106.1/24</text>
+<use href="#active" x="452" y="182" width="36" height="36"/><text x="470" y="236" class="node-name">PE_1</text><text x="470" y="250" class="node-sub">lb1: 172.16.0.1/32</text><text x="470" y="262" class="node-rt">AS 65032 / SID 1 / E-LAN PE</text>
+<use href="#active" x="852" y="182" width="36" height="36"/><text x="870" y="236" class="node-name">PE_2</text><text x="870" y="250" class="node-sub">lb1: 172.16.0.2/32</text><text x="870" y="262" class="node-rt">AS 65032 / SID 2 / E-LAN PE</text>
+<use href="#active" x="1152" y="182" width="36" height="36"/><text x="1170" y="236" class="node-name">CE_2</text><text x="1170" y="250" class="node-sub">172.16.106.2/24</text>
+<use href="#active" x="682" y="454" width="36" height="36"/><text x="700" y="508" class="node-name">PE_3</text><text x="700" y="522" class="node-sub">lb1: 172.16.0.5/32</text><text x="700" y="534" class="node-rt">AS 65032 / SID 5 / E-LAN PE</text>
+<use href="#active" x="682" y="604" width="36" height="36"/><text x="700" y="658" class="node-name">CE_3</text><text x="700" y="672" class="node-sub">172.16.106.3/24</text>
+<g><rect x="168" y="696" width="470" height="88" rx="6" class="lg-p"/><text x="182" y="714" class="lg-h">Legend</text><use href="#active" x="184" y="726" width="16" height="16"/><text x="208" y="738" class="lg">configured in this lab</text><line x1="428" y1="734" x2="458" y2="734" class="link"/><text x="466" y="738" class="lg">link in use</text><line x1="428" y1="756" x2="458" y2="756" class="unused"/><text x="466" y="760" class="lg">reserved / not used yet</text><rect x="184" y="765" width="16" height="11" rx="3" class="pd"/><text x="208" y="774" class="lg">shaded = provider domain (PE); outside it = customer edge (CE)</text></g>
+<text x="574" y="190" class="l3" text-anchor="middle">172.16.1.1/30</text>
+<text x="766" y="210" class="l3" text-anchor="middle">172.16.1.2/30</text>
+<text x="382" y="210" class="l3" text-anchor="middle">E-LAN site</text>
+<text x="298" y="168" class="l3" text-anchor="middle">172.16.106.1/24</text>
+<text x="972" y="190" class="l3" text-anchor="middle">E-LAN site</text>
+<text x="1068" y="210" class="l3" text-anchor="middle">172.16.106.2/24</text>
+<text x="823" y="293" class="l3" text-anchor="middle">172.16.2.2/30</text>
+<text x="747" y="379" class="l3" text-anchor="middle">172.16.2.1/30</text>
+<text x="578" y="245" class="l3" text-anchor="middle">172.16.2.5/30</text>
+<text x="625" y="399" class="l3" text-anchor="middle">172.16.2.6/30</text>
+<text x="690" y="571" class="l3" text-anchor="middle">172.16.106.3/24</text>
+<text x="798" y="523" class="l3" text-anchor="middle">E-LAN site</text>
+
+<line x1="489" y1="200" x2="851" y2="200" class="link"/>
+<line x1="451" y1="200" x2="229" y2="200" class="link"/>
+<line x1="889" y1="200" x2="1151" y2="200" class="link"/>
+<line x1="860" y1="216" x2="710" y2="456" class="link"/>
+<line x1="482" y1="215" x2="688" y2="457" class="link"/>
+<line x1="700" y1="603" x2="700" y2="491" class="link"/>
+<text x="504" y="190" class="port">1</text>
+<text x="836" y="210" class="port">1</text>
+<text x="436" y="210" class="port">2</text>
+<text x="244" y="190" class="port">1</text>
+<text x="904" y="190" class="port">2</text>
+<text x="1136" y="210" class="port">1</text>
+<text x="935" y="281" class="note">4</text>
+<text x="710" y="438" class="note">1</text>
+<text x="500" y="220" class="note">4</text>
+<text x="670" y="452" class="note">3</text>
+<text x="690" y="588" class="port">1</text>
+<text x="721" y="506" class="port">2</text>
+</svg>

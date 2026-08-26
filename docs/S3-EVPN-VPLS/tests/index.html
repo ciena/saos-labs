@@ -1,0 +1,672 @@
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" >
+<head>
+    <meta charset="utf-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+      <link rel="shortcut icon" href="../../img/favicon.ico" />
+    <title>Tests - SAOS Labs</title>
+    <link rel="stylesheet" href="../../css/theme.css" />
+    <link rel="stylesheet" href="../../css/theme_extra.css" />
+        <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.8.0/styles/github.min.css" />
+        <link href="../../assets/css/ciena.css" rel="stylesheet" />
+    
+      <script>
+        // Current page data
+        var mkdocs_page_name = "Tests";
+        var mkdocs_page_input_path = "S3-EVPN-VPLS/tests.md";
+        var mkdocs_page_url = null;
+      </script>
+    
+    <!--[if lt IE 9]>
+      <script src="../../js/html5shiv.min.js"></script>
+    <![endif]-->
+      <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.8.0/highlight.min.js"></script>
+      <script>hljs.highlightAll();</script> 
+</head>
+
+<body class="wy-body-for-nav" role="document">
+
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side stickynav">
+    <div class="wy-side-scroll">
+      <div class="wy-side-nav-search">
+          <a href="../.." class="icon icon-home"> SAOS Labs
+        </a><div role="search">
+  <form id ="rtd-search-form" class="wy-form" action="../../search.html" method="get">
+      <input type="text" name="q" placeholder="Search docs" aria-label="Search docs" title="Type search term here" />
+  </form>
+</div>
+      </div>
+
+      <div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+              <ul>
+                <li class="toctree-l1"><a class="reference internal" href="../..">Home</a>
+                </li>
+              </ul>
+              <p class="caption"><span class="caption-text">Foundation</span></p>
+              <ul>
+                  <li class="toctree-l1"><a class="reference internal" href="../../F0-SAOS-Fundamentals/">F0 SAOS Fundamentals</a>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" href="../../F1-Loopbacks-and-Interfaces/">F1 Loopbacks and Interfaces</a>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" href="../../F2-IS-IS-Routing/">F2 IS-IS Routing</a>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" href="../../F3-SR-MPLS/">F3 SR-MPLS</a>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" href="../../F4-BGP/">F4 BGP</a>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" href="../../F5-LDP/">F5 LDP</a>
+                  </li>
+              </ul>
+              <p class="caption"><span class="caption-text">Services</span></p>
+              <ul>
+                  <li class="toctree-l1"><a class="reference internal" href="../../S1-L3VPN/">S1 L3VPN</a>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" href="../../S2-EVPN-VPWS/">S2 EVPN-VPWS</a>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" href="../">S3 EVPN-VPLS</a>
+                  </li>
+              </ul>
+      </div>
+    </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap">
+      <nav class="wy-nav-top" role="navigation" aria-label="Mobile navigation menu">
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../..">SAOS Labs</a>
+        
+      </nav>
+      <div class="wy-nav-content">
+        <div class="rst-content"><div role="navigation" aria-label="breadcrumbs navigation">
+  <ul class="wy-breadcrumbs">
+    <li><a href="../.." class="icon icon-home" aria-label="Docs"></a></li>
+      <li class="breadcrumb-item active">Tests</li>
+    <li class="wy-breadcrumbs-aside">
+          <a href="https://github.com/ciena/saos-labs/edit/main/labs/S3-EVPN-VPLS/tests.md" class="icon icon-github"> Edit on GitHub</a>
+    </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+            <div class="section" itemprop="articleBody">
+              
+                <p>Deploy <code>S3-EVPN-VPLS</code>, then run the following validation checks.</p>
+<h2 id="g1-task-1-verify-the-deployed-topology">G1: Task 1 — Verify the deployed topology</h2>
+<!-- retry: 60s -->
+<p>On <strong>CE_1</strong>, run:</p>
+<pre><code class="language-saos">show lldp neighbors
+</code></pre>
+<p>Pass: Output contains <code>system-name</code> and <code>PE_1</code></p>
+<details><summary>Example output</summary>
+
+
+<pre><code>+--------------- LLDP NEIGHBORS ---------------+
+| Parameter                   | Value          |
++-----------------------------+----------------+
+| interface                   | 1              |
+| chassis-id                  | 0C008A2347F1   |
+| chassis-id-subtype          | mac-address    |
+| port-desc                   | 2              |
+| port-id                     | 2              |
+| port-id-subtype             | interface-name |
+| system-capability-supported | bridge         |
+| system-capability-enabled   | bridge         |
+| system-description          | 5162           |
+| system-name                 | PE_1           |
+| auto-neg-supported          | True           |
+| auto-neg-enabled            | False          |
+| oper-mau-type               | 33             |
+| port-class                  | p-class-pd     |
+| mdi-supported               | False          |
+| mdi-enabled                 | False          |
+| pair-controlable            | False          |
+| agg-status                  | capable        |
+| max-frame-size              | 1526           |
+| man-address-subtype         | ipv4           |
+| man-address                 | 10.0.0.15      |
+| if-subtype                  | if-index       |
++-----------------------------+----------------+
+</code></pre>
+
+
+</details>
+
+<!-- retry: 60s -->
+<p>On <strong>CE_2</strong>, run:</p>
+<pre><code class="language-saos">show lldp neighbors
+</code></pre>
+<p>Pass: Output contains <code>system-name</code> and <code>PE_2</code></p>
+<details><summary>Example output</summary>
+
+
+<pre><code>+--------------- LLDP NEIGHBORS ---------------+
+| Parameter                   | Value          |
++-----------------------------+----------------+
+| interface                   | 1              |
+| chassis-id                  | 0C00714D89F1   |
+| chassis-id-subtype          | mac-address    |
+| port-desc                   | 2              |
+| port-id                     | 2              |
+| port-id-subtype             | interface-name |
+| system-capability-supported | bridge         |
+| system-capability-enabled   | bridge         |
+| system-description          | 5162           |
+| system-name                 | PE_2           |
+| auto-neg-supported          | True           |
+| auto-neg-enabled            | False          |
+| oper-mau-type               | 33             |
+| port-class                  | p-class-pd     |
+| mdi-supported               | False          |
+| mdi-enabled                 | False          |
+| pair-controlable            | False          |
+| agg-status                  | capable        |
+| max-frame-size              | 1526           |
+| man-address-subtype         | ipv4           |
+| man-address                 | 10.0.0.15      |
+| if-subtype                  | if-index       |
++-----------------------------+----------------+
+</code></pre>
+
+
+</details>
+
+<!-- retry: 60s -->
+<p>On <strong>CE_3</strong>, run:</p>
+<pre><code class="language-saos">show lldp neighbors
+</code></pre>
+<p>Pass: Output contains <code>system-name</code> and <code>PE_3</code></p>
+<details><summary>Example output</summary>
+
+
+<pre><code>+--------------- LLDP NEIGHBORS ---------------+
+| Parameter                   | Value          |
++-----------------------------+----------------+
+| interface                   | 1              |
+| chassis-id                  | 0C00AC57DDF1   |
+| chassis-id-subtype          | mac-address    |
+| port-desc                   | 2              |
+| port-id                     | 2              |
+| port-id-subtype             | interface-name |
+| system-capability-supported | bridge         |
+| system-capability-enabled   | bridge         |
+| system-description          | 5162           |
+| system-name                 | PE_3           |
+| auto-neg-supported          | True           |
+| auto-neg-enabled            | False          |
+| oper-mau-type               | 33             |
+| port-class                  | p-class-pd     |
+| mdi-supported               | False          |
+| mdi-enabled                 | False          |
+| pair-controlable            | False          |
+| agg-status                  | capable        |
+| max-frame-size              | 1526           |
+| man-address-subtype         | ipv4           |
+| man-address                 | 10.0.0.15      |
+| if-subtype                  | if-index       |
++-----------------------------+----------------+
+</code></pre>
+
+
+</details>
+
+<!-- retry: 180s -->
+<p>On <strong>PE_1</strong>, run:</p>
+<pre><code class="language-saos">show bgp peers
+</code></pre>
+<p>Pass: Output contains <code>172.16.0.5</code> and <code>Established</code></p>
+<details><summary>Example output</summary>
+
+
+<pre><code>+-------------------------------------------------------------------------- BGP PEERS --------------------------------------------------------------------------+
+|                                             |        |          | Up         | Peer    | Received | Advertised | Last       | Received | Sent   |             |
+|                                             | Remote | Peer     | Time       | Table   | Pkt      | Pkt        | Reset      | Prefix   | Prefix |             |
+| Peer                                        | AS     | Type     | (hh:mm:ss) | Version | Count    | Count      | (hh:mm:ss) | Count    | Count  | State       |
++---------------------------------------------+--------+----------+------------+---------+----------+------------+------------+----------+--------+-------------+
+| 172.16.0.5                                  | 65032  | internal | 00:02:30   | 6       | 5        | 5          | -          | 2        | 2      | Established |
+| 172.16.0.2                                  | 65032  | internal | 00:02:41   | 2       | 9        | 9          | -          | 3        | 3      | Established |
++---------------------------------------------+--------+----------+------------+---------+----------+------------+------------+----------+--------+-------------+
+</code></pre>
+
+
+</details>
+
+<h2 id="g2-task-2-configure-the-evpn-vpls-mac-vrf-on-the-pes">G2: Task 2 — Configure the EVPN-VPLS MAC-VRF on the PEs</h2>
+<p>On <strong>PE_1</strong>, run:</p>
+<pre><code class="language-saos">show forwarding-domains forwarding-domain elan_1-fd
+</code></pre>
+<p>Pass: Output contains <code>elan_1-fd</code> and <code>evpn-vpls</code></p>
+<details><summary>Example output</summary>
+
+
+<pre><code>+ FORWARDING DOMAIN +
+| KEY  | VALUE      |
++------+------------+
+| Name | elan_1-fd  |
+| Mode | evpn-vpls  |
++------+------------+
+</code></pre>
+
+
+</details>
+
+<p>On <strong>PE_2</strong>, run:</p>
+<pre><code class="language-saos">show forwarding-domains forwarding-domain elan_1-fd
+</code></pre>
+<p>Pass: Output contains <code>elan_1-fd</code> and <code>evpn-vpls</code></p>
+<details><summary>Example output</summary>
+
+
+<pre><code>+ FORWARDING DOMAIN +
+| KEY  | VALUE      |
++------+------------+
+| Name | elan_1-fd  |
+| Mode | evpn-vpls  |
++------+------------+
+</code></pre>
+
+
+</details>
+
+<p>On <strong>PE_3</strong>, run:</p>
+<pre><code class="language-saos">show forwarding-domains forwarding-domain elan_1-fd
+</code></pre>
+<p>Pass: Output contains <code>elan_1-fd</code> and <code>evpn-vpls</code></p>
+<details><summary>Example output</summary>
+
+
+<pre><code>+ FORWARDING DOMAIN +
+| KEY  | VALUE      |
++------+------------+
+| Name | elan_1-fd  |
+| Mode | evpn-vpls  |
++------+------------+
+</code></pre>
+
+
+</details>
+
+<p>On <strong>PE_1</strong>, run:</p>
+<pre><code class="language-saos">show classifiers
+</code></pre>
+<p>Pass: Output contains <code>CLASSIFIER-106</code> and <code>106</code></p>
+<details><summary>Example output</summary>
+
+
+<pre><code>+---------------------- CLASSIFIER ---------------------+
+| Name                | Filter Parameter                |
++---------------------+---------------------------------+
+| CLASSIFIER-106      | Classifier:single-tagged        |
+| CLASSIFIER-UNTAGGED | ciena-mef-classifier:vtag-stack |
+| default-vid-127     | Classifier:single-tagged        |
++---------------------+---------------------------------+
+</code></pre>
+
+
+</details>
+
+<!-- retry: 120s -->
+<p>On <strong>PE_1</strong>, run:</p>
+<pre><code class="language-saos">show evpn instances
+</code></pre>
+<p>Pass: Output contains <code>103</code> and <code>0:103:103</code></p>
+<details><summary>Example output</summary>
+
+
+<pre><code>+-------------------------------------- EVPN INSTANCE STATE ---------------------------------------+
+|         | Route          | Route     |       SR Policy        |       Number of       |   SRv6   |
+| EVPN ID | Distinguisher  | Targets   |    Color    | Fallback | Cross-Connect Entries |  Locator |
++---------+----------------+-----------+-------------+----------+-----------------------+----------+
+| 103     | 172.16.0.1:103 | 0:103:103 |      -      |  enable  |           1           |    -     |
++---------+----------------+-----------+-------------+----------+-----------------------+----------+
+</code></pre>
+
+
+</details>
+
+<h2 id="g3-task-3-configure-customer-edge-ce_1">G3: Task 3 — Configure customer edge CE_1</h2>
+<p>On <strong>CE_1</strong>, run:</p>
+<pre><code class="language-saos">show flow-points flow-point CE_1-PE_1-FP
+</code></pre>
+<p>Pass: Output contains <code>CE_1-PE_1-FP</code> and <code>CE_1-PE_1-FD</code> and <code>push-vid-106</code></p>
+<details><summary>Example output</summary>
+
+
+<pre><code>+--------------- FLOW POINT --------------+
+| KEY                    | VALUE          |
++------------------------+----------------+
+| Name                   | CE_1-PE_1-FP   |
+| Forwarding Domain Name | CE_1-PE_1-FD   |
+| Logical Port           | 1              |
+| Statistics Collection  | on             |
+| MTU Size               | 2000           |
+| Admin State            | enabled        |
+| Egress L2 Transform    |                |
+|   Egress Name          | push-vid-106   |
+|   Egress VLAN Stack    |                |
+|     Tag                | 1              |
+|     Push TPID          | tpid-8100      |
+|     Push VID           | 106            |
+| Classifier List        |                |
+|                        | CLASSIFIER-106 |
++------------------------+----------------+
++------ FLOW POINT STATISTICS -------+
+| KEY                 | VALUE        |
++---------------------+--------------+
+| Name                | CE_1-PE_1-FP |
+| Rx Accepted Bytes   | 86728042     |
+| Rx Accepted Frames  | 889874       |
+| Tx Forwarded Bytes  | 4796         |
+| Tx Forwarded Frames | 53           |
+| Rx Yellow Bytes     | 0            |
+| Rx Yellow Frames    | 0            |
+| Rx Dropped Bytes    | 0            |
+| Rx Dropped Frames   | 396870       |
++---------------------+--------------+
++----------- FLOW POINT STATE -----------+
+| KEY                 | VALUE            |
++---------------------+------------------+
+| Name                | CE_1-PE_1-FP     |
+| Oper State          | up               |
+| Oper Up Time        | 0 days,0h:1m:31s |
+| Egress L2 Transform |                  |
+|   Egress VLAN Stack |                  |
+|     Tag             | 1                |
+|     Push TPID       | tpid-8100        |
+|     Push VID        | 106              |
++---------------------+------------------+
+</code></pre>
+
+
+</details>
+
+<h2 id="g4-task-4-configure-customer-edge-ce_2">G4: Task 4 — Configure customer edge CE_2</h2>
+<p>On <strong>CE_2</strong>, run:</p>
+<pre><code class="language-saos">show flow-points flow-point CE_2-PE_2-FP
+</code></pre>
+<p>Pass: Output contains <code>CE_2-PE_2-FP</code> and <code>CE_2-PE_2-FD</code> and <code>push-vid-106</code></p>
+<details><summary>Example output</summary>
+
+
+<pre><code>+--------------- FLOW POINT --------------+
+| KEY                    | VALUE          |
++------------------------+----------------+
+| Name                   | CE_2-PE_2-FP   |
+| Forwarding Domain Name | CE_2-PE_2-FD   |
+| Logical Port           | 1              |
+| Statistics Collection  | on             |
+| MTU Size               | 2000           |
+| Admin State            | enabled        |
+| Egress L2 Transform    |                |
+|   Egress Name          | push-vid-106   |
+|   Egress VLAN Stack    |                |
+|     Tag                | 1              |
+|     Push TPID          | tpid-8100      |
+|     Push VID           | 106            |
+| Classifier List        |                |
+|                        | CLASSIFIER-106 |
++------------------------+----------------+
++------ FLOW POINT STATISTICS -------+
+| KEY                 | VALUE        |
++---------------------+--------------+
+| Name                | CE_2-PE_2-FP |
+| Rx Accepted Bytes   | 66881244     |
+| Rx Accepted Frames  | 674482       |
+| Tx Forwarded Bytes  | 1672564      |
+| Tx Forwarded Frames | 26116        |
+| Rx Yellow Bytes     | 0            |
+| Rx Yellow Frames    | 0            |
+| Rx Dropped Bytes    | 0            |
+| Rx Dropped Frames   | 271287       |
++---------------------+--------------+
++----------- FLOW POINT STATE -----------+
+| KEY                 | VALUE            |
++---------------------+------------------+
+| Name                | CE_2-PE_2-FP     |
+| Oper State          | up               |
+| Oper Up Time        | 0 days,0h:1m:31s |
+| Egress L2 Transform |                  |
+|   Egress VLAN Stack |                  |
+|     Tag             | 1                |
+|     Push TPID       | tpid-8100        |
+|     Push VID        | 106              |
++---------------------+------------------+
+</code></pre>
+
+
+</details>
+
+<!-- retry: 60s -->
+<p>On <strong>CE_1</strong>, run:</p>
+<pre><code class="language-saos">ping ip destination 172.16.106.2 source 172.16.106.1 repeat-count 5
+</code></pre>
+<p>Pass: Output contains <code>100.00 percent</code></p>
+<details><summary>Example output</summary>
+
+
+<pre><code>Sending 5 ICMP Echos to 172.16.106.2, timeout is 1 second
+
+Codes: 
+'!' - Success, 'Q' - Request not sent, '.' - Timeout 
+
+ Type 'Ctrl+C' to abort
+
+! seq_num = 1  RTT = 5.43 ms  TTL = 255
+! seq_num = 2  RTT = 8.87 ms  TTL = 255
+! seq_num = 3  RTT = 6.77 ms  TTL = 255
+! seq_num = 4  RTT = 7.89 ms  TTL = 255
+! seq_num = 5  RTT = 6.28 ms  TTL = 255
+Success Rate is 100.00 percent (5/5)
+Round-trip min/avg/max = 5.43/7.05/8.87
+</code></pre>
+
+
+</details>
+
+<h2 id="g5-task-5-configure-customer-edge-ce_3-and-verify-the-e-lan">G5: Task 5 — Configure customer edge CE_3 and verify the E-LAN</h2>
+<p>On <strong>CE_3</strong>, run:</p>
+<pre><code class="language-saos">show flow-points flow-point CE_3-PE_3-FP
+</code></pre>
+<p>Pass: Output contains <code>CE_3-PE_3-FP</code> and <code>CE_3-PE_3-FD</code> and <code>push-vid-106</code></p>
+<details><summary>Example output</summary>
+
+
+<pre><code>+--------------- FLOW POINT --------------+
+| KEY                    | VALUE          |
++------------------------+----------------+
+| Name                   | CE_3-PE_3-FP   |
+| Forwarding Domain Name | CE_3-PE_3-FD   |
+| Logical Port           | 1              |
+| Statistics Collection  | on             |
+| MTU Size               | 2000           |
+| Admin State            | enabled        |
+| Egress L2 Transform    |                |
+|   Egress Name          | push-vid-106   |
+|   Egress VLAN Stack    |                |
+|     Tag                | 1              |
+|     Push TPID          | tpid-8100      |
+|     Push VID           | 106            |
+| Classifier List        |                |
+|                        | CLASSIFIER-106 |
++------------------------+----------------+
++------ FLOW POINT STATISTICS -------+
+| KEY                 | VALUE        |
++---------------------+--------------+
+| Name                | CE_3-PE_3-FP |
+| Rx Accepted Bytes   | 30909270     |
+| Rx Accepted Frames  | 329440       |
+| Tx Forwarded Bytes  | 4310760      |
+| Tx Forwarded Frames | 67330        |
+| Rx Yellow Bytes     | 0            |
+| Rx Yellow Frames    | 0            |
+| Rx Dropped Bytes    | 0            |
+| Rx Dropped Frames   | 114946       |
++---------------------+--------------+
++----------- FLOW POINT STATE ----------+
+| KEY                 | VALUE           |
++---------------------+-----------------+
+| Name                | CE_3-PE_3-FP    |
+| Oper State          | up              |
+| Oper Up Time        | 0 days,0h:1m:7s |
+| Egress L2 Transform |                 |
+|   Egress VLAN Stack |                 |
+|     Tag             | 1               |
+|     Push TPID       | tpid-8100       |
+|     Push VID        | 106             |
++---------------------+-----------------+
+</code></pre>
+
+
+</details>
+
+<!-- retry: 60s -->
+<p>On <strong>CE_1</strong>, run:</p>
+<pre><code class="language-saos">ping ip destination 172.16.106.3 source 172.16.106.1 repeat-count 5
+</code></pre>
+<p>Pass: Output contains <code>100.00 percent</code></p>
+<details><summary>Example output</summary>
+
+
+<pre><code>Sending 5 ICMP Echos to 172.16.106.3, timeout is 1 second
+
+Codes: 
+'!' - Success, 'Q' - Request not sent, '.' - Timeout 
+
+ Type 'Ctrl+C' to abort
+
+! seq_num = 1  RTT = 5.00 ms  TTL = 255
+! seq_num = 2  RTT = 4.51 ms  TTL = 255
+! seq_num = 3  RTT = 6.62 ms  TTL = 255
+! seq_num = 4  RTT = 6.71 ms  TTL = 255
+! seq_num = 5  RTT = 6.23 ms  TTL = 255
+Success Rate is 100.00 percent (5/5)
+Round-trip min/avg/max = 4.51/5.81/6.71
+</code></pre>
+
+
+</details>
+
+<!-- retry: 60s -->
+<p>On <strong>CE_2</strong>, run:</p>
+<pre><code class="language-saos">ping ip destination 172.16.106.3 source 172.16.106.2 repeat-count 5
+</code></pre>
+<p>Pass: Output contains <code>100.00 percent</code></p>
+<details><summary>Example output</summary>
+
+
+<pre><code>Sending 5 ICMP Echos to 172.16.106.3, timeout is 1 second
+
+Codes: 
+'!' - Success, 'Q' - Request not sent, '.' - Timeout 
+
+ Type 'Ctrl+C' to abort
+
+! seq_num = 1  RTT = 6.15 ms  TTL = 255
+! seq_num = 2  RTT = 6.87 ms  TTL = 255
+! seq_num = 3  RTT = 5.36 ms  TTL = 255
+! seq_num = 4  RTT = 7.52 ms  TTL = 255
+! seq_num = 5  RTT = 6.44 ms  TTL = 255
+Success Rate is 100.00 percent (5/5)
+Round-trip min/avg/max = 5.36/6.47/7.52
+</code></pre>
+
+
+</details>
+
+<!-- retry: 60s -->
+<p>On <strong>CE_3</strong>, run:</p>
+<pre><code class="language-saos">ping ip destination 172.16.106.1 source 172.16.106.3 repeat-count 5
+</code></pre>
+<p>Pass: Output contains <code>100.00 percent</code></p>
+<details><summary>Example output</summary>
+
+
+<pre><code>Sending 5 ICMP Echos to 172.16.106.1, timeout is 1 second
+
+Codes: 
+'!' - Success, 'Q' - Request not sent, '.' - Timeout 
+
+ Type 'Ctrl+C' to abort
+
+! seq_num = 1  RTT = 6.98 ms  TTL = 255
+! seq_num = 2  RTT = 6.00 ms  TTL = 255
+! seq_num = 3  RTT = 6.36 ms  TTL = 255
+! seq_num = 4  RTT = 4.74 ms  TTL = 255
+! seq_num = 5  RTT = 6.32 ms  TTL = 255
+Success Rate is 100.00 percent (5/5)
+Round-trip min/avg/max = 4.74/6.08/6.98
+</code></pre>
+
+
+</details>
+
+<!-- retry: 60s -->
+<p>On <strong>PE_1</strong>, run:</p>
+<pre><code class="language-saos">show evpn instances vpls forwarding-database
+</code></pre>
+<p>Pass: Output contains <code>elan_1-fd</code> and <code>172.16.0.2</code> and <code>172.16.0.5</code></p>
+<details><summary>Example output</summary>
+
+
+<pre><code>+--------------------------------------------------+
+| Codes: &gt; - installed FTN,                        |
+|        L - local, R - remote,                    |
+|        C - control-word, P - primary, B - backup |
++--------------------------------------------------+
++-------------------------------------------------------- EVPN VPLS FORWARDING DATABASE ---------------------------------------------------------+
+| State | EVPN ID | Forwarding Domain | MAC            | IP | Next Hop   |  Ethernet Segment Identifier  | Out Label | SRv6 Service SID | Flags  |
++-------+---------+-------------------+----------------+----+------------+-------------------------------+-----------+------------------+--------+
+|   &gt;   |   103   | elan_1-fd         | 0c00:4fd6:fbf5 | -  | 172.16.0.2 | 00:00:00:00:00:00:00:00:00:00 | 132000    | -                | (R)(C) |
+|       |   103   | elan_1-fd         | 0c00:d033:10f5 | -  | 0.0.0.0    | 00:00:00:00:00:00:00:00:00:00 | 132000    | -                | (L)(C) |
+|   &gt;   |   103   | elan_1-fd         | 0c00:d8b5:43f5 | -  | 172.16.0.5 | 00:00:00:00:00:00:00:00:00:00 | 132000    | -                | (R)(C) |
++-------+---------+-------------------+----------------+----+------------+-------------------------------+-----------+------------------+--------+
+</code></pre>
+
+
+</details>
+              
+            </div>
+          </div><footer>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <!-- Copyright etc -->
+  </div>
+
+  Built with <a href="https://www.mkdocs.org/">MkDocs</a> using a <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a> provided by <a href="https://readthedocs.org">Read the Docs</a>.
+</footer>
+          
+        </div>
+      </div>
+
+    </section>
+
+  </div>
+
+  <div class="rst-versions" role="note" aria-label="Versions">
+  <span class="rst-current-version" data-toggle="rst-current-version">
+    
+        <span>
+          <a href="https://github.com/ciena/saos-labs" class="fa fa-github" style="color: #fcfcfc"> GitHub</a>
+        </span>
+    
+    
+    
+  </span>
+</div>
+    <script src="../../js/jquery-3.6.0.min.js"></script>
+    <script>var base_url = "../..";</script>
+    <script src="../../js/theme_extra.js"></script>
+    <script src="../../js/theme.js"></script>
+      <script src="../../assets/js/lightbox.js"></script>
+      <script src="../../search/main.js"></script>
+    <script>
+        jQuery(function () {
+            SphinxRtdTheme.Navigation.enable(true);
+        });
+    </script>
+
+</body>
+</html>

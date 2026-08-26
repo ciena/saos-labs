@@ -1,0 +1,31 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="98 108 834 608" width="100%" font-family="Consolas, Monaco, monospace">
+<style>.node-name{font-size:12px;font-weight:bold;fill:#2d3436;text-anchor:middle;paint-order:stroke;stroke:#fff;stroke-width:3}.node-type{font-size:10px;fill:#636e72;text-anchor:middle;paint-order:stroke;stroke:#fff;stroke-width:3}.unused{stroke:#808080;stroke-width:1.5;stroke-dasharray:5 4}
+.link{stroke:#636e72;stroke-width:1.5}.port{font-size:9px;fill:#636e72;text-anchor:middle;paint-order:stroke;stroke:#fff;stroke-width:3}.lg{font-size:9px;fill:#636e72;paint-order:stroke;stroke:#fff;stroke-width:3}.lg-h{font-size:10px;font-weight:bold;fill:#2d3436;paint-order:stroke;stroke:#fff;stroke-width:3}.lg-p{fill:#fff;stroke:#dfe4e6;stroke-width:1}.pd{fill:#f4f6f7;stroke:#dfe4e6;stroke-width:1.5}.pd-t{font-size:10px;font-weight:bold;fill:#95a0a4;paint-order:stroke;stroke:#fff;stroke-width:3}</style>
+<defs><symbol id="active" viewBox="0 0 36 36"><circle cx="18" cy="18" r="17" fill="#900000" stroke="#fff" stroke-width="2"/></symbol><symbol id="inactive" viewBox="0 0 36 36"><circle cx="18" cy="18" r="17" fill="#808080" stroke="#fff" stroke-width="2"/></symbol></defs>
+<rect x="314" y="122" width="392" height="344" rx="10" class="pd"/><text x="326" y="138" class="pd-t">Provider domain</text>
+<use href="#active" x="112" y="150" width="36" height="36"/><text x="130" y="206" class="node-name">CE_1</text><text x="130" y="220" class="node-type">3984</text>
+<use href="#active" x="342" y="150" width="36" height="36"/><text x="360" y="206" class="node-name">PE_1</text><text x="360" y="220" class="node-type">5162</text>
+<use href="#active" x="642" y="150" width="36" height="36"/><text x="660" y="206" class="node-name">PE_2</text><text x="660" y="220" class="node-type">5162</text>
+<use href="#active" x="882" y="150" width="36" height="36"/><text x="900" y="206" class="node-name">CE_2</text><text x="900" y="220" class="node-type">3984</text>
+<use href="#active" x="492" y="366" width="36" height="36"/><text x="510" y="422" class="node-name">PE_3</text><text x="510" y="436" class="node-type">5162</text>
+<use href="#active" x="492" y="520" width="36" height="36"/><text x="510" y="576" class="node-name">CE_3</text><text x="510" y="590" class="node-type">3984</text>
+<g><rect x="112" y="614" width="470" height="88" rx="6" class="lg-p"/><text x="126" y="632" class="lg-h">Legend</text><use href="#active" x="128" y="644" width="16" height="16"/><text x="152" y="656" class="lg">configured in this lab</text><line x1="372" y1="652" x2="402" y2="652" class="link"/><text x="410" y="656" class="lg">link in use</text><line x1="372" y1="674" x2="402" y2="674" class="unused"/><text x="410" y="678" class="lg">reserved / not used yet</text><rect x="128" y="683" width="16" height="11" rx="3" class="pd"/><text x="152" y="692" class="lg">shaded = provider domain (PE); outside it = customer edge (CE)</text></g>
+<line x1="379" y1="168" x2="641" y2="168" class="link"/>
+<line x1="341" y1="168" x2="149" y2="168" class="link"/>
+<line x1="679" y1="168" x2="881" y2="168" class="link"/>
+<line x1="649" y1="184" x2="521" y2="368" class="link"/>
+<line x1="371" y1="184" x2="499" y2="368" class="link"/>
+<line x1="510" y1="519" x2="510" y2="403" class="link"/>
+<text x="394" y="158" class="port">1</text>
+<text x="626" y="178" class="port">1</text>
+<text x="326" y="178" class="port">2</text>
+<text x="164" y="158" class="port">1</text>
+<text x="694" y="158" class="port">2</text>
+<text x="866" y="178" class="port">1</text>
+<text x="685" y="227" class="note">4</text>
+<text x="521" y="350" class="note">1</text>
+<text x="388" y="190" class="note">4</text>
+<text x="482" y="362" class="note">3</text>
+<text x="500" y="504" class="port">1</text>
+<text x="531" y="418" class="port">2</text>
+</svg>

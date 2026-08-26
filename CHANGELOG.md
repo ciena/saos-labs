@@ -8,6 +8,28 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/).
 
 ## 2026-08-26
 
+### Added
+- **S3 — EVPN-VPLS** hands-on lab, the third of the Services track and the
+  first multipoint service in the program. Where S2 built a point-to-point
+  cross-connect between two PEs, S3 turns the fabric into a single Ethernet
+  LAN: one shared `elan_1` MAC-VRF (`mode evpn-vpls`, EVI 103, a
+  route-distinguisher per PE and the route-target `0:103:103` shared by all
+  three) joins one customer site per PE — `CE_1`, `CE_2` and `CE_3` on VLAN
+  106, all in one `172.16.106.0/24` broadcast domain.
+  Starting from the F4 checkpoint you extend IS-IS, SR-MPLS and the iBGP
+  overlay to `PE_3`, build the MAC-VRF on all three PEs, attach each customer
+  circuit, then watch MAC learning and BUM flooding do the rest: every site
+  reaches every other site, and the forwarding database shows which MACs were
+  learned locally and which arrived over BGP from a remote PE.
+  This is where the third customer edge the topology has been carrying finally
+  gets configured. Scope is the core E-LAN — all-active multi-homing and E-Tree
+  are deferred, and service protection is S5's subject.
+  Verified end to end against SAOS 10.12.00.0228: 17/17 checks, 5/5 tasks.
+  Published with its rendered lab pages, four concept diagrams (a logical E-LAN
+  overlay, the BGP-EVPN control-plane exchange, a data-plane packet walk and a
+  packet sequence diagram), topology diagrams, and startup and solution
+  configs, and added to the site nav and search.
+
 ### Changed
 - **Breaking — the lab topology has changed. Destroy and redeploy any lab you
   have running.** Every lab now boots three provider-edge routers, each with
