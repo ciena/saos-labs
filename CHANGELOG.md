@@ -6,7 +6,7 @@ upstream authoring history.
 
 The format is based on [Keep a Changelog](https://keepachangelog.com/).
 
-## 2026-08-25
+## 2026-08-26
 
 ### Added
 - **S1 — L3VPN Route Leaking** hands-on lab, the first lab of the Services
