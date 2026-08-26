@@ -65,6 +65,8 @@
     <ul class="current">
     <li class="toctree-l2"><a class="reference internal" href="#goals">Goals</a>
     </li>
+    <li class="toctree-l2"><a class="reference internal" href="#prerequisites">Prerequisites</a>
+    </li>
     <li class="toctree-l2"><a class="reference internal" href="#topology">Topology</a>
         <ul>
     <li class="toctree-l3"><a class="reference internal" href="#active-links">Active links</a>
@@ -79,12 +81,12 @@
     </li>
         </ul>
     </li>
-    <li class="toctree-l2"><a class="reference internal" href="#prerequisites">Prerequisites</a>
-    </li>
-    <li class="toctree-l2"><a class="reference internal" href="#startup-configs">Startup Configs</a>
-    </li>
     <li class="toctree-l2"><a class="reference internal" href="#deploy">Deploy</a>
         <ul>
+    <li class="toctree-l3"><a class="reference internal" href="#startup-configs">Startup Configs</a>
+    </li>
+    <li class="toctree-l3"><a class="reference internal" href="#containerlab-topology">Containerlab topology</a>
+    </li>
     <li class="toctree-l3"><a class="reference internal" href="#start-from-checkpoint">Start from checkpoint</a>
     </li>
         </ul>
@@ -214,6 +216,16 @@ services. By the end of this lab you will be able to:</p>
 PE routers and share the <em>same</em> MP-BGP session. What, specifically,
 keeps their routes apart before you add the cross-import — and what
 single BGP knob removes that separation once you add it?</p>
+<h2 id="prerequisites">Prerequisites</h2>
+<ul>
+<li>Complete F1 through F4, or deploy this lab with its included F4
+  SR-MPLS/ISIS and iBGP baseline. This lab creates both L3VPN VRFs; F4 does
+  not provide an existing L3VPN service.</li>
+<li>containerlab installed, with the SAOS 10x image
+  <code>vrnetlab/ciena_saos:10-12-00-0228</code> (release 10.12.00.0228) available
+  locally.</li>
+<li>Activate the built-in trial license after deployment.</li>
+</ul>
 <h2 id="topology">Topology</h2>
 <p><img alt="topology" src="topo.clab.svg" /></p>
 <p><img alt="topology detail" src="topo.detail.svg" /></p>
@@ -423,18 +435,9 @@ CIDR (<code>/n</code>) notation. The inherited <code>lb1</code> IPv6 addresses
 as CIDR or with <code>::</code> shorthand collapsed further than the address
 itself already is.</p>
 </blockquote>
-<h2 id="prerequisites">Prerequisites</h2>
-<ul>
-<li>Complete F1 through F4, or deploy this lab with its included F4
-  SR-MPLS/ISIS and iBGP baseline. This lab creates both L3VPN VRFs; F4 does
-  not provide an existing L3VPN service.</li>
-<li>containerlab installed, with the SAOS 10x image
-  <code>vrnetlab/ciena_saos:10-12-00-0228</code> (release 10.12.00.0228) available
-  locally.</li>
-<li>Activate the built-in trial license after deployment.</li>
-</ul>
-<h2 id="startup-configs">Startup Configs</h2>
-<p>The checkpoint baseline each node boots from. If you are assembling the lab by hand, create a <code>configs/</code> folder next to <code>topo.clab.yml</code> and copy each file into it before you deploy.</p>
+<h2 id="deploy">Deploy</h2>
+<h3 id="startup-configs">Startup Configs</h3>
+<p>The checkpoint baseline each node boots from. If you are assembling the lab by hand, create a <code>configs/</code> folder next to <a href="topo.clab.yml"><code>topo.clab.yml</code></a> and copy each file into it before you deploy.</p>
 <ul>
 <li><a href="configs/PE_1.cfg.partial">PE_1.cfg.partial</a></li>
 <li><a href="configs/PE_2.cfg.partial">PE_2.cfg.partial</a></li>
@@ -442,16 +445,8 @@ itself already is.</p>
 <li><a href="configs/CE_1.cfg.partial">CE_1.cfg.partial</a></li>
 <li><a href="configs/CE_2.cfg.partial">CE_2.cfg.partial</a></li>
 </ul>
-<h2 id="deploy">Deploy</h2>
-<h3 id="start-from-checkpoint">Start from checkpoint</h3>
-<pre><code class="language-bash">LAB=S1-L3VPN
-cd labs/${LAB}            # from the repo root, or cd into the unpacked directory
-containerlab deploy -t topo.clab.yml
-</code></pre>
-<p>Equivalent invocation from the repo root:</p>
-<pre><code class="language-bash">containerlab deploy -t &quot;labs/${LAB}/topo.clab.yml&quot;
-</code></pre>
-<p>The lab topology (<code>topo.clab.yml</code>):</p>
+<h3 id="containerlab-topology">Containerlab topology</h3>
+<p>Download the topology file: <a href="topo.clab.yml"><code>topo.clab.yml</code></a></p>
 <pre><code class="language-yaml">name: S1-L3VPN
 topology:
   defaults:
@@ -485,6 +480,14 @@ topology:
   - endpoints: [ &quot;PE_2:4&quot;, &quot;PE_3:1&quot; ]
   - endpoints: [ &quot;PE_1:4&quot;, &quot;PE_3:3&quot; ]
   - endpoints: [ &quot;CE_2:2&quot;, &quot;PE_3:2&quot; ]
+</code></pre>
+<h3 id="start-from-checkpoint">Start from checkpoint</h3>
+<pre><code class="language-bash">LAB=S1-L3VPN
+cd labs/${LAB}            # from the repo root, or cd into the unpacked directory
+containerlab deploy -t topo.clab.yml
+</code></pre>
+<p>Equivalent invocation from the repo root:</p>
+<pre><code class="language-bash">containerlab deploy -t &quot;labs/${LAB}/topo.clab.yml&quot;
 </code></pre>
 <p>Once all five nodes reach healthy state, complete the S1 tasks on PE_1,
 PE_2, CE_1, and CE_2:</p>

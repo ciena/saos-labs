@@ -6,6 +6,8 @@
 
 ## Containerlab topology
 
+Download the topology file: [`topo.clab.yml`](./topo.clab.yml)
+
 ```yaml
 name: F2-IS-IS-Routing
 topology:

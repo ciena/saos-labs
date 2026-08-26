@@ -6,6 +6,8 @@
 
 ## Containerlab topology
 
+Download the topology file: [`topo.clab.yml`](./topo.clab.yml)
+
 ```yaml
 name: F1-Loopbacks-and-Interfaces
 topology:

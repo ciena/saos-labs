@@ -9,6 +9,13 @@ Build a lab network to learn the commands needed to add IP interfaces to SAOS 10
 - Assign IPv4 and IPv6 addresses to interfaces
 - Verify connectivity between directly-connected nodes
 
+## Prerequisites
+
+- Complete [F0 — SAOS Fundamentals](../F0-SAOS-Fundamentals/README.md)
+- ContainerLab installed and accessible
+- SAOS 10x image `vrnetlab/ciena_saos:10-12-00-0228` (release 10.12.00.0228) available in the container registry
+- Activate the built-in trial license after deployment
+
 ## Topology
 
 ![topology](./topo.clab.svg)
@@ -51,16 +58,11 @@ The topology diagrams are `topo.clab.svg` (physical connectivity) and
 | IP MTU       | 1500          |
 | FP MTU-size  | 2000          |
 
-## Prerequisites
+## Deploy
 
-- Complete [F0 — SAOS Fundamentals](../F0-SAOS-Fundamentals/README.md)
-- ContainerLab installed and accessible
-- SAOS 10x image `vrnetlab/ciena_saos:10-12-00-0228` (release 10.12.00.0228) available in the container registry
-- Activate the built-in trial license after deployment
+### Startup Configs
 
-## Startup Configs
-
-The checkpoint baseline each node boots from. If you are assembling the lab by hand, create a `configs/` folder next to `topo.clab.yml` and copy each file into it before you deploy.
+The checkpoint baseline each node boots from. If you are assembling the lab by hand, create a `configs/` folder next to [`topo.clab.yml`](./topo.clab.yml) and copy each file into it before you deploy.
 
 - [PE_1.cfg.partial](./configs/PE_1.cfg.partial)
 - [PE_2.cfg.partial](./configs/PE_2.cfg.partial)
@@ -68,23 +70,9 @@ The checkpoint baseline each node boots from. If you are assembling the lab by h
 - [CE_1.cfg.partial](./configs/CE_1.cfg.partial)
 - [CE_2.cfg.partial](./configs/CE_2.cfg.partial)
 
-## Deploy
+### Containerlab topology
 
-### Start from checkpoint
-
-```bash
-LAB=F1-Loopbacks-and-Interfaces
-cd labs/${LAB}            # from the repo root, or cd into the unpacked directory
-containerlab deploy -t topo.clab.yml
-```
-
-Equivalent invocation from the repo root:
-
-```bash
-containerlab deploy -t "labs/${LAB}/topo.clab.yml"
-```
-
-The lab topology (`topo.clab.yml`):
+Download the topology file: [`topo.clab.yml`](./topo.clab.yml)
 
 ```yaml
 name: F1-Loopbacks-and-Interfaces
@@ -124,6 +112,20 @@ topology:
   - endpoints: [ "PE_2:4", "PE_3:1" ]
   - endpoints: [ "PE_1:4", "PE_3:3" ]
   - endpoints: [ "CE_2:2", "PE_3:2" ]
+```
+
+### Start from checkpoint
+
+```bash
+LAB=F1-Loopbacks-and-Interfaces
+cd labs/${LAB}            # from the repo root, or cd into the unpacked directory
+containerlab deploy -t topo.clab.yml
+```
+
+Equivalent invocation from the repo root:
+
+```bash
+containerlab deploy -t "labs/${LAB}/topo.clab.yml"
 ```
 
 Once all five nodes reach healthy state, complete the F1 tasks on PE_1 and
