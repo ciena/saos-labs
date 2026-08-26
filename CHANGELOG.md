@@ -6,6 +6,23 @@ upstream authoring history.
 
 The format is based on [Keep a Changelog](https://keepachangelog.com/).
 
+## 2026-08-26
+
+### Added
+- **S1 — L3VPN** hands-on lab, the first lab of the Services
+  track: it starts from the F4 checkpoint (SR-MPLS transport, iBGP with the
+  VPNv4 address family) and puts a second L3VPN on the same pair of PEs. Stand
+  up `L3VPN_2-vrf` on `PE_1` and `PE_2` as an in-VRF loopback plus its own BGP
+  VRF instance, give it a route-distinguisher and route-target the way
+  `L3VPN_1-vrf` already has, and confirm the two VRFs stay isolated by default
+  — then deliberately break that isolation by cross-importing each VRF's
+  route-target into the other, so each learns the other's connected prefixes
+  over the VPNv4 core. A final task checks that `CE_1` and `CE_2`, which live
+  in `L3VPN_1-vrf`, are untouched by the leak. The point of the lab is the one
+  BGP knob that separates two VRFs sharing a single MP-BGP session, and what
+  removing it does. Published with its rendered lab pages, topology diagrams,
+  and startup and solution configs, and added to the site nav and search.
+
 ## 2026-08-24
 
 ### Added
