@@ -133,6 +133,8 @@
     </li>
     <li class="toctree-l4"><a class="reference internal" href="#ce_2">CE_2</a>
     </li>
+    <li class="toctree-l4"><a class="reference internal" href="#ce_3">CE_3</a>
+    </li>
         </ul>
     </li>
     <li class="toctree-l3"><a class="reference internal" href="#solution-for-task-1">Solution for Task 1</a>
@@ -231,11 +233,13 @@ single BGP knob removes that separation once you add it?</p>
 <h2 id="topology">Topology</h2>
 <p><img alt="topology" src="topo.clab.svg" /></p>
 <p><img alt="topology detail" src="topo.detail.svg" /></p>
-<p>The topology already has the complete five-node S2 physical shape. <code>PE_1</code>
-and <code>PE_2</code> are the inherited F4 SR-MPLS/iBGP PE routers (AS 65032, ISIS
-area <code>49.0001</code>), each now carrying two L3VPNs. <code>CE_1</code> and <code>CE_2</code> are active
-customer-edge routers, each single-homed to one PE over an untagged access
-link. <code>PE_3</code> and its three links remain gray and unused until S2.</p>
+<p>The topology already has the complete six-node physical shape every lab in
+the series deploys: three PE routers, each with its own customer edge on
+port 2. <code>PE_1</code> and <code>PE_2</code> are the inherited F4 SR-MPLS/iBGP PE routers
+(AS 65032, ISIS area <code>49.0001</code>), each now carrying two L3VPNs. <code>CE_1</code> and
+<code>CE_2</code> are active customer-edge routers, each single-homed to one PE over an
+untagged access link. <code>PE_3</code> and <code>CE_3</code> remain gray and unused — <code>PE_3</code>
+until S2, <code>CE_3</code> until S3.</p>
 <h3 id="active-links">Active links</h3>
 <table>
 <thead>
@@ -446,6 +450,7 @@ itself already is.</p>
 <li><a href="configs/PE_3.cfg.partial">PE_3.cfg.partial</a></li>
 <li><a href="configs/CE_1.cfg.partial">CE_1.cfg.partial</a></li>
 <li><a href="configs/CE_2.cfg.partial">CE_2.cfg.partial</a></li>
+<li><a href="configs/CE_3.cfg.partial">CE_3.cfg.partial</a></li>
 </ul>
 <h3 id="containerlab-topology">Containerlab topology</h3>
 <p>Download the topology file: <a href="topo.clab.yml"><code>topo.clab.yml</code></a></p>
@@ -475,13 +480,18 @@ topology:
     CE_2:
       type: '3984'
       startup-config: configs/CE_2.cfg.partial
+    CE_3:
+      type: '3984'
+      labels:
+        lab-state: unused
+      startup-config: configs/CE_3.cfg.partial
   links:
   - endpoints: [ &quot;PE_1:1&quot;, &quot;PE_2:1&quot; ]
   - endpoints: [ &quot;PE_1:2&quot;, &quot;CE_1:1&quot; ]
   - endpoints: [ &quot;PE_2:2&quot;, &quot;CE_2:1&quot; ]
   - endpoints: [ &quot;PE_2:4&quot;, &quot;PE_3:1&quot; ]
   - endpoints: [ &quot;PE_1:4&quot;, &quot;PE_3:3&quot; ]
-  - endpoints: [ &quot;CE_2:2&quot;, &quot;PE_3:2&quot; ]
+  - endpoints: [ &quot;CE_3:1&quot;, &quot;PE_3:2&quot; ]
 </code></pre>
 <h3 id="start-from-checkpoint">Start from checkpoint</h3>
 <pre><code class="language-bash">LAB=S1-L3VPN
@@ -6624,6 +6634,11 @@ rib vrf default ipv4 172.16.103.0/30 next-hop 172.16.103.33
     exit
   exit
 exit
+# Preloaded end
+</code></pre>
+<h4 id="ce_3">CE_3</h4>
+<pre><code class="language-saos"># Preloaded start
+system config hostname CE_3
 # Preloaded end
 </code></pre>
 <h3 id="solution-for-task-1">Solution for Task 1</h3>

@@ -8,6 +8,29 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/).
 
 ## 2026-08-26
 
+### Changed
+- **Breaking — the lab topology has changed. Destroy and redeploy any lab you
+  have running.** Every lab now boots three provider-edge routers, each with
+  its own customer edge on port 2: `CE_1` on `PE_1:2`, `CE_2` on `PE_2:2`, and
+  a new `CE_3` on `PE_3:2`. `CE_2`'s second link to `PE_3` is gone.
+- **What that means for you:** the containers a lab deploys are not the same
+  set as before (`clab-<lab>-CE_3` is new), and a lab you have already wired up
+  by hand needs its `topo.clab.yml` re-downloaded — the old one will not match
+  the configs. Nothing about the services you configure changes: the tasks,
+  the addressing and the verification steps in each lab are the same.
+- **Why:** `CE_2` used to be dual-homed to `PE_3` in every lab, wiring that
+  only one future lab — S5, service protection — will actually use, while the
+  labs that need a third customer site had nowhere symmetric to attach one.
+  The base now carries what every lab needs, and S5 will add its own wiring
+  when it lands.
+- `CE_3` sits idle until the lab that configures it, drawn gray in the diagrams
+  the way `PE_3` already is, so it costs you nothing but the RAM for a sixth
+  node.
+- Every published lab was re-verified end to end on this topology against SAOS
+  10.12.00.0228 — F1 22/22, F2 18/18, F3 14/14, F4 14/14, F5 6/6, S1 33/33 and
+  S2 17/17 checks — with the example output on each page recaptured from those
+  runs.
+
 ### Added
 - **S2 — EVPN-VPWS** hands-on lab, the second lab of the Services track. Like
   S1 it starts from the F4 checkpoint, but where S1 stayed on the two-PE core,

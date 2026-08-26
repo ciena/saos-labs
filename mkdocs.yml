@@ -1,29 +1,26 @@
 site_name: SAOS Labs
-# repo_name intentionally omitted: MkDocs derives it as 'GitHub' from the
-# github.com URL, which the readthedocs theme renders with a GitHub icon.
 repo_url: https://github.com/ciena/saos-labs
-# edit_uri set explicitly: MkDocs' default is edit/master/docs/, but the default
-# branch is main and page sources live in labs/ (the docs_dir), not docs/.
 edit_uri: edit/main/labs/
 docs_dir: labs
 site_dir: docs
 theme:
   name: readthedocs
 extra_css:
-  - assets/css/ciena.css
+- assets/css/ciena.css
 extra_javascript:
-  - assets/js/lightbox.js
+- assets/js/lightbox.js
 plugins:
-  - search
+- search
+- mermaid2
 nav:
-  - Home: index.md
-  - Foundation:
-      - F0 SAOS Fundamentals: F0-SAOS-Fundamentals/README.md
-      - F1 Loopbacks and Interfaces: F1-Loopbacks-and-Interfaces/README.md
-      - F2 IS-IS Routing: F2-IS-IS-Routing/README.md
-      - F3 SR-MPLS: F3-SR-MPLS/README.md
-      - F4 BGP: F4-BGP/README.md
-      - F5 LDP: F5-LDP/README.md
-  - Services:
-      - S1 L3VPN: S1-L3VPN/README.md
-      - S2 EVPN-VPWS: S2-EVPN-VPWS/README.md
+- Home: index.md
+- Foundation:
+  - F0 SAOS Fundamentals: F0-SAOS-Fundamentals/README.md
+  - F1 Loopbacks and Interfaces: F1-Loopbacks-and-Interfaces/README.md
+  - F2 IS-IS Routing: F2-IS-IS-Routing/README.md
+  - F3 SR-MPLS: F3-SR-MPLS/README.md
+  - F4 BGP: F4-BGP/README.md
+  - F5 LDP: F5-LDP/README.md
+- Services:
+  - S1 L3VPN: S1-L3VPN/README.md
+  - S2 EVPN-VPWS: S2-EVPN-VPWS/README.md

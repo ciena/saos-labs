@@ -49,6 +49,7 @@ The checkpoint baseline each node boots from. If you are assembling the lab by h
 - [PE_3.cfg.partial](./configs/PE_3.cfg.partial)
 - [CE_1.cfg.partial](./configs/CE_1.cfg.partial)
 - [CE_2.cfg.partial](./configs/CE_2.cfg.partial)
+- [CE_3.cfg.partial](./configs/CE_3.cfg.partial)
 
 ### Containerlab topology
 
@@ -79,13 +80,18 @@ topology:
     CE_2:
       type: '3984'
       startup-config: configs/CE_2.cfg.partial
+    CE_3:
+      type: '3984'
+      labels:
+        lab-state: unused
+      startup-config: configs/CE_3.cfg.partial
   links:
   - endpoints: [ "PE_1:1", "PE_2:1" ]
   - endpoints: [ "PE_1:2", "CE_1:1" ]
   - endpoints: [ "PE_2:2", "CE_2:1" ]
   - endpoints: [ "PE_2:4", "PE_3:1" ]
   - endpoints: [ "PE_1:4", "PE_3:3" ]
-  - endpoints: [ "CE_2:2", "PE_3:2" ]
+  - endpoints: [ "CE_3:1", "PE_3:2" ]
 ```
 
 ### Start from checkpoint
@@ -1711,6 +1717,14 @@ system config hostname CE_1
 ```saos
 # Preloaded start
 system config hostname CE_2
+# Preloaded end
+```
+
+#### CE_3
+
+```saos
+# Preloaded start
+system config hostname CE_3
 # Preloaded end
 ```
 

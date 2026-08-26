@@ -69,6 +69,7 @@ The checkpoint baseline each node boots from. If you are assembling the lab by h
 - [PE_3.cfg.partial](./configs/PE_3.cfg.partial)
 - [CE_1.cfg.partial](./configs/CE_1.cfg.partial)
 - [CE_2.cfg.partial](./configs/CE_2.cfg.partial)
+- [CE_3.cfg.partial](./configs/CE_3.cfg.partial)
 
 ### Containerlab topology
 
@@ -105,13 +106,18 @@ topology:
       labels:
         lab-state: unused
       startup-config: configs/CE_2.cfg.partial
+    CE_3:
+      type: '3984'
+      labels:
+        lab-state: unused
+      startup-config: configs/CE_3.cfg.partial
   links:
   - endpoints: [ "PE_1:1", "PE_2:1" ]
   - endpoints: [ "PE_1:2", "CE_1:1" ]
   - endpoints: [ "PE_2:2", "CE_2:1" ]
   - endpoints: [ "PE_2:4", "PE_3:1" ]
   - endpoints: [ "PE_1:4", "PE_3:3" ]
-  - endpoints: [ "CE_2:2", "PE_3:2" ]
+  - endpoints: [ "CE_3:1", "PE_3:2" ]
 ```
 
 ### Start from checkpoint
@@ -154,8 +160,9 @@ Default credentials: `diag` / `ciena123`
 
 <!-- prose: detailed -->
 
-**Summary** — Every lab in this series deploys the same five-node
-topology, but only `PE_1` and `PE_2` are in play here — they connect
+**Summary** — Every lab in this series deploys the same six-node
+topology — three PEs, each with its own customer edge — but only `PE_1`
+and `PE_2` are in play here — they connect
 back-to-back on port 1. Before configuring anything, confirm the wiring
 matches the diagram: verifying physical adjacency first means any later
 reachability problem is a configuration problem, not a cabling one.
@@ -186,7 +193,7 @@ Pass: Output contains `system-name` and `PE_2`
 | Parameter                   | Value          |
 +-----------------------------+----------------+
 | interface                   | 1              |
-| chassis-id                  | 0C00CA51D3F1   |
+| chassis-id                  | 0C00E7BF10F1   |
 | chassis-id-subtype          | mac-address    |
 | port-desc                   | 1              |
 | port-id                     | 1              |
@@ -209,7 +216,7 @@ Pass: Output contains `system-name` and `PE_2`
 | if-subtype                  | if-index       |
 +-----------------------------+----------------+
 | interface                   | 2              |
-| chassis-id                  | 0C00C94520F1   |
+| chassis-id                  | 0C00B2FC8EF1   |
 | chassis-id-subtype          | mac-address    |
 | port-desc                   | 1              |
 | port-id                     | 1              |
@@ -217,7 +224,7 @@ Pass: Output contains `system-name` and `PE_2`
 | system-capability-supported | bridge         |
 | system-capability-enabled   | bridge         |
 | system-description          | 3984           |
-| system-name                 | CE_1            |
+| system-name                 | CE_1           |
 | auto-neg-supported          | True           |
 | auto-neg-enabled            | False          |
 | oper-mau-type               | 33             |
@@ -232,7 +239,7 @@ Pass: Output contains `system-name` and `PE_2`
 | if-subtype                  | if-index       |
 +-----------------------------+----------------+
 | interface                   | 4              |
-| chassis-id                  | 0C00DC6584F1   |
+| chassis-id                  | 0C00D5C728F1   |
 | chassis-id-subtype          | mac-address    |
 | port-desc                   | 3              |
 | port-id                     | 3              |
@@ -273,7 +280,7 @@ Pass: Output contains `system-name` and `PE_1`
 | Parameter                   | Value          |
 +-----------------------------+----------------+
 | interface                   | 1              |
-| chassis-id                  | 0C00711A13F1   |
+| chassis-id                  | 0C009D2E08F1   |
 | chassis-id-subtype          | mac-address    |
 | port-desc                   | 1              |
 | port-id                     | 1              |
@@ -296,7 +303,7 @@ Pass: Output contains `system-name` and `PE_1`
 | if-subtype                  | if-index       |
 +-----------------------------+----------------+
 | interface                   | 2              |
-| chassis-id                  | 0C000F3EBAF1   |
+| chassis-id                  | 0C00FABAA6F1   |
 | chassis-id-subtype          | mac-address    |
 | port-desc                   | 1              |
 | port-id                     | 1              |
@@ -304,7 +311,7 @@ Pass: Output contains `system-name` and `PE_1`
 | system-capability-supported | bridge         |
 | system-capability-enabled   | bridge         |
 | system-description          | 3984           |
-| system-name                 | CE_2            |
+| system-name                 | CE_2           |
 | auto-neg-supported          | True           |
 | auto-neg-enabled            | False          |
 | oper-mau-type               | 33             |
@@ -319,7 +326,7 @@ Pass: Output contains `system-name` and `PE_1`
 | if-subtype                  | if-index       |
 +-----------------------------+----------------+
 | interface                   | 4              |
-| chassis-id                  | 0C00DC6584F1   |
+| chassis-id                  | 0C00D5C728F1   |
 | chassis-id-subtype          | mac-address    |
 | port-desc                   | 1              |
 | port-id                     | 1              |
@@ -431,24 +438,24 @@ Pass: Output contains `lb1` and `172.16.0.1` and `32`
 | DHCP IPv4 Address                          | 10.0.0.15                                                                   |
 | DHCP IPv4 Prefix                           | 24                                                                          |
 | IPv6 Link Local Data                       |                                                                             |
-|   Address                                  | fe80::200:71ff:fe1a:1400                                                    |
+|   Address                                  | fe80::200:9dff:fe2e:900                                                     |
 |   Prefix Length                            | 128                                                                         |
 |   Origin                                   | AUTO                                                                        |
 | Interface Index                            | 56                                                                          |
 | Description                                | bridge interface for out of band management port/local management interface |
 | MTU                                        | 1500                                                                        |
-| MAC Address                                | 0c:00:71:1a:14:00                                                           |
+| MAC Address                                | 0c:00:9d:2e:09:00                                                           |
 | Bandwidth (Mbps)                           | 0                                                                           |
 | Gratuitous ARP                             | Disabled                                                                    |
 | Unsolicited Neighbor Advertisement         | Disabled                                                                    |
 | Router Advertisement                       | Disabled                                                                    |
 | Counters                                   |                                                                             |
-|   Input Octets                             | 32254                                                                       |
-|   Input Packets                            | 557                                                                         |
+|   Input Octets                             | 31350                                                                       |
+|   Input Packets                            | 533                                                                         |
 |   Input Dropped Octets                     | -                                                                           |
 |   Input Dropped Packets                    | 0                                                                           |
-|   Output Octets                            | 209399                                                                      |
-|   Output Packets                           | 580                                                                         |
+|   Output Octets                            | 205073                                                                      |
+|   Output Packets                           | 557                                                                         |
 |   Output Gratuitous ARP Packets            | -                                                                           |
 |   Output Unsolicited Neighbor Adv. Packets | -                                                                           |
 |   Output Router Adv. Packets               | 0                                                                           |
@@ -474,15 +481,15 @@ Pass: Output contains `lb1` and `172.16.0.1` and `32`
 | Role                                       | management                                                                  |
 | VRF Binding                                | default                                                                     |
 | IPv6 Link Local Data                       |                                                                             |
-|   Address                                  | fe80::e00:71ff:fe1a:13f7                                                    |
+|   Address                                  | fe80::e00:9dff:fe2e:8f7                                                     |
 |   Prefix Length                            | 64                                                                          |
 |   Origin                                   | AUTO                                                                        |
 |   Address Status                           | preferred                                                                   |
 | Interface Index                            | 1073731825                                                                  |
 | Description                                | in band remote management interface                                         |
 | MTU                                        | 1500                                                                        |
-| MAC Address                                | 0c:00:71:1a:13:f7                                                           |
-| Last Changed                               | Aug 06 2026 20:25:27 Local                                                  |
+| MAC Address                                | 0c:00:9d:2e:08:f7                                                           |
+| Last Changed                               | Aug 26 2026 18:55:57 Local                                                  |
 | Bandwidth (Mbps)                           | 10000                                                                       |
 | Gratuitous ARP                             | Enabled                                                                     |
 | Unsolicited Neighbor Advertisement         | Enabled                                                                     |
@@ -546,7 +553,7 @@ Pass: Output contains `lb1` and `172.16.0.1` and `32`
 | Role                                       | data                                                                        |
 | VRF Binding                                | default                                                                     |
 | IPv6 Link Local Data                       |                                                                             |
-|   Address                                  | fe80::e00:71ff:fe1a:13f6                                                    |
+|   Address                                  | fe80::e00:9dff:fe2e:8f6                                                     |
 |   Prefix Length                            | 64                                                                          |
 |   Origin                                   | AUTO                                                                        |
 |   Address Status                           | preferred                                                                   |
@@ -603,15 +610,15 @@ Pass: Output contains `lb1` and `172.16.0.1` and `32`
 | Role                                       | data                                                                        |
 | VRF Binding                                | default                                                                     |
 | IPv6 Link Local Data                       |                                                                             |
-|   Address                                  | fe80::e00:71ff:fe1a:13f6                                                    |
+|   Address                                  | fe80::e00:9dff:fe2e:8f6                                                     |
 |   Prefix Length                            | 64                                                                          |
 |   Origin                                   | AUTO                                                                        |
 |   Address Status                           | preferred                                                                   |
 | Interface Index                            | 1073731826                                                                  |
 | Description                                | -                                                                           |
 | MTU                                        | 1500                                                                        |
-| MAC Address                                | 0c:00:71:1a:13:f6                                                           |
-| Last Changed                               | Aug 06 2026 20:32:02 Local                                                  |
+| MAC Address                                | 0c:00:9d:2e:08:f6                                                           |
+| Last Changed                               | Aug 26 2026 19:02:05 Local                                                  |
 | Bandwidth (Mbps)                           | 10000                                                                       |
 | Gratuitous ARP                             | Disabled                                                                    |
 | Unsolicited Neighbor Advertisement         | Disabled                                                                    |
@@ -622,12 +629,12 @@ Pass: Output contains `lb1` and `172.16.0.1` and `32`
 | Frame to CoS Map                           | default-f2c                                                                 |
 | Stats Collection                           | on                                                                          |
 | Counters                                   |                                                                             |
-|   Input Octets                             | 3844                                                                        |
-|   Input Packets                            | 44                                                                          |
+|   Input Octets                             | 4122                                                                        |
+|   Input Packets                            | 47                                                                          |
 |   Input Dropped Octets                     | 0                                                                           |
-|   Input Dropped Packets                    | 5                                                                           |
-|   Output Octets                            | 3930                                                                        |
-|   Output Packets                           | 42                                                                          |
+|   Input Dropped Packets                    | 3                                                                           |
+|   Output Octets                            | 4403                                                                        |
+|   Output Packets                           | 46                                                                          |
 |   Output Gratuitous ARP Packets            | 0                                                                           |
 |   Output Unsolicited Neighbor Adv. Packets | 0                                                                           |
 |   Output Router Adv. Packets               | 0                                                                           |
@@ -716,10 +723,10 @@ Pass: Output contains `PE_1-PE_2-FP` and `PE_1-PE_2-FD` and `CLASSIFIER-UNTAGGED
 | KEY                 | VALUE        |
 +---------------------+--------------+
 | Name                | PE_1-PE_2-FP |
-| Rx Accepted Bytes   | 4552         |
-| Rx Accepted Frames  | 47           |
-| Tx Forwarded Bytes  | 3930         |
-| Tx Forwarded Frames | 42           |
+| Rx Accepted Bytes   | 4516         |
+| Rx Accepted Frames  | 48           |
+| Tx Forwarded Bytes  | 4403         |
+| Tx Forwarded Frames | 46           |
 | Rx Yellow Bytes     | 0            |
 | Rx Yellow Frames    | 0            |
 | Rx Dropped Bytes    | 0            |
@@ -730,7 +737,7 @@ Pass: Output contains `PE_1-PE_2-FP` and `PE_1-PE_2-FD` and `CLASSIFIER-UNTAGGED
 +---------------------+------------------+
 | Name                | PE_1-PE_2-FP     |
 | Oper State          | up               |
-| Oper Up Time        | 0 days,0h:0m:22s |
+| Oper Up Time        | 0 days,0h:0m:23s |
 | Egress L2 Transform | -                |
 +---------------------+------------------+
 ```
@@ -761,24 +768,24 @@ Pass: Output contains `PE_1-PE_2-if` and `172.16.1.1` and `30`
 | DHCP IPv4 Address                          | 10.0.0.15                                                                   |
 | DHCP IPv4 Prefix                           | 24                                                                          |
 | IPv6 Link Local Data                       |                                                                             |
-|   Address                                  | fe80::200:71ff:fe1a:1400                                                    |
+|   Address                                  | fe80::200:9dff:fe2e:900                                                     |
 |   Prefix Length                            | 128                                                                         |
 |   Origin                                   | AUTO                                                                        |
 | Interface Index                            | 56                                                                          |
 | Description                                | bridge interface for out of band management port/local management interface |
 | MTU                                        | 1500                                                                        |
-| MAC Address                                | 0c:00:71:1a:14:00                                                           |
+| MAC Address                                | 0c:00:9d:2e:09:00                                                           |
 | Bandwidth (Mbps)                           | 0                                                                           |
 | Gratuitous ARP                             | Disabled                                                                    |
 | Unsolicited Neighbor Advertisement         | Disabled                                                                    |
 | Router Advertisement                       | Disabled                                                                    |
 | Counters                                   |                                                                             |
-|   Input Octets                             | 34982                                                                       |
-|   Input Packets                            | 618                                                                         |
+|   Input Octets                             | 34558                                                                       |
+|   Input Packets                            | 606                                                                         |
 |   Input Dropped Octets                     | -                                                                           |
 |   Input Dropped Packets                    | 0                                                                           |
-|   Output Octets                            | 247859                                                                      |
-|   Output Packets                           | 638                                                                         |
+|   Output Octets                            | 245255                                                                      |
+|   Output Packets                           | 630                                                                         |
 |   Output Gratuitous ARP Packets            | -                                                                           |
 |   Output Unsolicited Neighbor Adv. Packets | -                                                                           |
 |   Output Router Adv. Packets               | 0                                                                           |
@@ -804,15 +811,15 @@ Pass: Output contains `PE_1-PE_2-if` and `172.16.1.1` and `30`
 | Role                                       | management                                                                  |
 | VRF Binding                                | default                                                                     |
 | IPv6 Link Local Data                       |                                                                             |
-|   Address                                  | fe80::e00:71ff:fe1a:13f7                                                    |
+|   Address                                  | fe80::e00:9dff:fe2e:8f7                                                     |
 |   Prefix Length                            | 64                                                                          |
 |   Origin                                   | AUTO                                                                        |
 |   Address Status                           | preferred                                                                   |
 | Interface Index                            | 1073731825                                                                  |
 | Description                                | in band remote management interface                                         |
 | MTU                                        | 1500                                                                        |
-| MAC Address                                | 0c:00:71:1a:13:f7                                                           |
-| Last Changed                               | Aug 06 2026 20:25:27 Local                                                  |
+| MAC Address                                | 0c:00:9d:2e:08:f7                                                           |
+| Last Changed                               | Aug 26 2026 18:55:57 Local                                                  |
 | Bandwidth (Mbps)                           | 10000                                                                       |
 | Gratuitous ARP                             | Enabled                                                                     |
 | Unsolicited Neighbor Advertisement         | Enabled                                                                     |
@@ -876,7 +883,7 @@ Pass: Output contains `PE_1-PE_2-if` and `172.16.1.1` and `30`
 | Role                                       | data                                                                        |
 | VRF Binding                                | default                                                                     |
 | IPv6 Link Local Data                       |                                                                             |
-|   Address                                  | fe80::e00:71ff:fe1a:13f6                                                    |
+|   Address                                  | fe80::e00:9dff:fe2e:8f6                                                     |
 |   Prefix Length                            | 64                                                                          |
 |   Origin                                   | AUTO                                                                        |
 |   Address Status                           | preferred                                                                   |
@@ -933,15 +940,15 @@ Pass: Output contains `PE_1-PE_2-if` and `172.16.1.1` and `30`
 | Role                                       | data                                                                        |
 | VRF Binding                                | default                                                                     |
 | IPv6 Link Local Data                       |                                                                             |
-|   Address                                  | fe80::e00:71ff:fe1a:13f6                                                    |
+|   Address                                  | fe80::e00:9dff:fe2e:8f6                                                     |
 |   Prefix Length                            | 64                                                                          |
 |   Origin                                   | AUTO                                                                        |
 |   Address Status                           | preferred                                                                   |
 | Interface Index                            | 1073731826                                                                  |
 | Description                                | -                                                                           |
 | MTU                                        | 1500                                                                        |
-| MAC Address                                | 0c:00:71:1a:13:f6                                                           |
-| Last Changed                               | Aug 06 2026 20:32:02 Local                                                  |
+| MAC Address                                | 0c:00:9d:2e:08:f6                                                           |
+| Last Changed                               | Aug 26 2026 19:02:05 Local                                                  |
 | Bandwidth (Mbps)                           | 10000                                                                       |
 | Gratuitous ARP                             | Disabled                                                                    |
 | Unsolicited Neighbor Advertisement         | Disabled                                                                    |
@@ -952,12 +959,12 @@ Pass: Output contains `PE_1-PE_2-if` and `172.16.1.1` and `30`
 | Frame to CoS Map                           | default-f2c                                                                 |
 | Stats Collection                           | on                                                                          |
 | Counters                                   |                                                                             |
-|   Input Octets                             | 3844                                                                        |
-|   Input Packets                            | 44                                                                          |
+|   Input Octets                             | 4122                                                                        |
+|   Input Packets                            | 47                                                                          |
 |   Input Dropped Octets                     | 0                                                                           |
-|   Input Dropped Packets                    | 5                                                                           |
-|   Output Octets                            | 4058                                                                        |
-|   Output Packets                           | 43                                                                          |
+|   Input Dropped Packets                    | 3                                                                           |
+|   Output Octets                            | 4403                                                                        |
+|   Output Packets                           | 46                                                                          |
 |   Output Gratuitous ARP Packets            | 0                                                                           |
 |   Output Unsolicited Neighbor Adv. Packets | 0                                                                           |
 |   Output Router Adv. Packets               | 0                                                                           |
@@ -1083,24 +1090,24 @@ Pass: Output contains `lb1` and `172.16.0.2` and `32`
 | DHCP IPv4 Address                          | 10.0.0.15                                                                   |
 | DHCP IPv4 Prefix                           | 24                                                                          |
 | IPv6 Link Local Data                       |                                                                             |
-|   Address                                  | fe80::200:caff:fe51:d400                                                    |
+|   Address                                  | fe80::200:e7ff:febf:1100                                                    |
 |   Prefix Length                            | 128                                                                         |
 |   Origin                                   | AUTO                                                                        |
 | Interface Index                            | 56                                                                          |
 | Description                                | bridge interface for out of band management port/local management interface |
 | MTU                                        | 1500                                                                        |
-| MAC Address                                | 0c:00:ca:51:d4:00                                                           |
+| MAC Address                                | 0c:00:e7:bf:11:00                                                           |
 | Bandwidth (Mbps)                           | 0                                                                           |
 | Gratuitous ARP                             | Disabled                                                                    |
 | Unsolicited Neighbor Advertisement         | Disabled                                                                    |
 | Router Advertisement                       | Disabled                                                                    |
 | Counters                                   |                                                                             |
-|   Input Octets                             | 31830                                                                       |
-|   Input Packets                            | 545                                                                         |
+|   Input Octets                             | 29774                                                                       |
+|   Input Packets                            | 495                                                                         |
 |   Input Dropped Octets                     | -                                                                           |
 |   Input Dropped Packets                    | 0                                                                           |
-|   Output Octets                            | 207181                                                                      |
-|   Output Packets                           | 567                                                                         |
+|   Output Octets                            | 201941                                                                      |
+|   Output Packets                           | 525                                                                         |
 |   Output Gratuitous ARP Packets            | -                                                                           |
 |   Output Unsolicited Neighbor Adv. Packets | -                                                                           |
 |   Output Router Adv. Packets               | 0                                                                           |
@@ -1126,15 +1133,15 @@ Pass: Output contains `lb1` and `172.16.0.2` and `32`
 | Role                                       | management                                                                  |
 | VRF Binding                                | default                                                                     |
 | IPv6 Link Local Data                       |                                                                             |
-|   Address                                  | fe80::e00:caff:fe51:d3f7                                                    |
+|   Address                                  | fe80::e00:e7ff:febf:10f7                                                    |
 |   Prefix Length                            | 64                                                                          |
 |   Origin                                   | AUTO                                                                        |
 |   Address Status                           | preferred                                                                   |
 | Interface Index                            | 1073731825                                                                  |
 | Description                                | in band remote management interface                                         |
 | MTU                                        | 1500                                                                        |
-| MAC Address                                | 0c:00:ca:51:d3:f7                                                           |
-| Last Changed                               | Aug 06 2026 20:25:04 Local                                                  |
+| MAC Address                                | 0c:00:e7:bf:10:f7                                                           |
+| Last Changed                               | Aug 26 2026 18:55:35 Local                                                  |
 | Bandwidth (Mbps)                           | 10000                                                                       |
 | Gratuitous ARP                             | Enabled                                                                     |
 | Unsolicited Neighbor Advertisement         | Enabled                                                                     |
@@ -1198,7 +1205,7 @@ Pass: Output contains `lb1` and `172.16.0.2` and `32`
 | Role                                       | data                                                                        |
 | VRF Binding                                | default                                                                     |
 | IPv6 Link Local Data                       |                                                                             |
-|   Address                                  | fe80::e00:caff:fe51:d3f6                                                    |
+|   Address                                  | fe80::e00:e7ff:febf:10f6                                                    |
 |   Prefix Length                            | 64                                                                          |
 |   Origin                                   | AUTO                                                                        |
 |   Address Status                           | preferred                                                                   |
@@ -1255,15 +1262,15 @@ Pass: Output contains `lb1` and `172.16.0.2` and `32`
 | Role                                       | data                                                                        |
 | VRF Binding                                | default                                                                     |
 | IPv6 Link Local Data                       |                                                                             |
-|   Address                                  | fe80::e00:caff:fe51:d3f6                                                    |
+|   Address                                  | fe80::e00:e7ff:febf:10f6                                                    |
 |   Prefix Length                            | 64                                                                          |
 |   Origin                                   | AUTO                                                                        |
 |   Address Status                           | preferred                                                                   |
 | Interface Index                            | 1073731826                                                                  |
 | Description                                | -                                                                           |
 | MTU                                        | 1500                                                                        |
-| MAC Address                                | 0c:00:ca:51:d3:f6                                                           |
-| Last Changed                               | Aug 06 2026 20:32:05 Local                                                  |
+| MAC Address                                | 0c:00:e7:bf:10:f6                                                           |
+| Last Changed                               | Aug 26 2026 19:02:09 Local                                                  |
 | Bandwidth (Mbps)                           | 10000                                                                       |
 | Gratuitous ARP                             | Disabled                                                                    |
 | Unsolicited Neighbor Advertisement         | Disabled                                                                    |
@@ -1277,9 +1284,9 @@ Pass: Output contains `lb1` and `172.16.0.2` and `32`
 |   Input Octets                             | 3182                                                                        |
 |   Input Packets                            | 38                                                                          |
 |   Input Dropped Octets                     | 0                                                                           |
-|   Input Dropped Packets                    | 4                                                                           |
-|   Output Octets                            | 4431                                                                        |
-|   Output Packets                           | 46                                                                          |
+|   Input Dropped Packets                    | 2                                                                           |
+|   Output Octets                            | 4388                                                                        |
+|   Output Packets                           | 47                                                                          |
 |   Output Gratuitous ARP Packets            | 0                                                                           |
 |   Output Unsolicited Neighbor Adv. Packets | 0                                                                           |
 |   Output Router Adv. Packets               | 0                                                                           |
@@ -1368,10 +1375,10 @@ Pass: Output contains `PE_1-PE_2-FP` and `PE_1-PE_2-FD` and `CLASSIFIER-UNTAGGED
 | KEY                 | VALUE        |
 +---------------------+--------------+
 | Name                | PE_1-PE_2-FP |
-| Rx Accepted Bytes   | 3562         |
-| Rx Accepted Frames  | 39           |
-| Tx Forwarded Bytes  | 4431         |
-| Tx Forwarded Frames | 46           |
+| Rx Accepted Bytes   | 3683         |
+| Rx Accepted Frames  | 40           |
+| Tx Forwarded Bytes  | 4388         |
+| Tx Forwarded Frames | 47           |
 | Rx Yellow Bytes     | 0            |
 | Rx Yellow Frames    | 0            |
 | Rx Dropped Bytes    | 0            |
@@ -1413,24 +1420,24 @@ Pass: Output contains `PE_1-PE_2-if` and `172.16.1.2` and `30`
 | DHCP IPv4 Address                          | 10.0.0.15                                                                   |
 | DHCP IPv4 Prefix                           | 24                                                                          |
 | IPv6 Link Local Data                       |                                                                             |
-|   Address                                  | fe80::200:caff:fe51:d400                                                    |
+|   Address                                  | fe80::200:e7ff:febf:1100                                                    |
 |   Prefix Length                            | 128                                                                         |
 |   Origin                                   | AUTO                                                                        |
 | Interface Index                            | 56                                                                          |
 | Description                                | bridge interface for out of band management port/local management interface |
 | MTU                                        | 1500                                                                        |
-| MAC Address                                | 0c:00:ca:51:d4:00                                                           |
+| MAC Address                                | 0c:00:e7:bf:11:00                                                           |
 | Bandwidth (Mbps)                           | 0                                                                           |
 | Gratuitous ARP                             | Disabled                                                                    |
 | Unsolicited Neighbor Advertisement         | Disabled                                                                    |
 | Router Advertisement                       | Disabled                                                                    |
 | Counters                                   |                                                                             |
-|   Input Octets                             | 34878                                                                       |
-|   Input Packets                            | 614                                                                         |
+|   Input Octets                             | 33062                                                                       |
+|   Input Packets                            | 570                                                                         |
 |   Input Dropped Octets                     | -                                                                           |
 |   Input Dropped Packets                    | 0                                                                           |
-|   Output Octets                            | 246843                                                                      |
-|   Output Packets                           | 636                                                                         |
+|   Output Octets                            | 242631                                                                      |
+|   Output Packets                           | 600                                                                         |
 |   Output Gratuitous ARP Packets            | -                                                                           |
 |   Output Unsolicited Neighbor Adv. Packets | -                                                                           |
 |   Output Router Adv. Packets               | 0                                                                           |
@@ -1456,15 +1463,15 @@ Pass: Output contains `PE_1-PE_2-if` and `172.16.1.2` and `30`
 | Role                                       | management                                                                  |
 | VRF Binding                                | default                                                                     |
 | IPv6 Link Local Data                       |                                                                             |
-|   Address                                  | fe80::e00:caff:fe51:d3f7                                                    |
+|   Address                                  | fe80::e00:e7ff:febf:10f7                                                    |
 |   Prefix Length                            | 64                                                                          |
 |   Origin                                   | AUTO                                                                        |
 |   Address Status                           | preferred                                                                   |
 | Interface Index                            | 1073731825                                                                  |
 | Description                                | in band remote management interface                                         |
 | MTU                                        | 1500                                                                        |
-| MAC Address                                | 0c:00:ca:51:d3:f7                                                           |
-| Last Changed                               | Aug 06 2026 20:25:04 Local                                                  |
+| MAC Address                                | 0c:00:e7:bf:10:f7                                                           |
+| Last Changed                               | Aug 26 2026 18:55:35 Local                                                  |
 | Bandwidth (Mbps)                           | 10000                                                                       |
 | Gratuitous ARP                             | Enabled                                                                     |
 | Unsolicited Neighbor Advertisement         | Enabled                                                                     |
@@ -1528,7 +1535,7 @@ Pass: Output contains `PE_1-PE_2-if` and `172.16.1.2` and `30`
 | Role                                       | data                                                                        |
 | VRF Binding                                | default                                                                     |
 | IPv6 Link Local Data                       |                                                                             |
-|   Address                                  | fe80::e00:caff:fe51:d3f6                                                    |
+|   Address                                  | fe80::e00:e7ff:febf:10f6                                                    |
 |   Prefix Length                            | 64                                                                          |
 |   Origin                                   | AUTO                                                                        |
 |   Address Status                           | preferred                                                                   |
@@ -1585,15 +1592,15 @@ Pass: Output contains `PE_1-PE_2-if` and `172.16.1.2` and `30`
 | Role                                       | data                                                                        |
 | VRF Binding                                | default                                                                     |
 | IPv6 Link Local Data                       |                                                                             |
-|   Address                                  | fe80::e00:caff:fe51:d3f6                                                    |
+|   Address                                  | fe80::e00:e7ff:febf:10f6                                                    |
 |   Prefix Length                            | 64                                                                          |
 |   Origin                                   | AUTO                                                                        |
 |   Address Status                           | preferred                                                                   |
 | Interface Index                            | 1073731826                                                                  |
 | Description                                | -                                                                           |
 | MTU                                        | 1500                                                                        |
-| MAC Address                                | 0c:00:ca:51:d3:f6                                                           |
-| Last Changed                               | Aug 06 2026 20:32:05 Local                                                  |
+| MAC Address                                | 0c:00:e7:bf:10:f6                                                           |
+| Last Changed                               | Aug 26 2026 19:02:09 Local                                                  |
 | Bandwidth (Mbps)                           | 10000                                                                       |
 | Gratuitous ARP                             | Disabled                                                                    |
 | Unsolicited Neighbor Advertisement         | Disabled                                                                    |
@@ -1607,9 +1614,9 @@ Pass: Output contains `PE_1-PE_2-if` and `172.16.1.2` and `30`
 |   Input Octets                             | 3182                                                                        |
 |   Input Packets                            | 38                                                                          |
 |   Input Dropped Octets                     | 0                                                                           |
-|   Input Dropped Packets                    | 4                                                                           |
-|   Output Octets                            | 4431                                                                        |
-|   Output Packets                           | 46                                                                          |
+|   Input Dropped Packets                    | 2                                                                           |
+|   Output Octets                            | 4388                                                                        |
+|   Output Packets                           | 47                                                                          |
 |   Output Gratuitous ARP Packets            | 0                                                                           |
 |   Output Unsolicited Neighbor Adv. Packets | 0                                                                           |
 |   Output Router Adv. Packets               | 0                                                                           |
@@ -1784,11 +1791,11 @@ Codes:
 
  Type 'Ctrl+C' to abort
 
-! seq_num = 1  RTT = 2.37 ms  TTL = 255
-! seq_num = 2  RTT = 2.71 ms  TTL = 255
-! seq_num = 3  RTT = 3.51 ms  TTL = 255
+! seq_num = 1  RTT = 3.27 ms  TTL = 255
+! seq_num = 2  RTT = 2.63 ms  TTL = 255
+! seq_num = 3  RTT = 2.46 ms  TTL = 255
 Success Rate is 100.00 percent (3/3)
-Round-trip min/avg/max = 2.37/2.86/3.51
+Round-trip min/avg/max = 2.46/2.79/3.27
 ```
 
 </details>
@@ -1812,11 +1819,11 @@ Codes:
 
  Type 'Ctrl+C' to abort
 
-! seq_num = 1  RTT = 3.01 ms  TTL = 255
-! seq_num = 2  RTT = 1.84 ms  TTL = 255
-! seq_num = 3  RTT = 2.72 ms  TTL = 255
+! seq_num = 1  RTT = 2.71 ms  TTL = 255
+! seq_num = 2  RTT = 8.02 ms  TTL = 255
+! seq_num = 3  RTT = 4.49 ms  TTL = 255
 Success Rate is 100.00 percent (3/3)
-Round-trip min/avg/max = 1.84/2.52/3.01
+Round-trip min/avg/max = 2.71/5.07/8.02
 ```
 
 </details>
@@ -1891,24 +1898,24 @@ Pass: Output contains `lb1` and `fc00:0000:0000:0000:0000:0000:0000:0001` and `1
 | DHCP IPv4 Address                          | 10.0.0.15                                                                   |
 | DHCP IPv4 Prefix                           | 24                                                                          |
 | IPv6 Link Local Data                       |                                                                             |
-|   Address                                  | fe80::200:71ff:fe1a:1400                                                    |
+|   Address                                  | fe80::200:9dff:fe2e:900                                                     |
 |   Prefix Length                            | 128                                                                         |
 |   Origin                                   | AUTO                                                                        |
 | Interface Index                            | 56                                                                          |
 | Description                                | bridge interface for out of band management port/local management interface |
 | MTU                                        | 1500                                                                        |
-| MAC Address                                | 0c:00:71:1a:14:00                                                           |
+| MAC Address                                | 0c:00:9d:2e:09:00                                                           |
 | Bandwidth (Mbps)                           | 0                                                                           |
 | Gratuitous ARP                             | Disabled                                                                    |
 | Unsolicited Neighbor Advertisement         | Disabled                                                                    |
 | Router Advertisement                       | Disabled                                                                    |
 | Counters                                   |                                                                             |
-|   Input Octets                             | 38110                                                                       |
-|   Input Packets                            | 687                                                                         |
+|   Input Octets                             | 37646                                                                       |
+|   Input Packets                            | 674                                                                         |
 |   Input Dropped Octets                     | -                                                                           |
 |   Input Dropped Packets                    | 0                                                                           |
-|   Output Octets                            | 288543                                                                      |
-|   Output Packets                           | 704                                                                         |
+|   Output Octets                            | 286201                                                                      |
+|   Output Packets                           | 697                                                                         |
 |   Output Gratuitous ARP Packets            | -                                                                           |
 |   Output Unsolicited Neighbor Adv. Packets | -                                                                           |
 |   Output Router Adv. Packets               | 0                                                                           |
@@ -1934,15 +1941,15 @@ Pass: Output contains `lb1` and `fc00:0000:0000:0000:0000:0000:0000:0001` and `1
 | Role                                       | management                                                                  |
 | VRF Binding                                | default                                                                     |
 | IPv6 Link Local Data                       |                                                                             |
-|   Address                                  | fe80::e00:71ff:fe1a:13f7                                                    |
+|   Address                                  | fe80::e00:9dff:fe2e:8f7                                                     |
 |   Prefix Length                            | 64                                                                          |
 |   Origin                                   | AUTO                                                                        |
 |   Address Status                           | preferred                                                                   |
 | Interface Index                            | 1073731825                                                                  |
 | Description                                | in band remote management interface                                         |
 | MTU                                        | 1500                                                                        |
-| MAC Address                                | 0c:00:71:1a:13:f7                                                           |
-| Last Changed                               | Aug 06 2026 20:25:27 Local                                                  |
+| MAC Address                                | 0c:00:9d:2e:08:f7                                                           |
+| Last Changed                               | Aug 26 2026 18:55:57 Local                                                  |
 | Bandwidth (Mbps)                           | 10000                                                                       |
 | Gratuitous ARP                             | Enabled                                                                     |
 | Unsolicited Neighbor Advertisement         | Enabled                                                                     |
@@ -2006,7 +2013,7 @@ Pass: Output contains `lb1` and `fc00:0000:0000:0000:0000:0000:0000:0001` and `1
 | Role                                       | data                                                                        |
 | VRF Binding                                | default                                                                     |
 | IPv6 Link Local Data                       |                                                                             |
-|   Address                                  | fe80::e00:71ff:fe1a:13f6                                                    |
+|   Address                                  | fe80::e00:9dff:fe2e:8f6                                                     |
 |   Prefix Length                            | 64                                                                          |
 |   Origin                                   | AUTO                                                                        |
 |   Address Status                           | preferred                                                                   |
@@ -2063,15 +2070,15 @@ Pass: Output contains `lb1` and `fc00:0000:0000:0000:0000:0000:0000:0001` and `1
 | Role                                       | data                                                                        |
 | VRF Binding                                | default                                                                     |
 | IPv6 Link Local Data                       |                                                                             |
-|   Address                                  | fe80::e00:71ff:fe1a:13f6                                                    |
+|   Address                                  | fe80::e00:9dff:fe2e:8f6                                                     |
 |   Prefix Length                            | 64                                                                          |
 |   Origin                                   | AUTO                                                                        |
 |   Address Status                           | preferred                                                                   |
 | Interface Index                            | 1073731826                                                                  |
 | Description                                | -                                                                           |
 | MTU                                        | 1500                                                                        |
-| MAC Address                                | 0c:00:71:1a:13:f6                                                           |
-| Last Changed                               | Aug 06 2026 20:32:02 Local                                                  |
+| MAC Address                                | 0c:00:9d:2e:08:f6                                                           |
+| Last Changed                               | Aug 26 2026 19:02:05 Local                                                  |
 | Bandwidth (Mbps)                           | 10000                                                                       |
 | Gratuitous ARP                             | Disabled                                                                    |
 | Unsolicited Neighbor Advertisement         | Disabled                                                                    |
@@ -2082,12 +2089,12 @@ Pass: Output contains `lb1` and `fc00:0000:0000:0000:0000:0000:0000:0001` and `1
 | Frame to CoS Map                           | default-f2c                                                                 |
 | Stats Collection                           | on                                                                          |
 | Counters                                   |                                                                             |
-|   Input Octets                             | 4372                                                                        |
-|   Input Packets                            | 50                                                                          |
+|   Input Octets                             | 4650                                                                        |
+|   Input Packets                            | 53                                                                          |
 |   Input Dropped Octets                     | 0                                                                           |
-|   Input Dropped Packets                    | 5                                                                           |
-|   Output Octets                            | 4791                                                                        |
-|   Output Packets                           | 50                                                                          |
+|   Input Dropped Packets                    | 4                                                                           |
+|   Output Octets                            | 5388                                                                        |
+|   Output Packets                           | 53                                                                          |
 |   Output Gratuitous ARP Packets            | 0                                                                           |
 |   Output Unsolicited Neighbor Adv. Packets | 0                                                                           |
 |   Output Router Adv. Packets               | 0                                                                           |
@@ -2151,24 +2158,24 @@ Pass: Output contains `lb1` and `fc00:0000:0000:0000:0000:0000:0000:0002` and `1
 | DHCP IPv4 Address                          | 10.0.0.15                                                                   |
 | DHCP IPv4 Prefix                           | 24                                                                          |
 | IPv6 Link Local Data                       |                                                                             |
-|   Address                                  | fe80::200:caff:fe51:d400                                                    |
+|   Address                                  | fe80::200:e7ff:febf:1100                                                    |
 |   Prefix Length                            | 128                                                                         |
 |   Origin                                   | AUTO                                                                        |
 | Interface Index                            | 56                                                                          |
 | Description                                | bridge interface for out of band management port/local management interface |
 | MTU                                        | 1500                                                                        |
-| MAC Address                                | 0c:00:ca:51:d4:00                                                           |
+| MAC Address                                | 0c:00:e7:bf:11:00                                                           |
 | Bandwidth (Mbps)                           | 0                                                                           |
 | Gratuitous ARP                             | Disabled                                                                    |
 | Unsolicited Neighbor Advertisement         | Disabled                                                                    |
 | Router Advertisement                       | Disabled                                                                    |
 | Counters                                   |                                                                             |
-|   Input Octets                             | 38326                                                                       |
-|   Input Packets                            | 691                                                                         |
+|   Input Octets                             | 36070                                                                       |
+|   Input Packets                            | 636                                                                         |
 |   Input Dropped Octets                     | -                                                                           |
 |   Input Dropped Packets                    | 0                                                                           |
-|   Output Octets                            | 288697                                                                      |
-|   Output Packets                           | 713                                                                         |
+|   Output Octets                            | 283121                                                                      |
+|   Output Packets                           | 663                                                                         |
 |   Output Gratuitous ARP Packets            | -                                                                           |
 |   Output Unsolicited Neighbor Adv. Packets | -                                                                           |
 |   Output Router Adv. Packets               | 0                                                                           |
@@ -2194,15 +2201,15 @@ Pass: Output contains `lb1` and `fc00:0000:0000:0000:0000:0000:0000:0002` and `1
 | Role                                       | management                                                                  |
 | VRF Binding                                | default                                                                     |
 | IPv6 Link Local Data                       |                                                                             |
-|   Address                                  | fe80::e00:caff:fe51:d3f7                                                    |
+|   Address                                  | fe80::e00:e7ff:febf:10f7                                                    |
 |   Prefix Length                            | 64                                                                          |
 |   Origin                                   | AUTO                                                                        |
 |   Address Status                           | preferred                                                                   |
 | Interface Index                            | 1073731825                                                                  |
 | Description                                | in band remote management interface                                         |
 | MTU                                        | 1500                                                                        |
-| MAC Address                                | 0c:00:ca:51:d3:f7                                                           |
-| Last Changed                               | Aug 06 2026 20:25:04 Local                                                  |
+| MAC Address                                | 0c:00:e7:bf:10:f7                                                           |
+| Last Changed                               | Aug 26 2026 18:55:35 Local                                                  |
 | Bandwidth (Mbps)                           | 10000                                                                       |
 | Gratuitous ARP                             | Enabled                                                                     |
 | Unsolicited Neighbor Advertisement         | Enabled                                                                     |
@@ -2266,7 +2273,7 @@ Pass: Output contains `lb1` and `fc00:0000:0000:0000:0000:0000:0000:0002` and `1
 | Role                                       | data                                                                        |
 | VRF Binding                                | default                                                                     |
 | IPv6 Link Local Data                       |                                                                             |
-|   Address                                  | fe80::e00:caff:fe51:d3f6                                                    |
+|   Address                                  | fe80::e00:e7ff:febf:10f6                                                    |
 |   Prefix Length                            | 64                                                                          |
 |   Origin                                   | AUTO                                                                        |
 |   Address Status                           | preferred                                                                   |
@@ -2323,15 +2330,15 @@ Pass: Output contains `lb1` and `fc00:0000:0000:0000:0000:0000:0000:0002` and `1
 | Role                                       | data                                                                        |
 | VRF Binding                                | default                                                                     |
 | IPv6 Link Local Data                       |                                                                             |
-|   Address                                  | fe80::e00:caff:fe51:d3f6                                                    |
+|   Address                                  | fe80::e00:e7ff:febf:10f6                                                    |
 |   Prefix Length                            | 64                                                                          |
 |   Origin                                   | AUTO                                                                        |
 |   Address Status                           | preferred                                                                   |
 | Interface Index                            | 1073731826                                                                  |
 | Description                                | -                                                                           |
 | MTU                                        | 1500                                                                        |
-| MAC Address                                | 0c:00:ca:51:d3:f6                                                           |
-| Last Changed                               | Aug 06 2026 20:32:05 Local                                                  |
+| MAC Address                                | 0c:00:e7:bf:10:f6                                                           |
+| Last Changed                               | Aug 26 2026 19:02:09 Local                                                  |
 | Bandwidth (Mbps)                           | 10000                                                                       |
 | Gratuitous ARP                             | Disabled                                                                    |
 | Unsolicited Neighbor Advertisement         | Disabled                                                                    |
@@ -2345,9 +2352,9 @@ Pass: Output contains `lb1` and `fc00:0000:0000:0000:0000:0000:0000:0002` and `1
 |   Input Octets                             | 3710                                                                        |
 |   Input Packets                            | 44                                                                          |
 |   Input Dropped Octets                     | 0                                                                           |
-|   Input Dropped Packets                    | 4                                                                           |
-|   Output Octets                            | 5164                                                                        |
-|   Output Packets                           | 53                                                                          |
+|   Input Dropped Packets                    | 2                                                                           |
+|   Output Octets                            | 5622                                                                        |
+|   Output Packets                           | 56                                                                          |
 |   Output Gratuitous ARP Packets            | 0                                                                           |
 |   Output Unsolicited Neighbor Adv. Packets | 0                                                                           |
 |   Output Router Adv. Packets               | 0                                                                           |
@@ -2411,24 +2418,24 @@ Pass: Output contains `fc00:0000:0000:0000:0000:0000:0000:0600` and `127`
 | DHCP IPv4 Address                          | 10.0.0.15                                                                   |
 | DHCP IPv4 Prefix                           | 24                                                                          |
 | IPv6 Link Local Data                       |                                                                             |
-|   Address                                  | fe80::200:71ff:fe1a:1400                                                    |
+|   Address                                  | fe80::200:9dff:fe2e:900                                                     |
 |   Prefix Length                            | 128                                                                         |
 |   Origin                                   | AUTO                                                                        |
 | Interface Index                            | 56                                                                          |
 | Description                                | bridge interface for out of band management port/local management interface |
 | MTU                                        | 1500                                                                        |
-| MAC Address                                | 0c:00:71:1a:14:00                                                           |
+| MAC Address                                | 0c:00:9d:2e:09:00                                                           |
 | Bandwidth (Mbps)                           | 0                                                                           |
 | Gratuitous ARP                             | Disabled                                                                    |
 | Unsolicited Neighbor Advertisement         | Disabled                                                                    |
 | Router Advertisement                       | Disabled                                                                    |
 | Counters                                   |                                                                             |
-|   Input Octets                             | 40134                                                                       |
-|   Input Packets                            | 734                                                                         |
+|   Input Octets                             | 40430                                                                       |
+|   Input Packets                            | 740                                                                         |
 |   Input Dropped Octets                     | -                                                                           |
 |   Input Dropped Packets                    | 0                                                                           |
-|   Output Octets                            | 323769                                                                      |
-|   Output Packets                           | 751                                                                         |
+|   Output Octets                            | 324021                                                                      |
+|   Output Packets                           | 763                                                                         |
 |   Output Gratuitous ARP Packets            | -                                                                           |
 |   Output Unsolicited Neighbor Adv. Packets | -                                                                           |
 |   Output Router Adv. Packets               | 0                                                                           |
@@ -2454,15 +2461,15 @@ Pass: Output contains `fc00:0000:0000:0000:0000:0000:0000:0600` and `127`
 | Role                                       | management                                                                  |
 | VRF Binding                                | default                                                                     |
 | IPv6 Link Local Data                       |                                                                             |
-|   Address                                  | fe80::e00:71ff:fe1a:13f7                                                    |
+|   Address                                  | fe80::e00:9dff:fe2e:8f7                                                     |
 |   Prefix Length                            | 64                                                                          |
 |   Origin                                   | AUTO                                                                        |
 |   Address Status                           | preferred                                                                   |
 | Interface Index                            | 1073731825                                                                  |
 | Description                                | in band remote management interface                                         |
 | MTU                                        | 1500                                                                        |
-| MAC Address                                | 0c:00:71:1a:13:f7                                                           |
-| Last Changed                               | Aug 06 2026 20:25:27 Local                                                  |
+| MAC Address                                | 0c:00:9d:2e:08:f7                                                           |
+| Last Changed                               | Aug 26 2026 18:55:57 Local                                                  |
 | Bandwidth (Mbps)                           | 10000                                                                       |
 | Gratuitous ARP                             | Enabled                                                                     |
 | Unsolicited Neighbor Advertisement         | Enabled                                                                     |
@@ -2526,7 +2533,7 @@ Pass: Output contains `fc00:0000:0000:0000:0000:0000:0000:0600` and `127`
 | Role                                       | data                                                                        |
 | VRF Binding                                | default                                                                     |
 | IPv6 Link Local Data                       |                                                                             |
-|   Address                                  | fe80::e00:71ff:fe1a:13f6                                                    |
+|   Address                                  | fe80::e00:9dff:fe2e:8f6                                                     |
 |   Prefix Length                            | 64                                                                          |
 |   Origin                                   | AUTO                                                                        |
 |   Address Status                           | preferred                                                                   |
@@ -2583,15 +2590,15 @@ Pass: Output contains `fc00:0000:0000:0000:0000:0000:0000:0600` and `127`
 | Role                                       | data                                                                        |
 | VRF Binding                                | default                                                                     |
 | IPv6 Link Local Data                       |                                                                             |
-|   Address                                  | fe80::e00:71ff:fe1a:13f6                                                    |
+|   Address                                  | fe80::e00:9dff:fe2e:8f6                                                     |
 |   Prefix Length                            | 64                                                                          |
 |   Origin                                   | AUTO                                                                        |
 |   Address Status                           | preferred                                                                   |
 | Interface Index                            | 1073731826                                                                  |
 | Description                                | -                                                                           |
 | MTU                                        | 1500                                                                        |
-| MAC Address                                | 0c:00:71:1a:13:f6                                                           |
-| Last Changed                               | Aug 06 2026 20:32:02 Local                                                  |
+| MAC Address                                | 0c:00:9d:2e:08:f6                                                           |
+| Last Changed                               | Aug 26 2026 19:02:05 Local                                                  |
 | Bandwidth (Mbps)                           | 10000                                                                       |
 | Gratuitous ARP                             | Disabled                                                                    |
 | Unsolicited Neighbor Advertisement         | Disabled                                                                    |
@@ -2602,12 +2609,12 @@ Pass: Output contains `fc00:0000:0000:0000:0000:0000:0000:0600` and `127`
 | Frame to CoS Map                           | default-f2c                                                                 |
 | Stats Collection                           | on                                                                          |
 | Counters                                   |                                                                             |
-|   Input Octets                             | 4372                                                                        |
-|   Input Packets                            | 50                                                                          |
+|   Input Octets                             | 4650                                                                        |
+|   Input Packets                            | 53                                                                          |
 |   Input Dropped Octets                     | 0                                                                           |
-|   Input Dropped Packets                    | 5                                                                           |
-|   Output Octets                            | 5164                                                                        |
-|   Output Packets                           | 51                                                                          |
+|   Input Dropped Packets                    | 4                                                                           |
+|   Output Octets                            | 5388                                                                        |
+|   Output Packets                           | 53                                                                          |
 |   Output Gratuitous ARP Packets            | 0                                                                           |
 |   Output Unsolicited Neighbor Adv. Packets | 0                                                                           |
 |   Output Router Adv. Packets               | 0                                                                           |
@@ -2671,24 +2678,24 @@ Pass: Output contains `fc00:0000:0000:0000:0000:0000:0000:0601` and `127`
 | DHCP IPv4 Address                          | 10.0.0.15                                                                   |
 | DHCP IPv4 Prefix                           | 24                                                                          |
 | IPv6 Link Local Data                       |                                                                             |
-|   Address                                  | fe80::200:caff:fe51:d400                                                    |
+|   Address                                  | fe80::200:e7ff:febf:1100                                                    |
 |   Prefix Length                            | 128                                                                         |
 |   Origin                                   | AUTO                                                                        |
 | Interface Index                            | 56                                                                          |
 | Description                                | bridge interface for out of band management port/local management interface |
 | MTU                                        | 1500                                                                        |
-| MAC Address                                | 0c:00:ca:51:d4:00                                                           |
+| MAC Address                                | 0c:00:e7:bf:11:00                                                           |
 | Bandwidth (Mbps)                           | 0                                                                           |
 | Gratuitous ARP                             | Disabled                                                                    |
 | Unsolicited Neighbor Advertisement         | Disabled                                                                    |
 | Router Advertisement                       | Disabled                                                                    |
 | Counters                                   |                                                                             |
-|   Input Octets                             | 39950                                                                       |
-|   Input Packets                            | 728                                                                         |
+|   Input Octets                             | 40134                                                                       |
+|   Input Packets                            | 734                                                                         |
 |   Input Dropped Octets                     | -                                                                           |
 |   Input Dropped Packets                    | 0                                                                           |
-|   Output Octets                            | 322839                                                                      |
-|   Output Packets                           | 750                                                                         |
+|   Output Octets                            | 324413                                                                      |
+|   Output Packets                           | 761                                                                         |
 |   Output Gratuitous ARP Packets            | -                                                                           |
 |   Output Unsolicited Neighbor Adv. Packets | -                                                                           |
 |   Output Router Adv. Packets               | 0                                                                           |
@@ -2714,15 +2721,15 @@ Pass: Output contains `fc00:0000:0000:0000:0000:0000:0000:0601` and `127`
 | Role                                       | management                                                                  |
 | VRF Binding                                | default                                                                     |
 | IPv6 Link Local Data                       |                                                                             |
-|   Address                                  | fe80::e00:caff:fe51:d3f7                                                    |
+|   Address                                  | fe80::e00:e7ff:febf:10f7                                                    |
 |   Prefix Length                            | 64                                                                          |
 |   Origin                                   | AUTO                                                                        |
 |   Address Status                           | preferred                                                                   |
 | Interface Index                            | 1073731825                                                                  |
 | Description                                | in band remote management interface                                         |
 | MTU                                        | 1500                                                                        |
-| MAC Address                                | 0c:00:ca:51:d3:f7                                                           |
-| Last Changed                               | Aug 06 2026 20:25:04 Local                                                  |
+| MAC Address                                | 0c:00:e7:bf:10:f7                                                           |
+| Last Changed                               | Aug 26 2026 18:55:35 Local                                                  |
 | Bandwidth (Mbps)                           | 10000                                                                       |
 | Gratuitous ARP                             | Enabled                                                                     |
 | Unsolicited Neighbor Advertisement         | Enabled                                                                     |
@@ -2786,7 +2793,7 @@ Pass: Output contains `fc00:0000:0000:0000:0000:0000:0000:0601` and `127`
 | Role                                       | data                                                                        |
 | VRF Binding                                | default                                                                     |
 | IPv6 Link Local Data                       |                                                                             |
-|   Address                                  | fe80::e00:caff:fe51:d3f6                                                    |
+|   Address                                  | fe80::e00:e7ff:febf:10f6                                                    |
 |   Prefix Length                            | 64                                                                          |
 |   Origin                                   | AUTO                                                                        |
 |   Address Status                           | preferred                                                                   |
@@ -2843,15 +2850,15 @@ Pass: Output contains `fc00:0000:0000:0000:0000:0000:0000:0601` and `127`
 | Role                                       | data                                                                        |
 | VRF Binding                                | default                                                                     |
 | IPv6 Link Local Data                       |                                                                             |
-|   Address                                  | fe80::e00:caff:fe51:d3f6                                                    |
+|   Address                                  | fe80::e00:e7ff:febf:10f6                                                    |
 |   Prefix Length                            | 64                                                                          |
 |   Origin                                   | AUTO                                                                        |
 |   Address Status                           | preferred                                                                   |
 | Interface Index                            | 1073731826                                                                  |
 | Description                                | -                                                                           |
 | MTU                                        | 1500                                                                        |
-| MAC Address                                | 0c:00:ca:51:d3:f6                                                           |
-| Last Changed                               | Aug 06 2026 20:32:05 Local                                                  |
+| MAC Address                                | 0c:00:e7:bf:10:f6                                                           |
+| Last Changed                               | Aug 26 2026 19:02:09 Local                                                  |
 | Bandwidth (Mbps)                           | 10000                                                                       |
 | Gratuitous ARP                             | Disabled                                                                    |
 | Unsolicited Neighbor Advertisement         | Disabled                                                                    |
@@ -2865,9 +2872,9 @@ Pass: Output contains `fc00:0000:0000:0000:0000:0000:0000:0601` and `127`
 |   Input Octets                             | 3710                                                                        |
 |   Input Packets                            | 44                                                                          |
 |   Input Dropped Octets                     | 0                                                                           |
-|   Input Dropped Packets                    | 4                                                                           |
-|   Output Octets                            | 5292                                                                        |
-|   Output Packets                           | 54                                                                          |
+|   Input Dropped Packets                    | 2                                                                           |
+|   Output Octets                            | 5622                                                                        |
+|   Output Packets                           | 56                                                                          |
 |   Output Gratuitous ARP Packets            | 0                                                                           |
 |   Output Unsolicited Neighbor Adv. Packets | 0                                                                           |
 |   Output Router Adv. Packets               | 0                                                                           |
@@ -2947,11 +2954,11 @@ Codes:
 
  Type 'Ctrl+C' to abort
 
-! seq_num = 1  RTT = 2.43 ms  TTL = 255
-! seq_num = 2  RTT = 3.32 ms  TTL = 255
-! seq_num = 3  RTT = 2.99 ms  TTL = 255
+! seq_num = 1  RTT = 2.37 ms  TTL = 255
+! seq_num = 2  RTT = 3.24 ms  TTL = 255
+! seq_num = 3  RTT = 3.85 ms  TTL = 255
 Success Rate is 100.00 percent (3/3)
-Round-trip min/avg/max = 2.43/2.91/3.32
+Round-trip min/avg/max = 2.37/3.15/3.85
 ```
 
 </details>
@@ -2975,11 +2982,11 @@ Codes:
 
  Type 'Ctrl+C' to abort
 
-! seq_num = 1  RTT = 2.96 ms  TTL = 255
-! seq_num = 2  RTT = 3.11 ms  TTL = 255
-! seq_num = 3  RTT = 2.96 ms  TTL = 255
+! seq_num = 1  RTT = 2.05 ms  TTL = 255
+! seq_num = 2  RTT = 4.05 ms  TTL = 255
+! seq_num = 3  RTT = 2.81 ms  TTL = 255
 Success Rate is 100.00 percent (3/3)
-Round-trip min/avg/max = 2.96/3.01/3.11
+Round-trip min/avg/max = 2.05/2.97/4.05
 ```
 
 </details>
@@ -3005,7 +3012,7 @@ Pass: Output contains `system-name` and `PE_2`
 | Parameter                   | Value          |
 +-----------------------------+----------------+
 | interface                   | 1              |
-| chassis-id                  | 0C00CA51D3F1   |
+| chassis-id                  | 0C00E7BF10F1   |
 | chassis-id-subtype          | mac-address    |
 | port-desc                   | 1              |
 | port-id                     | 1              |
@@ -3028,7 +3035,7 @@ Pass: Output contains `system-name` and `PE_2`
 | if-subtype                  | if-index       |
 +-----------------------------+----------------+
 | interface                   | 2              |
-| chassis-id                  | 0C00C94520F1   |
+| chassis-id                  | 0C00B2FC8EF1   |
 | chassis-id-subtype          | mac-address    |
 | port-desc                   | 1              |
 | port-id                     | 1              |
@@ -3036,7 +3043,7 @@ Pass: Output contains `system-name` and `PE_2`
 | system-capability-supported | bridge         |
 | system-capability-enabled   | bridge         |
 | system-description          | 3984           |
-| system-name                 | CE_1            |
+| system-name                 | CE_1           |
 | auto-neg-supported          | True           |
 | auto-neg-enabled            | False          |
 | oper-mau-type               | 33             |
@@ -3051,7 +3058,7 @@ Pass: Output contains `system-name` and `PE_2`
 | if-subtype                  | if-index       |
 +-----------------------------+----------------+
 | interface                   | 4              |
-| chassis-id                  | 0C00DC6584F1   |
+| chassis-id                  | 0C00D5C728F1   |
 | chassis-id-subtype          | mac-address    |
 | port-desc                   | 3              |
 | port-id                     | 3              |
@@ -3092,7 +3099,7 @@ Pass: Output contains `system-name` and `PE_1`
 | Parameter                   | Value          |
 +-----------------------------+----------------+
 | interface                   | 1              |
-| chassis-id                  | 0C00711A13F1   |
+| chassis-id                  | 0C009D2E08F1   |
 | chassis-id-subtype          | mac-address    |
 | port-desc                   | 1              |
 | port-id                     | 1              |
@@ -3115,7 +3122,7 @@ Pass: Output contains `system-name` and `PE_1`
 | if-subtype                  | if-index       |
 +-----------------------------+----------------+
 | interface                   | 2              |
-| chassis-id                  | 0C000F3EBAF1   |
+| chassis-id                  | 0C00FABAA6F1   |
 | chassis-id-subtype          | mac-address    |
 | port-desc                   | 1              |
 | port-id                     | 1              |
@@ -3123,7 +3130,7 @@ Pass: Output contains `system-name` and `PE_1`
 | system-capability-supported | bridge         |
 | system-capability-enabled   | bridge         |
 | system-description          | 3984           |
-| system-name                 | CE_2            |
+| system-name                 | CE_2           |
 | auto-neg-supported          | True           |
 | auto-neg-enabled            | False          |
 | oper-mau-type               | 33             |
@@ -3138,7 +3145,7 @@ Pass: Output contains `system-name` and `PE_1`
 | if-subtype                  | if-index       |
 +-----------------------------+----------------+
 | interface                   | 4              |
-| chassis-id                  | 0C00DC6584F1   |
+| chassis-id                  | 0C00D5C728F1   |
 | chassis-id-subtype          | mac-address    |
 | port-desc                   | 1              |
 | port-id                     | 1              |
@@ -3190,24 +3197,24 @@ Pass: Output contains `lb1` and `172.16.0.1` and `32`
 | DHCP IPv4 Address                          | 10.0.0.15                                                                   |
 | DHCP IPv4 Prefix                           | 24                                                                          |
 | IPv6 Link Local Data                       |                                                                             |
-|   Address                                  | fe80::200:71ff:fe1a:1400                                                    |
+|   Address                                  | fe80::200:9dff:fe2e:900                                                     |
 |   Prefix Length                            | 128                                                                         |
 |   Origin                                   | AUTO                                                                        |
 | Interface Index                            | 56                                                                          |
 | Description                                | bridge interface for out of band management port/local management interface |
 | MTU                                        | 1500                                                                        |
-| MAC Address                                | 0c:00:71:1a:14:00                                                           |
+| MAC Address                                | 0c:00:9d:2e:09:00                                                           |
 | Bandwidth (Mbps)                           | 0                                                                           |
 | Gratuitous ARP                             | Disabled                                                                    |
 | Unsolicited Neighbor Advertisement         | Disabled                                                                    |
 | Router Advertisement                       | Disabled                                                                    |
 | Counters                                   |                                                                             |
-|   Input Octets                             | 32254                                                                       |
-|   Input Packets                            | 557                                                                         |
+|   Input Octets                             | 31350                                                                       |
+|   Input Packets                            | 533                                                                         |
 |   Input Dropped Octets                     | -                                                                           |
 |   Input Dropped Packets                    | 0                                                                           |
-|   Output Octets                            | 209399                                                                      |
-|   Output Packets                           | 580                                                                         |
+|   Output Octets                            | 205073                                                                      |
+|   Output Packets                           | 557                                                                         |
 |   Output Gratuitous ARP Packets            | -                                                                           |
 |   Output Unsolicited Neighbor Adv. Packets | -                                                                           |
 |   Output Router Adv. Packets               | 0                                                                           |
@@ -3233,15 +3240,15 @@ Pass: Output contains `lb1` and `172.16.0.1` and `32`
 | Role                                       | management                                                                  |
 | VRF Binding                                | default                                                                     |
 | IPv6 Link Local Data                       |                                                                             |
-|   Address                                  | fe80::e00:71ff:fe1a:13f7                                                    |
+|   Address                                  | fe80::e00:9dff:fe2e:8f7                                                     |
 |   Prefix Length                            | 64                                                                          |
 |   Origin                                   | AUTO                                                                        |
 |   Address Status                           | preferred                                                                   |
 | Interface Index                            | 1073731825                                                                  |
 | Description                                | in band remote management interface                                         |
 | MTU                                        | 1500                                                                        |
-| MAC Address                                | 0c:00:71:1a:13:f7                                                           |
-| Last Changed                               | Aug 06 2026 20:25:27 Local                                                  |
+| MAC Address                                | 0c:00:9d:2e:08:f7                                                           |
+| Last Changed                               | Aug 26 2026 18:55:57 Local                                                  |
 | Bandwidth (Mbps)                           | 10000                                                                       |
 | Gratuitous ARP                             | Enabled                                                                     |
 | Unsolicited Neighbor Advertisement         | Enabled                                                                     |
@@ -3305,7 +3312,7 @@ Pass: Output contains `lb1` and `172.16.0.1` and `32`
 | Role                                       | data                                                                        |
 | VRF Binding                                | default                                                                     |
 | IPv6 Link Local Data                       |                                                                             |
-|   Address                                  | fe80::e00:71ff:fe1a:13f6                                                    |
+|   Address                                  | fe80::e00:9dff:fe2e:8f6                                                     |
 |   Prefix Length                            | 64                                                                          |
 |   Origin                                   | AUTO                                                                        |
 |   Address Status                           | preferred                                                                   |
@@ -3362,15 +3369,15 @@ Pass: Output contains `lb1` and `172.16.0.1` and `32`
 | Role                                       | data                                                                        |
 | VRF Binding                                | default                                                                     |
 | IPv6 Link Local Data                       |                                                                             |
-|   Address                                  | fe80::e00:71ff:fe1a:13f6                                                    |
+|   Address                                  | fe80::e00:9dff:fe2e:8f6                                                     |
 |   Prefix Length                            | 64                                                                          |
 |   Origin                                   | AUTO                                                                        |
 |   Address Status                           | preferred                                                                   |
 | Interface Index                            | 1073731826                                                                  |
 | Description                                | -                                                                           |
 | MTU                                        | 1500                                                                        |
-| MAC Address                                | 0c:00:71:1a:13:f6                                                           |
-| Last Changed                               | Aug 06 2026 20:32:02 Local                                                  |
+| MAC Address                                | 0c:00:9d:2e:08:f6                                                           |
+| Last Changed                               | Aug 26 2026 19:02:05 Local                                                  |
 | Bandwidth (Mbps)                           | 10000                                                                       |
 | Gratuitous ARP                             | Disabled                                                                    |
 | Unsolicited Neighbor Advertisement         | Disabled                                                                    |
@@ -3381,12 +3388,12 @@ Pass: Output contains `lb1` and `172.16.0.1` and `32`
 | Frame to CoS Map                           | default-f2c                                                                 |
 | Stats Collection                           | on                                                                          |
 | Counters                                   |                                                                             |
-|   Input Octets                             | 3844                                                                        |
-|   Input Packets                            | 44                                                                          |
+|   Input Octets                             | 4122                                                                        |
+|   Input Packets                            | 47                                                                          |
 |   Input Dropped Octets                     | 0                                                                           |
-|   Input Dropped Packets                    | 5                                                                           |
-|   Output Octets                            | 3930                                                                        |
-|   Output Packets                           | 42                                                                          |
+|   Input Dropped Packets                    | 3                                                                           |
+|   Output Octets                            | 4403                                                                        |
+|   Output Packets                           | 46                                                                          |
 |   Output Gratuitous ARP Packets            | 0                                                                           |
 |   Output Unsolicited Neighbor Adv. Packets | 0                                                                           |
 |   Output Router Adv. Packets               | 0                                                                           |
@@ -3475,10 +3482,10 @@ Pass: Output contains `PE_1-PE_2-FP` and `PE_1-PE_2-FD` and `CLASSIFIER-UNTAGGED
 | KEY                 | VALUE        |
 +---------------------+--------------+
 | Name                | PE_1-PE_2-FP |
-| Rx Accepted Bytes   | 4552         |
-| Rx Accepted Frames  | 47           |
-| Tx Forwarded Bytes  | 3930         |
-| Tx Forwarded Frames | 42           |
+| Rx Accepted Bytes   | 4516         |
+| Rx Accepted Frames  | 48           |
+| Tx Forwarded Bytes  | 4403         |
+| Tx Forwarded Frames | 46           |
 | Rx Yellow Bytes     | 0            |
 | Rx Yellow Frames    | 0            |
 | Rx Dropped Bytes    | 0            |
@@ -3489,7 +3496,7 @@ Pass: Output contains `PE_1-PE_2-FP` and `PE_1-PE_2-FD` and `CLASSIFIER-UNTAGGED
 +---------------------+------------------+
 | Name                | PE_1-PE_2-FP     |
 | Oper State          | up               |
-| Oper Up Time        | 0 days,0h:0m:22s |
+| Oper Up Time        | 0 days,0h:0m:23s |
 | Egress L2 Transform | -                |
 +---------------------+------------------+
 ```
@@ -3520,24 +3527,24 @@ Pass: Output contains `PE_1-PE_2-if` and `172.16.1.1` and `30`
 | DHCP IPv4 Address                          | 10.0.0.15                                                                   |
 | DHCP IPv4 Prefix                           | 24                                                                          |
 | IPv6 Link Local Data                       |                                                                             |
-|   Address                                  | fe80::200:71ff:fe1a:1400                                                    |
+|   Address                                  | fe80::200:9dff:fe2e:900                                                     |
 |   Prefix Length                            | 128                                                                         |
 |   Origin                                   | AUTO                                                                        |
 | Interface Index                            | 56                                                                          |
 | Description                                | bridge interface for out of band management port/local management interface |
 | MTU                                        | 1500                                                                        |
-| MAC Address                                | 0c:00:71:1a:14:00                                                           |
+| MAC Address                                | 0c:00:9d:2e:09:00                                                           |
 | Bandwidth (Mbps)                           | 0                                                                           |
 | Gratuitous ARP                             | Disabled                                                                    |
 | Unsolicited Neighbor Advertisement         | Disabled                                                                    |
 | Router Advertisement                       | Disabled                                                                    |
 | Counters                                   |                                                                             |
-|   Input Octets                             | 34982                                                                       |
-|   Input Packets                            | 618                                                                         |
+|   Input Octets                             | 34558                                                                       |
+|   Input Packets                            | 606                                                                         |
 |   Input Dropped Octets                     | -                                                                           |
 |   Input Dropped Packets                    | 0                                                                           |
-|   Output Octets                            | 247859                                                                      |
-|   Output Packets                           | 638                                                                         |
+|   Output Octets                            | 245255                                                                      |
+|   Output Packets                           | 630                                                                         |
 |   Output Gratuitous ARP Packets            | -                                                                           |
 |   Output Unsolicited Neighbor Adv. Packets | -                                                                           |
 |   Output Router Adv. Packets               | 0                                                                           |
@@ -3563,15 +3570,15 @@ Pass: Output contains `PE_1-PE_2-if` and `172.16.1.1` and `30`
 | Role                                       | management                                                                  |
 | VRF Binding                                | default                                                                     |
 | IPv6 Link Local Data                       |                                                                             |
-|   Address                                  | fe80::e00:71ff:fe1a:13f7                                                    |
+|   Address                                  | fe80::e00:9dff:fe2e:8f7                                                     |
 |   Prefix Length                            | 64                                                                          |
 |   Origin                                   | AUTO                                                                        |
 |   Address Status                           | preferred                                                                   |
 | Interface Index                            | 1073731825                                                                  |
 | Description                                | in band remote management interface                                         |
 | MTU                                        | 1500                                                                        |
-| MAC Address                                | 0c:00:71:1a:13:f7                                                           |
-| Last Changed                               | Aug 06 2026 20:25:27 Local                                                  |
+| MAC Address                                | 0c:00:9d:2e:08:f7                                                           |
+| Last Changed                               | Aug 26 2026 18:55:57 Local                                                  |
 | Bandwidth (Mbps)                           | 10000                                                                       |
 | Gratuitous ARP                             | Enabled                                                                     |
 | Unsolicited Neighbor Advertisement         | Enabled                                                                     |
@@ -3635,7 +3642,7 @@ Pass: Output contains `PE_1-PE_2-if` and `172.16.1.1` and `30`
 | Role                                       | data                                                                        |
 | VRF Binding                                | default                                                                     |
 | IPv6 Link Local Data                       |                                                                             |
-|   Address                                  | fe80::e00:71ff:fe1a:13f6                                                    |
+|   Address                                  | fe80::e00:9dff:fe2e:8f6                                                     |
 |   Prefix Length                            | 64                                                                          |
 |   Origin                                   | AUTO                                                                        |
 |   Address Status                           | preferred                                                                   |
@@ -3692,15 +3699,15 @@ Pass: Output contains `PE_1-PE_2-if` and `172.16.1.1` and `30`
 | Role                                       | data                                                                        |
 | VRF Binding                                | default                                                                     |
 | IPv6 Link Local Data                       |                                                                             |
-|   Address                                  | fe80::e00:71ff:fe1a:13f6                                                    |
+|   Address                                  | fe80::e00:9dff:fe2e:8f6                                                     |
 |   Prefix Length                            | 64                                                                          |
 |   Origin                                   | AUTO                                                                        |
 |   Address Status                           | preferred                                                                   |
 | Interface Index                            | 1073731826                                                                  |
 | Description                                | -                                                                           |
 | MTU                                        | 1500                                                                        |
-| MAC Address                                | 0c:00:71:1a:13:f6                                                           |
-| Last Changed                               | Aug 06 2026 20:32:02 Local                                                  |
+| MAC Address                                | 0c:00:9d:2e:08:f6                                                           |
+| Last Changed                               | Aug 26 2026 19:02:05 Local                                                  |
 | Bandwidth (Mbps)                           | 10000                                                                       |
 | Gratuitous ARP                             | Disabled                                                                    |
 | Unsolicited Neighbor Advertisement         | Disabled                                                                    |
@@ -3711,12 +3718,12 @@ Pass: Output contains `PE_1-PE_2-if` and `172.16.1.1` and `30`
 | Frame to CoS Map                           | default-f2c                                                                 |
 | Stats Collection                           | on                                                                          |
 | Counters                                   |                                                                             |
-|   Input Octets                             | 3844                                                                        |
-|   Input Packets                            | 44                                                                          |
+|   Input Octets                             | 4122                                                                        |
+|   Input Packets                            | 47                                                                          |
 |   Input Dropped Octets                     | 0                                                                           |
-|   Input Dropped Packets                    | 5                                                                           |
-|   Output Octets                            | 4058                                                                        |
-|   Output Packets                           | 43                                                                          |
+|   Input Dropped Packets                    | 3                                                                           |
+|   Output Octets                            | 4403                                                                        |
+|   Output Packets                           | 46                                                                          |
 |   Output Gratuitous ARP Packets            | 0                                                                           |
 |   Output Unsolicited Neighbor Adv. Packets | 0                                                                           |
 |   Output Router Adv. Packets               | 0                                                                           |
@@ -3803,24 +3810,24 @@ Pass: Output contains `lb1` and `172.16.0.2` and `32`
 | DHCP IPv4 Address                          | 10.0.0.15                                                                   |
 | DHCP IPv4 Prefix                           | 24                                                                          |
 | IPv6 Link Local Data                       |                                                                             |
-|   Address                                  | fe80::200:caff:fe51:d400                                                    |
+|   Address                                  | fe80::200:e7ff:febf:1100                                                    |
 |   Prefix Length                            | 128                                                                         |
 |   Origin                                   | AUTO                                                                        |
 | Interface Index                            | 56                                                                          |
 | Description                                | bridge interface for out of band management port/local management interface |
 | MTU                                        | 1500                                                                        |
-| MAC Address                                | 0c:00:ca:51:d4:00                                                           |
+| MAC Address                                | 0c:00:e7:bf:11:00                                                           |
 | Bandwidth (Mbps)                           | 0                                                                           |
 | Gratuitous ARP                             | Disabled                                                                    |
 | Unsolicited Neighbor Advertisement         | Disabled                                                                    |
 | Router Advertisement                       | Disabled                                                                    |
 | Counters                                   |                                                                             |
-|   Input Octets                             | 31830                                                                       |
-|   Input Packets                            | 545                                                                         |
+|   Input Octets                             | 29774                                                                       |
+|   Input Packets                            | 495                                                                         |
 |   Input Dropped Octets                     | -                                                                           |
 |   Input Dropped Packets                    | 0                                                                           |
-|   Output Octets                            | 207181                                                                      |
-|   Output Packets                           | 567                                                                         |
+|   Output Octets                            | 201941                                                                      |
+|   Output Packets                           | 525                                                                         |
 |   Output Gratuitous ARP Packets            | -                                                                           |
 |   Output Unsolicited Neighbor Adv. Packets | -                                                                           |
 |   Output Router Adv. Packets               | 0                                                                           |
@@ -3846,15 +3853,15 @@ Pass: Output contains `lb1` and `172.16.0.2` and `32`
 | Role                                       | management                                                                  |
 | VRF Binding                                | default                                                                     |
 | IPv6 Link Local Data                       |                                                                             |
-|   Address                                  | fe80::e00:caff:fe51:d3f7                                                    |
+|   Address                                  | fe80::e00:e7ff:febf:10f7                                                    |
 |   Prefix Length                            | 64                                                                          |
 |   Origin                                   | AUTO                                                                        |
 |   Address Status                           | preferred                                                                   |
 | Interface Index                            | 1073731825                                                                  |
 | Description                                | in band remote management interface                                         |
 | MTU                                        | 1500                                                                        |
-| MAC Address                                | 0c:00:ca:51:d3:f7                                                           |
-| Last Changed                               | Aug 06 2026 20:25:04 Local                                                  |
+| MAC Address                                | 0c:00:e7:bf:10:f7                                                           |
+| Last Changed                               | Aug 26 2026 18:55:35 Local                                                  |
 | Bandwidth (Mbps)                           | 10000                                                                       |
 | Gratuitous ARP                             | Enabled                                                                     |
 | Unsolicited Neighbor Advertisement         | Enabled                                                                     |
@@ -3918,7 +3925,7 @@ Pass: Output contains `lb1` and `172.16.0.2` and `32`
 | Role                                       | data                                                                        |
 | VRF Binding                                | default                                                                     |
 | IPv6 Link Local Data                       |                                                                             |
-|   Address                                  | fe80::e00:caff:fe51:d3f6                                                    |
+|   Address                                  | fe80::e00:e7ff:febf:10f6                                                    |
 |   Prefix Length                            | 64                                                                          |
 |   Origin                                   | AUTO                                                                        |
 |   Address Status                           | preferred                                                                   |
@@ -3975,15 +3982,15 @@ Pass: Output contains `lb1` and `172.16.0.2` and `32`
 | Role                                       | data                                                                        |
 | VRF Binding                                | default                                                                     |
 | IPv6 Link Local Data                       |                                                                             |
-|   Address                                  | fe80::e00:caff:fe51:d3f6                                                    |
+|   Address                                  | fe80::e00:e7ff:febf:10f6                                                    |
 |   Prefix Length                            | 64                                                                          |
 |   Origin                                   | AUTO                                                                        |
 |   Address Status                           | preferred                                                                   |
 | Interface Index                            | 1073731826                                                                  |
 | Description                                | -                                                                           |
 | MTU                                        | 1500                                                                        |
-| MAC Address                                | 0c:00:ca:51:d3:f6                                                           |
-| Last Changed                               | Aug 06 2026 20:32:05 Local                                                  |
+| MAC Address                                | 0c:00:e7:bf:10:f6                                                           |
+| Last Changed                               | Aug 26 2026 19:02:09 Local                                                  |
 | Bandwidth (Mbps)                           | 10000                                                                       |
 | Gratuitous ARP                             | Disabled                                                                    |
 | Unsolicited Neighbor Advertisement         | Disabled                                                                    |
@@ -3997,9 +4004,9 @@ Pass: Output contains `lb1` and `172.16.0.2` and `32`
 |   Input Octets                             | 3182                                                                        |
 |   Input Packets                            | 38                                                                          |
 |   Input Dropped Octets                     | 0                                                                           |
-|   Input Dropped Packets                    | 4                                                                           |
-|   Output Octets                            | 4431                                                                        |
-|   Output Packets                           | 46                                                                          |
+|   Input Dropped Packets                    | 2                                                                           |
+|   Output Octets                            | 4388                                                                        |
+|   Output Packets                           | 47                                                                          |
 |   Output Gratuitous ARP Packets            | 0                                                                           |
 |   Output Unsolicited Neighbor Adv. Packets | 0                                                                           |
 |   Output Router Adv. Packets               | 0                                                                           |
@@ -4088,10 +4095,10 @@ Pass: Output contains `PE_1-PE_2-FP` and `PE_1-PE_2-FD` and `CLASSIFIER-UNTAGGED
 | KEY                 | VALUE        |
 +---------------------+--------------+
 | Name                | PE_1-PE_2-FP |
-| Rx Accepted Bytes   | 3562         |
-| Rx Accepted Frames  | 39           |
-| Tx Forwarded Bytes  | 4431         |
-| Tx Forwarded Frames | 46           |
+| Rx Accepted Bytes   | 3683         |
+| Rx Accepted Frames  | 40           |
+| Tx Forwarded Bytes  | 4388         |
+| Tx Forwarded Frames | 47           |
 | Rx Yellow Bytes     | 0            |
 | Rx Yellow Frames    | 0            |
 | Rx Dropped Bytes    | 0            |
@@ -4133,24 +4140,24 @@ Pass: Output contains `PE_1-PE_2-if` and `172.16.1.2` and `30`
 | DHCP IPv4 Address                          | 10.0.0.15                                                                   |
 | DHCP IPv4 Prefix                           | 24                                                                          |
 | IPv6 Link Local Data                       |                                                                             |
-|   Address                                  | fe80::200:caff:fe51:d400                                                    |
+|   Address                                  | fe80::200:e7ff:febf:1100                                                    |
 |   Prefix Length                            | 128                                                                         |
 |   Origin                                   | AUTO                                                                        |
 | Interface Index                            | 56                                                                          |
 | Description                                | bridge interface for out of band management port/local management interface |
 | MTU                                        | 1500                                                                        |
-| MAC Address                                | 0c:00:ca:51:d4:00                                                           |
+| MAC Address                                | 0c:00:e7:bf:11:00                                                           |
 | Bandwidth (Mbps)                           | 0                                                                           |
 | Gratuitous ARP                             | Disabled                                                                    |
 | Unsolicited Neighbor Advertisement         | Disabled                                                                    |
 | Router Advertisement                       | Disabled                                                                    |
 | Counters                                   |                                                                             |
-|   Input Octets                             | 34878                                                                       |
-|   Input Packets                            | 614                                                                         |
+|   Input Octets                             | 33062                                                                       |
+|   Input Packets                            | 570                                                                         |
 |   Input Dropped Octets                     | -                                                                           |
 |   Input Dropped Packets                    | 0                                                                           |
-|   Output Octets                            | 246843                                                                      |
-|   Output Packets                           | 636                                                                         |
+|   Output Octets                            | 242631                                                                      |
+|   Output Packets                           | 600                                                                         |
 |   Output Gratuitous ARP Packets            | -                                                                           |
 |   Output Unsolicited Neighbor Adv. Packets | -                                                                           |
 |   Output Router Adv. Packets               | 0                                                                           |
@@ -4176,15 +4183,15 @@ Pass: Output contains `PE_1-PE_2-if` and `172.16.1.2` and `30`
 | Role                                       | management                                                                  |
 | VRF Binding                                | default                                                                     |
 | IPv6 Link Local Data                       |                                                                             |
-|   Address                                  | fe80::e00:caff:fe51:d3f7                                                    |
+|   Address                                  | fe80::e00:e7ff:febf:10f7                                                    |
 |   Prefix Length                            | 64                                                                          |
 |   Origin                                   | AUTO                                                                        |
 |   Address Status                           | preferred                                                                   |
 | Interface Index                            | 1073731825                                                                  |
 | Description                                | in band remote management interface                                         |
 | MTU                                        | 1500                                                                        |
-| MAC Address                                | 0c:00:ca:51:d3:f7                                                           |
-| Last Changed                               | Aug 06 2026 20:25:04 Local                                                  |
+| MAC Address                                | 0c:00:e7:bf:10:f7                                                           |
+| Last Changed                               | Aug 26 2026 18:55:35 Local                                                  |
 | Bandwidth (Mbps)                           | 10000                                                                       |
 | Gratuitous ARP                             | Enabled                                                                     |
 | Unsolicited Neighbor Advertisement         | Enabled                                                                     |
@@ -4248,7 +4255,7 @@ Pass: Output contains `PE_1-PE_2-if` and `172.16.1.2` and `30`
 | Role                                       | data                                                                        |
 | VRF Binding                                | default                                                                     |
 | IPv6 Link Local Data                       |                                                                             |
-|   Address                                  | fe80::e00:caff:fe51:d3f6                                                    |
+|   Address                                  | fe80::e00:e7ff:febf:10f6                                                    |
 |   Prefix Length                            | 64                                                                          |
 |   Origin                                   | AUTO                                                                        |
 |   Address Status                           | preferred                                                                   |
@@ -4305,15 +4312,15 @@ Pass: Output contains `PE_1-PE_2-if` and `172.16.1.2` and `30`
 | Role                                       | data                                                                        |
 | VRF Binding                                | default                                                                     |
 | IPv6 Link Local Data                       |                                                                             |
-|   Address                                  | fe80::e00:caff:fe51:d3f6                                                    |
+|   Address                                  | fe80::e00:e7ff:febf:10f6                                                    |
 |   Prefix Length                            | 64                                                                          |
 |   Origin                                   | AUTO                                                                        |
 |   Address Status                           | preferred                                                                   |
 | Interface Index                            | 1073731826                                                                  |
 | Description                                | -                                                                           |
 | MTU                                        | 1500                                                                        |
-| MAC Address                                | 0c:00:ca:51:d3:f6                                                           |
-| Last Changed                               | Aug 06 2026 20:32:05 Local                                                  |
+| MAC Address                                | 0c:00:e7:bf:10:f6                                                           |
+| Last Changed                               | Aug 26 2026 19:02:09 Local                                                  |
 | Bandwidth (Mbps)                           | 10000                                                                       |
 | Gratuitous ARP                             | Disabled                                                                    |
 | Unsolicited Neighbor Advertisement         | Disabled                                                                    |
@@ -4327,9 +4334,9 @@ Pass: Output contains `PE_1-PE_2-if` and `172.16.1.2` and `30`
 |   Input Octets                             | 3182                                                                        |
 |   Input Packets                            | 38                                                                          |
 |   Input Dropped Octets                     | 0                                                                           |
-|   Input Dropped Packets                    | 4                                                                           |
-|   Output Octets                            | 4431                                                                        |
-|   Output Packets                           | 46                                                                          |
+|   Input Dropped Packets                    | 2                                                                           |
+|   Output Octets                            | 4388                                                                        |
+|   Output Packets                           | 47                                                                          |
 |   Output Gratuitous ARP Packets            | 0                                                                           |
 |   Output Unsolicited Neighbor Adv. Packets | 0                                                                           |
 |   Output Router Adv. Packets               | 0                                                                           |
@@ -4477,11 +4484,11 @@ Codes:
 
  Type 'Ctrl+C' to abort
 
-! seq_num = 1  RTT = 2.37 ms  TTL = 255
-! seq_num = 2  RTT = 2.71 ms  TTL = 255
-! seq_num = 3  RTT = 3.51 ms  TTL = 255
+! seq_num = 1  RTT = 3.27 ms  TTL = 255
+! seq_num = 2  RTT = 2.63 ms  TTL = 255
+! seq_num = 3  RTT = 2.46 ms  TTL = 255
 Success Rate is 100.00 percent (3/3)
-Round-trip min/avg/max = 2.37/2.86/3.51
+Round-trip min/avg/max = 2.46/2.79/3.27
 ```
 
 </details>
@@ -4505,11 +4512,11 @@ Codes:
 
  Type 'Ctrl+C' to abort
 
-! seq_num = 1  RTT = 3.01 ms  TTL = 255
-! seq_num = 2  RTT = 1.84 ms  TTL = 255
-! seq_num = 3  RTT = 2.72 ms  TTL = 255
+! seq_num = 1  RTT = 2.71 ms  TTL = 255
+! seq_num = 2  RTT = 8.02 ms  TTL = 255
+! seq_num = 3  RTT = 4.49 ms  TTL = 255
 Success Rate is 100.00 percent (3/3)
-Round-trip min/avg/max = 1.84/2.52/3.01
+Round-trip min/avg/max = 2.71/5.07/8.02
 ```
 
 </details>
@@ -4540,24 +4547,24 @@ Pass: Output contains `lb1` and `fc00:0000:0000:0000:0000:0000:0000:0001` and `1
 | DHCP IPv4 Address                          | 10.0.0.15                                                                   |
 | DHCP IPv4 Prefix                           | 24                                                                          |
 | IPv6 Link Local Data                       |                                                                             |
-|   Address                                  | fe80::200:71ff:fe1a:1400                                                    |
+|   Address                                  | fe80::200:9dff:fe2e:900                                                     |
 |   Prefix Length                            | 128                                                                         |
 |   Origin                                   | AUTO                                                                        |
 | Interface Index                            | 56                                                                          |
 | Description                                | bridge interface for out of band management port/local management interface |
 | MTU                                        | 1500                                                                        |
-| MAC Address                                | 0c:00:71:1a:14:00                                                           |
+| MAC Address                                | 0c:00:9d:2e:09:00                                                           |
 | Bandwidth (Mbps)                           | 0                                                                           |
 | Gratuitous ARP                             | Disabled                                                                    |
 | Unsolicited Neighbor Advertisement         | Disabled                                                                    |
 | Router Advertisement                       | Disabled                                                                    |
 | Counters                                   |                                                                             |
-|   Input Octets                             | 38110                                                                       |
-|   Input Packets                            | 687                                                                         |
+|   Input Octets                             | 37646                                                                       |
+|   Input Packets                            | 674                                                                         |
 |   Input Dropped Octets                     | -                                                                           |
 |   Input Dropped Packets                    | 0                                                                           |
-|   Output Octets                            | 288543                                                                      |
-|   Output Packets                           | 704                                                                         |
+|   Output Octets                            | 286201                                                                      |
+|   Output Packets                           | 697                                                                         |
 |   Output Gratuitous ARP Packets            | -                                                                           |
 |   Output Unsolicited Neighbor Adv. Packets | -                                                                           |
 |   Output Router Adv. Packets               | 0                                                                           |
@@ -4583,15 +4590,15 @@ Pass: Output contains `lb1` and `fc00:0000:0000:0000:0000:0000:0000:0001` and `1
 | Role                                       | management                                                                  |
 | VRF Binding                                | default                                                                     |
 | IPv6 Link Local Data                       |                                                                             |
-|   Address                                  | fe80::e00:71ff:fe1a:13f7                                                    |
+|   Address                                  | fe80::e00:9dff:fe2e:8f7                                                     |
 |   Prefix Length                            | 64                                                                          |
 |   Origin                                   | AUTO                                                                        |
 |   Address Status                           | preferred                                                                   |
 | Interface Index                            | 1073731825                                                                  |
 | Description                                | in band remote management interface                                         |
 | MTU                                        | 1500                                                                        |
-| MAC Address                                | 0c:00:71:1a:13:f7                                                           |
-| Last Changed                               | Aug 06 2026 20:25:27 Local                                                  |
+| MAC Address                                | 0c:00:9d:2e:08:f7                                                           |
+| Last Changed                               | Aug 26 2026 18:55:57 Local                                                  |
 | Bandwidth (Mbps)                           | 10000                                                                       |
 | Gratuitous ARP                             | Enabled                                                                     |
 | Unsolicited Neighbor Advertisement         | Enabled                                                                     |
@@ -4655,7 +4662,7 @@ Pass: Output contains `lb1` and `fc00:0000:0000:0000:0000:0000:0000:0001` and `1
 | Role                                       | data                                                                        |
 | VRF Binding                                | default                                                                     |
 | IPv6 Link Local Data                       |                                                                             |
-|   Address                                  | fe80::e00:71ff:fe1a:13f6                                                    |
+|   Address                                  | fe80::e00:9dff:fe2e:8f6                                                     |
 |   Prefix Length                            | 64                                                                          |
 |   Origin                                   | AUTO                                                                        |
 |   Address Status                           | preferred                                                                   |
@@ -4712,15 +4719,15 @@ Pass: Output contains `lb1` and `fc00:0000:0000:0000:0000:0000:0000:0001` and `1
 | Role                                       | data                                                                        |
 | VRF Binding                                | default                                                                     |
 | IPv6 Link Local Data                       |                                                                             |
-|   Address                                  | fe80::e00:71ff:fe1a:13f6                                                    |
+|   Address                                  | fe80::e00:9dff:fe2e:8f6                                                     |
 |   Prefix Length                            | 64                                                                          |
 |   Origin                                   | AUTO                                                                        |
 |   Address Status                           | preferred                                                                   |
 | Interface Index                            | 1073731826                                                                  |
 | Description                                | -                                                                           |
 | MTU                                        | 1500                                                                        |
-| MAC Address                                | 0c:00:71:1a:13:f6                                                           |
-| Last Changed                               | Aug 06 2026 20:32:02 Local                                                  |
+| MAC Address                                | 0c:00:9d:2e:08:f6                                                           |
+| Last Changed                               | Aug 26 2026 19:02:05 Local                                                  |
 | Bandwidth (Mbps)                           | 10000                                                                       |
 | Gratuitous ARP                             | Disabled                                                                    |
 | Unsolicited Neighbor Advertisement         | Disabled                                                                    |
@@ -4731,12 +4738,12 @@ Pass: Output contains `lb1` and `fc00:0000:0000:0000:0000:0000:0000:0001` and `1
 | Frame to CoS Map                           | default-f2c                                                                 |
 | Stats Collection                           | on                                                                          |
 | Counters                                   |                                                                             |
-|   Input Octets                             | 4372                                                                        |
-|   Input Packets                            | 50                                                                          |
+|   Input Octets                             | 4650                                                                        |
+|   Input Packets                            | 53                                                                          |
 |   Input Dropped Octets                     | 0                                                                           |
-|   Input Dropped Packets                    | 5                                                                           |
-|   Output Octets                            | 4791                                                                        |
-|   Output Packets                           | 50                                                                          |
+|   Input Dropped Packets                    | 4                                                                           |
+|   Output Octets                            | 5388                                                                        |
+|   Output Packets                           | 53                                                                          |
 |   Output Gratuitous ARP Packets            | 0                                                                           |
 |   Output Unsolicited Neighbor Adv. Packets | 0                                                                           |
 |   Output Router Adv. Packets               | 0                                                                           |
@@ -4800,24 +4807,24 @@ Pass: Output contains `lb1` and `fc00:0000:0000:0000:0000:0000:0000:0002` and `1
 | DHCP IPv4 Address                          | 10.0.0.15                                                                   |
 | DHCP IPv4 Prefix                           | 24                                                                          |
 | IPv6 Link Local Data                       |                                                                             |
-|   Address                                  | fe80::200:caff:fe51:d400                                                    |
+|   Address                                  | fe80::200:e7ff:febf:1100                                                    |
 |   Prefix Length                            | 128                                                                         |
 |   Origin                                   | AUTO                                                                        |
 | Interface Index                            | 56                                                                          |
 | Description                                | bridge interface for out of band management port/local management interface |
 | MTU                                        | 1500                                                                        |
-| MAC Address                                | 0c:00:ca:51:d4:00                                                           |
+| MAC Address                                | 0c:00:e7:bf:11:00                                                           |
 | Bandwidth (Mbps)                           | 0                                                                           |
 | Gratuitous ARP                             | Disabled                                                                    |
 | Unsolicited Neighbor Advertisement         | Disabled                                                                    |
 | Router Advertisement                       | Disabled                                                                    |
 | Counters                                   |                                                                             |
-|   Input Octets                             | 38326                                                                       |
-|   Input Packets                            | 691                                                                         |
+|   Input Octets                             | 36070                                                                       |
+|   Input Packets                            | 636                                                                         |
 |   Input Dropped Octets                     | -                                                                           |
 |   Input Dropped Packets                    | 0                                                                           |
-|   Output Octets                            | 288697                                                                      |
-|   Output Packets                           | 713                                                                         |
+|   Output Octets                            | 283121                                                                      |
+|   Output Packets                           | 663                                                                         |
 |   Output Gratuitous ARP Packets            | -                                                                           |
 |   Output Unsolicited Neighbor Adv. Packets | -                                                                           |
 |   Output Router Adv. Packets               | 0                                                                           |
@@ -4843,15 +4850,15 @@ Pass: Output contains `lb1` and `fc00:0000:0000:0000:0000:0000:0000:0002` and `1
 | Role                                       | management                                                                  |
 | VRF Binding                                | default                                                                     |
 | IPv6 Link Local Data                       |                                                                             |
-|   Address                                  | fe80::e00:caff:fe51:d3f7                                                    |
+|   Address                                  | fe80::e00:e7ff:febf:10f7                                                    |
 |   Prefix Length                            | 64                                                                          |
 |   Origin                                   | AUTO                                                                        |
 |   Address Status                           | preferred                                                                   |
 | Interface Index                            | 1073731825                                                                  |
 | Description                                | in band remote management interface                                         |
 | MTU                                        | 1500                                                                        |
-| MAC Address                                | 0c:00:ca:51:d3:f7                                                           |
-| Last Changed                               | Aug 06 2026 20:25:04 Local                                                  |
+| MAC Address                                | 0c:00:e7:bf:10:f7                                                           |
+| Last Changed                               | Aug 26 2026 18:55:35 Local                                                  |
 | Bandwidth (Mbps)                           | 10000                                                                       |
 | Gratuitous ARP                             | Enabled                                                                     |
 | Unsolicited Neighbor Advertisement         | Enabled                                                                     |
@@ -4915,7 +4922,7 @@ Pass: Output contains `lb1` and `fc00:0000:0000:0000:0000:0000:0000:0002` and `1
 | Role                                       | data                                                                        |
 | VRF Binding                                | default                                                                     |
 | IPv6 Link Local Data                       |                                                                             |
-|   Address                                  | fe80::e00:caff:fe51:d3f6                                                    |
+|   Address                                  | fe80::e00:e7ff:febf:10f6                                                    |
 |   Prefix Length                            | 64                                                                          |
 |   Origin                                   | AUTO                                                                        |
 |   Address Status                           | preferred                                                                   |
@@ -4972,15 +4979,15 @@ Pass: Output contains `lb1` and `fc00:0000:0000:0000:0000:0000:0000:0002` and `1
 | Role                                       | data                                                                        |
 | VRF Binding                                | default                                                                     |
 | IPv6 Link Local Data                       |                                                                             |
-|   Address                                  | fe80::e00:caff:fe51:d3f6                                                    |
+|   Address                                  | fe80::e00:e7ff:febf:10f6                                                    |
 |   Prefix Length                            | 64                                                                          |
 |   Origin                                   | AUTO                                                                        |
 |   Address Status                           | preferred                                                                   |
 | Interface Index                            | 1073731826                                                                  |
 | Description                                | -                                                                           |
 | MTU                                        | 1500                                                                        |
-| MAC Address                                | 0c:00:ca:51:d3:f6                                                           |
-| Last Changed                               | Aug 06 2026 20:32:05 Local                                                  |
+| MAC Address                                | 0c:00:e7:bf:10:f6                                                           |
+| Last Changed                               | Aug 26 2026 19:02:09 Local                                                  |
 | Bandwidth (Mbps)                           | 10000                                                                       |
 | Gratuitous ARP                             | Disabled                                                                    |
 | Unsolicited Neighbor Advertisement         | Disabled                                                                    |
@@ -4994,9 +5001,9 @@ Pass: Output contains `lb1` and `fc00:0000:0000:0000:0000:0000:0000:0002` and `1
 |   Input Octets                             | 3710                                                                        |
 |   Input Packets                            | 44                                                                          |
 |   Input Dropped Octets                     | 0                                                                           |
-|   Input Dropped Packets                    | 4                                                                           |
-|   Output Octets                            | 5164                                                                        |
-|   Output Packets                           | 53                                                                          |
+|   Input Dropped Packets                    | 2                                                                           |
+|   Output Octets                            | 5622                                                                        |
+|   Output Packets                           | 56                                                                          |
 |   Output Gratuitous ARP Packets            | 0                                                                           |
 |   Output Unsolicited Neighbor Adv. Packets | 0                                                                           |
 |   Output Router Adv. Packets               | 0                                                                           |
@@ -5060,24 +5067,24 @@ Pass: Output contains `fc00:0000:0000:0000:0000:0000:0000:0600` and `127`
 | DHCP IPv4 Address                          | 10.0.0.15                                                                   |
 | DHCP IPv4 Prefix                           | 24                                                                          |
 | IPv6 Link Local Data                       |                                                                             |
-|   Address                                  | fe80::200:71ff:fe1a:1400                                                    |
+|   Address                                  | fe80::200:9dff:fe2e:900                                                     |
 |   Prefix Length                            | 128                                                                         |
 |   Origin                                   | AUTO                                                                        |
 | Interface Index                            | 56                                                                          |
 | Description                                | bridge interface for out of band management port/local management interface |
 | MTU                                        | 1500                                                                        |
-| MAC Address                                | 0c:00:71:1a:14:00                                                           |
+| MAC Address                                | 0c:00:9d:2e:09:00                                                           |
 | Bandwidth (Mbps)                           | 0                                                                           |
 | Gratuitous ARP                             | Disabled                                                                    |
 | Unsolicited Neighbor Advertisement         | Disabled                                                                    |
 | Router Advertisement                       | Disabled                                                                    |
 | Counters                                   |                                                                             |
-|   Input Octets                             | 40134                                                                       |
-|   Input Packets                            | 734                                                                         |
+|   Input Octets                             | 40430                                                                       |
+|   Input Packets                            | 740                                                                         |
 |   Input Dropped Octets                     | -                                                                           |
 |   Input Dropped Packets                    | 0                                                                           |
-|   Output Octets                            | 323769                                                                      |
-|   Output Packets                           | 751                                                                         |
+|   Output Octets                            | 324021                                                                      |
+|   Output Packets                           | 763                                                                         |
 |   Output Gratuitous ARP Packets            | -                                                                           |
 |   Output Unsolicited Neighbor Adv. Packets | -                                                                           |
 |   Output Router Adv. Packets               | 0                                                                           |
@@ -5103,15 +5110,15 @@ Pass: Output contains `fc00:0000:0000:0000:0000:0000:0000:0600` and `127`
 | Role                                       | management                                                                  |
 | VRF Binding                                | default                                                                     |
 | IPv6 Link Local Data                       |                                                                             |
-|   Address                                  | fe80::e00:71ff:fe1a:13f7                                                    |
+|   Address                                  | fe80::e00:9dff:fe2e:8f7                                                     |
 |   Prefix Length                            | 64                                                                          |
 |   Origin                                   | AUTO                                                                        |
 |   Address Status                           | preferred                                                                   |
 | Interface Index                            | 1073731825                                                                  |
 | Description                                | in band remote management interface                                         |
 | MTU                                        | 1500                                                                        |
-| MAC Address                                | 0c:00:71:1a:13:f7                                                           |
-| Last Changed                               | Aug 06 2026 20:25:27 Local                                                  |
+| MAC Address                                | 0c:00:9d:2e:08:f7                                                           |
+| Last Changed                               | Aug 26 2026 18:55:57 Local                                                  |
 | Bandwidth (Mbps)                           | 10000                                                                       |
 | Gratuitous ARP                             | Enabled                                                                     |
 | Unsolicited Neighbor Advertisement         | Enabled                                                                     |
@@ -5175,7 +5182,7 @@ Pass: Output contains `fc00:0000:0000:0000:0000:0000:0000:0600` and `127`
 | Role                                       | data                                                                        |
 | VRF Binding                                | default                                                                     |
 | IPv6 Link Local Data                       |                                                                             |
-|   Address                                  | fe80::e00:71ff:fe1a:13f6                                                    |
+|   Address                                  | fe80::e00:9dff:fe2e:8f6                                                     |
 |   Prefix Length                            | 64                                                                          |
 |   Origin                                   | AUTO                                                                        |
 |   Address Status                           | preferred                                                                   |
@@ -5232,15 +5239,15 @@ Pass: Output contains `fc00:0000:0000:0000:0000:0000:0000:0600` and `127`
 | Role                                       | data                                                                        |
 | VRF Binding                                | default                                                                     |
 | IPv6 Link Local Data                       |                                                                             |
-|   Address                                  | fe80::e00:71ff:fe1a:13f6                                                    |
+|   Address                                  | fe80::e00:9dff:fe2e:8f6                                                     |
 |   Prefix Length                            | 64                                                                          |
 |   Origin                                   | AUTO                                                                        |
 |   Address Status                           | preferred                                                                   |
 | Interface Index                            | 1073731826                                                                  |
 | Description                                | -                                                                           |
 | MTU                                        | 1500                                                                        |
-| MAC Address                                | 0c:00:71:1a:13:f6                                                           |
-| Last Changed                               | Aug 06 2026 20:32:02 Local                                                  |
+| MAC Address                                | 0c:00:9d:2e:08:f6                                                           |
+| Last Changed                               | Aug 26 2026 19:02:05 Local                                                  |
 | Bandwidth (Mbps)                           | 10000                                                                       |
 | Gratuitous ARP                             | Disabled                                                                    |
 | Unsolicited Neighbor Advertisement         | Disabled                                                                    |
@@ -5251,12 +5258,12 @@ Pass: Output contains `fc00:0000:0000:0000:0000:0000:0000:0600` and `127`
 | Frame to CoS Map                           | default-f2c                                                                 |
 | Stats Collection                           | on                                                                          |
 | Counters                                   |                                                                             |
-|   Input Octets                             | 4372                                                                        |
-|   Input Packets                            | 50                                                                          |
+|   Input Octets                             | 4650                                                                        |
+|   Input Packets                            | 53                                                                          |
 |   Input Dropped Octets                     | 0                                                                           |
-|   Input Dropped Packets                    | 5                                                                           |
-|   Output Octets                            | 5164                                                                        |
-|   Output Packets                           | 51                                                                          |
+|   Input Dropped Packets                    | 4                                                                           |
+|   Output Octets                            | 5388                                                                        |
+|   Output Packets                           | 53                                                                          |
 |   Output Gratuitous ARP Packets            | 0                                                                           |
 |   Output Unsolicited Neighbor Adv. Packets | 0                                                                           |
 |   Output Router Adv. Packets               | 0                                                                           |
@@ -5320,24 +5327,24 @@ Pass: Output contains `fc00:0000:0000:0000:0000:0000:0000:0601` and `127`
 | DHCP IPv4 Address                          | 10.0.0.15                                                                   |
 | DHCP IPv4 Prefix                           | 24                                                                          |
 | IPv6 Link Local Data                       |                                                                             |
-|   Address                                  | fe80::200:caff:fe51:d400                                                    |
+|   Address                                  | fe80::200:e7ff:febf:1100                                                    |
 |   Prefix Length                            | 128                                                                         |
 |   Origin                                   | AUTO                                                                        |
 | Interface Index                            | 56                                                                          |
 | Description                                | bridge interface for out of band management port/local management interface |
 | MTU                                        | 1500                                                                        |
-| MAC Address                                | 0c:00:ca:51:d4:00                                                           |
+| MAC Address                                | 0c:00:e7:bf:11:00                                                           |
 | Bandwidth (Mbps)                           | 0                                                                           |
 | Gratuitous ARP                             | Disabled                                                                    |
 | Unsolicited Neighbor Advertisement         | Disabled                                                                    |
 | Router Advertisement                       | Disabled                                                                    |
 | Counters                                   |                                                                             |
-|   Input Octets                             | 39950                                                                       |
-|   Input Packets                            | 728                                                                         |
+|   Input Octets                             | 40134                                                                       |
+|   Input Packets                            | 734                                                                         |
 |   Input Dropped Octets                     | -                                                                           |
 |   Input Dropped Packets                    | 0                                                                           |
-|   Output Octets                            | 322839                                                                      |
-|   Output Packets                           | 750                                                                         |
+|   Output Octets                            | 324413                                                                      |
+|   Output Packets                           | 761                                                                         |
 |   Output Gratuitous ARP Packets            | -                                                                           |
 |   Output Unsolicited Neighbor Adv. Packets | -                                                                           |
 |   Output Router Adv. Packets               | 0                                                                           |
@@ -5363,15 +5370,15 @@ Pass: Output contains `fc00:0000:0000:0000:0000:0000:0000:0601` and `127`
 | Role                                       | management                                                                  |
 | VRF Binding                                | default                                                                     |
 | IPv6 Link Local Data                       |                                                                             |
-|   Address                                  | fe80::e00:caff:fe51:d3f7                                                    |
+|   Address                                  | fe80::e00:e7ff:febf:10f7                                                    |
 |   Prefix Length                            | 64                                                                          |
 |   Origin                                   | AUTO                                                                        |
 |   Address Status                           | preferred                                                                   |
 | Interface Index                            | 1073731825                                                                  |
 | Description                                | in band remote management interface                                         |
 | MTU                                        | 1500                                                                        |
-| MAC Address                                | 0c:00:ca:51:d3:f7                                                           |
-| Last Changed                               | Aug 06 2026 20:25:04 Local                                                  |
+| MAC Address                                | 0c:00:e7:bf:10:f7                                                           |
+| Last Changed                               | Aug 26 2026 18:55:35 Local                                                  |
 | Bandwidth (Mbps)                           | 10000                                                                       |
 | Gratuitous ARP                             | Enabled                                                                     |
 | Unsolicited Neighbor Advertisement         | Enabled                                                                     |
@@ -5435,7 +5442,7 @@ Pass: Output contains `fc00:0000:0000:0000:0000:0000:0000:0601` and `127`
 | Role                                       | data                                                                        |
 | VRF Binding                                | default                                                                     |
 | IPv6 Link Local Data                       |                                                                             |
-|   Address                                  | fe80::e00:caff:fe51:d3f6                                                    |
+|   Address                                  | fe80::e00:e7ff:febf:10f6                                                    |
 |   Prefix Length                            | 64                                                                          |
 |   Origin                                   | AUTO                                                                        |
 |   Address Status                           | preferred                                                                   |
@@ -5492,15 +5499,15 @@ Pass: Output contains `fc00:0000:0000:0000:0000:0000:0000:0601` and `127`
 | Role                                       | data                                                                        |
 | VRF Binding                                | default                                                                     |
 | IPv6 Link Local Data                       |                                                                             |
-|   Address                                  | fe80::e00:caff:fe51:d3f6                                                    |
+|   Address                                  | fe80::e00:e7ff:febf:10f6                                                    |
 |   Prefix Length                            | 64                                                                          |
 |   Origin                                   | AUTO                                                                        |
 |   Address Status                           | preferred                                                                   |
 | Interface Index                            | 1073731826                                                                  |
 | Description                                | -                                                                           |
 | MTU                                        | 1500                                                                        |
-| MAC Address                                | 0c:00:ca:51:d3:f6                                                           |
-| Last Changed                               | Aug 06 2026 20:32:05 Local                                                  |
+| MAC Address                                | 0c:00:e7:bf:10:f6                                                           |
+| Last Changed                               | Aug 26 2026 19:02:09 Local                                                  |
 | Bandwidth (Mbps)                           | 10000                                                                       |
 | Gratuitous ARP                             | Disabled                                                                    |
 | Unsolicited Neighbor Advertisement         | Disabled                                                                    |
@@ -5514,9 +5521,9 @@ Pass: Output contains `fc00:0000:0000:0000:0000:0000:0000:0601` and `127`
 |   Input Octets                             | 3710                                                                        |
 |   Input Packets                            | 44                                                                          |
 |   Input Dropped Octets                     | 0                                                                           |
-|   Input Dropped Packets                    | 4                                                                           |
-|   Output Octets                            | 5292                                                                        |
-|   Output Packets                           | 54                                                                          |
+|   Input Dropped Packets                    | 2                                                                           |
+|   Output Octets                            | 5622                                                                        |
+|   Output Packets                           | 56                                                                          |
 |   Output Gratuitous ARP Packets            | 0                                                                           |
 |   Output Unsolicited Neighbor Adv. Packets | 0                                                                           |
 |   Output Router Adv. Packets               | 0                                                                           |
@@ -5577,11 +5584,11 @@ Codes:
 
  Type 'Ctrl+C' to abort
 
-! seq_num = 1  RTT = 2.43 ms  TTL = 255
-! seq_num = 2  RTT = 3.32 ms  TTL = 255
-! seq_num = 3  RTT = 2.99 ms  TTL = 255
+! seq_num = 1  RTT = 2.37 ms  TTL = 255
+! seq_num = 2  RTT = 3.24 ms  TTL = 255
+! seq_num = 3  RTT = 3.85 ms  TTL = 255
 Success Rate is 100.00 percent (3/3)
-Round-trip min/avg/max = 2.43/2.91/3.32
+Round-trip min/avg/max = 2.37/3.15/3.85
 ```
 
 </details>
@@ -5605,11 +5612,11 @@ Codes:
 
  Type 'Ctrl+C' to abort
 
-! seq_num = 1  RTT = 2.96 ms  TTL = 255
-! seq_num = 2  RTT = 3.11 ms  TTL = 255
-! seq_num = 3  RTT = 2.96 ms  TTL = 255
+! seq_num = 1  RTT = 2.05 ms  TTL = 255
+! seq_num = 2  RTT = 4.05 ms  TTL = 255
+! seq_num = 3  RTT = 2.81 ms  TTL = 255
 Success Rate is 100.00 percent (3/3)
-Round-trip min/avg/max = 2.96/3.01/3.11
+Round-trip min/avg/max = 2.05/2.97/4.05
 ```
 
 </details>
@@ -5657,6 +5664,14 @@ system config hostname CE_1
 ```saos
 # Preloaded start
 system config hostname CE_2
+# Preloaded end
+```
+
+#### CE_3
+
+```saos
+# Preloaded start
+system config hostname CE_3
 # Preloaded end
 ```
 

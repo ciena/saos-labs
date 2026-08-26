@@ -49,6 +49,16 @@
         "x": 600,
         "y": 400
       }
+    },
+    {
+      "id": "CE_3",
+      "icon": "router",
+      "iconColor": "#808080",
+      "iconCornerRadius": 60,
+      "position": {
+        "x": 600,
+        "y": 560
+      }
     }
   ]
 }
