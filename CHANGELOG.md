@@ -9,6 +9,18 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/).
 ## 2026-08-26
 
 ### Added
+- **S2 — EVPN-VPWS** hands-on lab, the second lab of the Services track. Like
+  S1 it starts from the F4 checkpoint, but where S1 stayed on the two-PE core,
+  S2 brings the third provider-edge node into the fabric: extend IS-IS,
+  SR-MPLS, and the iBGP overlay to `PE_3`, then build a BGP-signalled
+  point-to-point cross-connect between `PE_1` and `PE_3`. Configure the EVPN
+  instance with its EVI, route-distinguisher, and route-target, attach the
+  customer circuits on VLAN 105, and verify the EVPN routes and end-to-end
+  service between `CE_1` and `CE_2`. LDP is not on this path — the service
+  rides the SR-MPLS transport from F3. Published with its rendered lab pages,
+  topology diagrams, and startup and solution configs, and added to the site
+  nav and search.
+
 - **S1 — L3VPN** hands-on lab, the first lab of the Services
   track: it starts from the F4 checkpoint (SR-MPLS transport, iBGP with the
   VPNv4 address family) and puts a second L3VPN on the same pair of PEs. Stand
