@@ -79,6 +79,3 @@ Prerequisites: F1, F2, F3, F4
 | --- | ------------------------ | --------------------------------- |
 | S1  | [L3VPN](S1-L3VPN/README.md) | VRF, RD, RT, VPNv4, route leaking |
 | S2  | [EVPN-VPWS](S2-EVPN-VPWS/README.md) | EVPN instance, VPWS, ESI, all-active multi-homing |
-
-| Lab                            | Topic                      |
-| ------------------------------ | -------------------------- |

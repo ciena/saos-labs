@@ -6,6 +6,50 @@ upstream authoring history.
 
 The format is based on [Keep a Changelog](https://keepachangelog.com/).
 
+## 2026-08-29
+
+### Added
+- **F0 gained a `Viewing the Running Config` section.** The guide explained how
+  to change a SAOS node and never how to read one back. The new section covers
+  the whole family: `show running config` and `show running`,
+  `excluding-bootstrap` and `with-defaults`, `format xml`, the
+  `section`/`xpath`/`line-numbered` options and the `|` filters, and
+  `config compare`. It opens with a grouped table of every command so you can
+  find the one you want without reading the section.
+  The lead is the distinction that costs the most to learn the hard way:
+  `show running` prints an indented tree with no `exit` lines, and
+  `show running config` prints the flat form that carries them — 3093 lines
+  against 1353 on a lab node. One is the version you read; the other is the
+  version you can paste onto another node.
+  `config compare` is covered in both directions, because which end you name
+  decides which script you get back: `source running target <snapshot>` is the
+  rollback, and `source <snapshot> target running` is the play. Swap the
+  snapshot for `bootstrap` and the same pair becomes "undo everything since
+  this node booted" and "rebuild this node from factory".
+  Every command was validated on SAOS 10.12.00.0228 and its output captured
+  from a live node.
+
+### Changed
+- **F0 now opens with the object model instead of the CLI.** `How the SAOS
+  Objects Fit Together` and `Traffic Through the Objects` move to the top of
+  the page, ahead of `Operational and Configuration Contexts`. The CLI sections
+  name ETTPs, logical ports, flow points and forwarding domains from their
+  first example onward — `Understanding the CLI Hierarchy` opens on an
+  `fps fp ... fd-name ...` command — so the objects are now defined before the
+  commands that manipulate them.
+
+### Fixed
+- **The site home page rendered an empty table.** A two-column table header
+  with no rows sat at the bottom of the curriculum list, left behind when the
+  legacy standalone labs were removed. Dropped.
+- **`poetry install` failed in a clone of this repository.** `poetry.lock` had
+  drifted from `pyproject.toml` and locked no entries for
+  `mkdocs-mermaid2-plugin` or `paramiko`, so `poetry check --lock` rejected it
+  and the install refused to run — leaving anyone who wanted to build the site
+  locally to install MkDocs by hand. Relocked against the same declared pins,
+  and `package-mode = false` set, since this repository ships lab content
+  rather than an installable package.
+
 ## 2026-08-26
 
 ### Added
