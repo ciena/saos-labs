@@ -48,6 +48,10 @@
               <ul class="current">
                   <li class="toctree-l1 current"><a class="reference internal current" href="#">F0 SAOS Fundamentals</a>
     <ul class="current">
+    <li class="toctree-l2"><a class="reference internal" href="#how-the-saos-objects-fit-together">How the SAOS Objects Fit Together</a>
+    </li>
+    <li class="toctree-l2"><a class="reference internal" href="#traffic-through-the-objects">Traffic Through the Objects</a>
+    </li>
     <li class="toctree-l2"><a class="reference internal" href="#operational-and-configuration-contexts">Operational and Configuration Contexts</a>
     </li>
     <li class="toctree-l2"><a class="reference internal" href="#understanding-the-cli-hierarchy">Understanding the CLI Hierarchy</a>
@@ -64,9 +68,21 @@
     </li>
         </ul>
     </li>
-    <li class="toctree-l2"><a class="reference internal" href="#how-the-saos-objects-fit-together">How the SAOS Objects Fit Together</a>
+    <li class="toctree-l2"><a class="reference internal" href="#viewing-the-running-config">Viewing the Running Config</a>
+        <ul>
+    <li class="toctree-l3"><a class="reference internal" href="#show-running-and-show-running-config">show running and show running config</a>
     </li>
-    <li class="toctree-l2"><a class="reference internal" href="#traffic-through-the-objects">Traffic Through the Objects</a>
+    <li class="toctree-l3"><a class="reference internal" href="#trimming-the-bootstrap-noise">Trimming the bootstrap noise</a>
+    </li>
+    <li class="toctree-l3"><a class="reference internal" href="#seeing-what-you-did-not-set">Seeing what you did not set</a>
+    </li>
+    <li class="toctree-l3"><a class="reference internal" href="#other-formats">Other formats</a>
+    </li>
+    <li class="toctree-l3"><a class="reference internal" href="#narrowing-the-output">Narrowing the output</a>
+    </li>
+    <li class="toctree-l3"><a class="reference internal" href="#config-compare-the-configuration-as-a-diff">config compare — the configuration as a diff</a>
+    </li>
+        </ul>
     </li>
     </ul>
                   </li>
@@ -117,6 +133,75 @@
               
                 <h1 id="f0-saos-fundamentals">F0 — SAOS Fundamentals</h1>
 <p>F0 is a theory-only introduction for readers who are new to Ciena SAOS 10x. There is no topology to deploy and no configuration goal. Read this guide before starting F1.</p>
+<h2 id="how-the-saos-objects-fit-together">How the SAOS Objects Fit Together</h2>
+<p>An IP interface reached through an Ethernet faceplate port is built from
+several linked SAOS objects. The physical interface components are abstracted
+by an <strong>Ethernet Trail Termination Point (ETTP)</strong>. The ETTP is bound to a
+<strong>logical port</strong>, which is the port abstraction used by services. A <strong>flow
+point (FP)</strong> references that logical port, applies a <strong>classifier</strong>, and
+connects matching traffic to a <strong>forwarding domain (FD)</strong>. The <strong>IP
+interface</strong> then uses the FD as its Layer 2 underlay.</p>
+<p><img alt="SAOS IP interface object relationships" src="interface-object-relationships.svg" /></p>
+<table>
+<thead>
+<tr>
+<th>Object</th>
+<th>Role</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Physical interface components</td>
+<td>The Ethernet medium, transceiver (XCVR), and physical termination point (PTP).</td>
+</tr>
+<tr>
+<td>ETTP</td>
+<td>Ethernet Trail Termination Point that abstracts the underlying physical interface components and terminates the Ethernet trail.</td>
+</tr>
+<tr>
+<td>Logical port</td>
+<td>The service-facing port abstraction bound to one ETTP by default, or to multiple ETTPs for an aggregation.</td>
+</tr>
+<tr>
+<td>Classifier</td>
+<td>A reusable configuration object that defines traffic match criteria, such as a VLAN ID.</td>
+</tr>
+<tr>
+<td>Flow point (FP)</td>
+<td>Applies attached classifiers on a logical port and connects matching traffic to an FD.</td>
+</tr>
+<tr>
+<td>Forwarding domain (FD)</td>
+<td>Provides the Layer 2 forwarding context beneath an IP interface.</td>
+</tr>
+<tr>
+<td>IP interface</td>
+<td>Adds Layer 3 behavior, including the MTU and IPv4/IPv6 addresses.</td>
+</tr>
+<tr>
+<td>Loopback interface</td>
+<td>A logical Layer 3 interface that does not require a port, classifier, FP, or FD.</td>
+</tr>
+</tbody>
+</table>
+<p>The classifier does not process frames by itself. It becomes active in the
+forwarding path when an FP references it. The FP implements the classifier
+match for its logical port in the dataplane and resolves matching traffic
+into the configured FD. L2 services are configured through logical ports and
+flow points, not directly on ETTPs.</p>
+<h2 id="traffic-through-the-objects">Traffic Through the Objects</h2>
+<p><img alt="SAOS IP interface packet path" src="interface-packet-path.svg" /></p>
+<p>On ingress, a frame passes through the physical interface components and
+ETTP to the bound logical port. The FP applies its attached classifier and
+optional ingress L2 transformation, and matching traffic enters the FD used
+by the IP interface. On egress, traffic returns through the FD and FP, where
+an egress L2 transformation can be applied before transmission through the
+logical port, ETTP, and physical interface.</p>
+<blockquote>
+<p><strong>Key idea:</strong> the ETTP represents Ethernet termination, the logical port is
+the service-facing port abstraction, and the FP applies classifier logic to
+connect that logical port to the FD.</p>
+</blockquote>
 <h2 id="operational-and-configuration-contexts">Operational and Configuration Contexts</h2>
 <p>SAOS separates commands that inspect the system from commands that change it.</p>
 <table>
@@ -266,74 +351,254 @@ config mode. <code>return</code> leaves config mode and discards any edit still 
 </tr>
 </tbody>
 </table>
-<h2 id="how-the-saos-objects-fit-together">How the SAOS Objects Fit Together</h2>
-<p>An IP interface reached through an Ethernet faceplate port is built from
-several linked SAOS objects. The physical interface components are abstracted
-by an <strong>Ethernet Trail Termination Point (ETTP)</strong>. The ETTP is bound to a
-<strong>logical port</strong>, which is the port abstraction used by services. A <strong>flow
-point (FP)</strong> references that logical port, applies a <strong>classifier</strong>, and
-connects matching traffic to a <strong>forwarding domain (FD)</strong>. The <strong>IP
-interface</strong> then uses the FD as its Layer 2 underlay.</p>
-<p><img alt="SAOS IP interface object relationships" src="interface-object-relationships.svg" /></p>
+<h2 id="viewing-the-running-config">Viewing the Running Config</h2>
+<p>The CLI sections above are about changing a node. This section reads one back.
+Except where a capture names a different node, everything below was taken from
+a SAOS 10x simulator running release 10.12.00.0228 — the same image the labs
+use — with the <code>DOC-LB</code> loopback from the previous section applied.</p>
+<p>One note before the commands. These are tools for reading a node, not for
+testing one: a lab's <code>tests.md</code> may not use <code>show running</code> at all, because
+echoing configuration back proves a line was typed, not that the feature it
+configures works. Inspect with these; assert on behavior.</p>
+<p>The commands below, at a glance. The options stack: scope, format, and filter
+all attach to the same <code>show running config</code>.</p>
 <table>
 <thead>
 <tr>
-<th>Object</th>
-<th>Role</th>
+<th>Group</th>
+<th>Command</th>
+<th>What you get</th>
 </tr>
 </thead>
 <tbody>
 <tr>
-<td>Physical interface components</td>
-<td>The Ethernet medium, transceiver (XCVR), and physical termination point (PTP).</td>
+<td><strong>Dump</strong></td>
+<td><code>show running config</code></td>
+<td>Complete command paths carrying the <code>exit</code> lines — the form you can paste onto another node</td>
 </tr>
 <tr>
-<td>ETTP</td>
-<td>Ethernet Trail Termination Point that abstracts the underlying physical interface components and terminates the Ethernet trail.</td>
+<td></td>
+<td><code>show running</code></td>
+<td>The same configuration as an indented tree, with no <code>exit</code> lines — to read, not to replay</td>
 </tr>
 <tr>
-<td>Logical port</td>
-<td>The service-facing port abstraction bound to one ETTP by default, or to multiple ETTPs for an aggregation.</td>
+<td><strong>Scope</strong></td>
+<td><code>... excluding-bootstrap</code></td>
+<td>Only what was configured over the factory baseline</td>
 </tr>
 <tr>
-<td>Classifier</td>
-<td>A reusable configuration object that defines traffic match criteria, such as a VLAN ID.</td>
+<td></td>
+<td><code>... with-defaults</code></td>
+<td>That, plus every value left at its default</td>
 </tr>
 <tr>
-<td>Flow point (FP)</td>
-<td>Applies attached classifiers on a logical port and connects matching traffic to an FD.</td>
+<td></td>
+<td><code>... section &lt;name&gt;</code>, <code>... xpath &lt;path&gt;</code></td>
+<td>One top-level YANG container, or one subtree</td>
 </tr>
 <tr>
-<td>Forwarding domain (FD)</td>
-<td>Provides the Layer 2 forwarding context beneath an IP interface.</td>
+<td><strong>Format</strong></td>
+<td><code>... format cli</code>, <code>... format xml</code></td>
+<td>The default CLI form, or the YANG data with namespaces as a NETCONF payload carries it</td>
 </tr>
 <tr>
-<td>IP interface</td>
-<td>Adds Layer 3 behavior, including the MTU and IPv4/IPv6 addresses.</td>
+<td></td>
+<td><code>... line-numbered</code></td>
+<td>Each line prefixed with its position in the full output</td>
 </tr>
 <tr>
-<td>Loopback interface</td>
-<td>A logical Layer 3 interface that does not require a port, classifier, FP, or FD.</td>
+<td><strong>Filter</strong></td>
+<td>a pipe, then <code>grep</code>, <code>exclude</code>, <code>begin</code>, or <code>end</code></td>
+<td>Keep, drop, or truncate lines — the full set is under Narrowing the output</td>
+</tr>
+<tr>
+<td><strong>Diff</strong></td>
+<td><code>config compare source running target &lt;snap&gt;</code></td>
+<td>The rollback — commands that undo everything done since <code>&lt;snap&gt;</code></td>
+</tr>
+<tr>
+<td></td>
+<td><code>config compare source &lt;snap&gt; target running</code></td>
+<td>The play — commands that reproduce everything done since <code>&lt;snap&gt;</code></td>
+</tr>
+<tr>
+<td></td>
+<td><code>config backup filename &lt;name&gt;</code></td>
+<td>Takes the <code>&lt;snap&gt;</code>; <code>running</code> and <code>bootstrap</code> work in either slot too</td>
 </tr>
 </tbody>
 </table>
-<p>The classifier does not process frames by itself. It becomes active in the
-forwarding path when an FP references it. The FP implements the classifier
-match for its logical port in the dataplane and resolves matching traffic
-into the configured FD. L2 services are configured through logical ports and
-flow points, not directly on ETTPs.</p>
-<h2 id="traffic-through-the-objects">Traffic Through the Objects</h2>
-<p><img alt="SAOS IP interface packet path" src="interface-packet-path.svg" /></p>
-<p>On ingress, a frame passes through the physical interface components and
-ETTP to the bound logical port. The FP applies its attached classifier and
-optional ingress L2 transformation, and matching traffic enters the FD used
-by the IP interface. On egress, traffic returns through the FD and FP, where
-an egress L2 transformation can be applied before transmission through the
-logical port, ETTP, and physical interface.</p>
+<h3 id="show-running-and-show-running-config"><code>show running</code> and <code>show running config</code></h3>
+<p>The two entry styles from earlier in this guide come back here as two output
+styles, and the one word between them decides which you get.</p>
+<p><code>show running config</code> prints the flat form — each object as one complete
+command path, the same shape you would type:</p>
+<pre><code>PE_1&gt; show running config section fds
+fds fd &quot;remote-fd&quot; pfg-profile &quot;default-pfg-profile&quot; 
+fds fd &quot;remote-fd&quot; initiate-l2-transform vlan-stack &quot;1&quot; push-pcp map push-vid 127 
+</code></pre>
+<p><code>show running</code> prints the same configuration as an indented tree:</p>
+<pre><code>PE_1&gt; show running section fds
+fds
+  fd 'remote-fd'
+    pfg-profile &quot;default-pfg-profile&quot;
+    initiate-l2-transform
+      vlan-stack '1'
+        push-pcp map
+        push-vid 127
+</code></pre>
+<p>The tree is easier to read, and it has been stripped of every <code>exit</code> that
+would let you put it back. Across the whole node the difference is not
+subtle: <code>show running config</code> produces 1353 lines carrying 479 <code>exit</code>
+commands, while <code>show running</code> produces 3093 lines carrying none. Read a node
+with <code>show running</code>; move a node's configuration with <code>show running config</code>.</p>
+<h3 id="trimming-the-bootstrap-noise">Trimming the bootstrap noise</h3>
+<p>Most of what a node is running, nobody typed. SAOS boots a factory baseline —
+port definitions, maintenance domains, DHCP clients, NACM rules — and on the
+lab sim that baseline is 1353 lines. <code>excluding-bootstrap</code> subtracts it and
+leaves the 59 lines that were configured on top:</p>
+<pre><code class="language-saos">show running config excluding-bootstrap
+</code></pre>
+<p>This is the everyday form. It is also the one to reach for when you want to
+confirm your own work and nothing else:</p>
+<pre><code>PE_1&gt; show running config excluding-bootstrap | grep DOC-LB
+oc-if:interfaces interface &quot;DOC-LB&quot; config name &quot;DOC-LB&quot; type loopback 
+oc-if:interfaces interface &quot;DOC-LB&quot; ipv4 addresses address &quot;10.20.30.40&quot; config ip &quot;10.20.30.40&quot; prefix-length 32 
+</code></pre>
+<h3 id="seeing-what-you-did-not-set">Seeing what you did not set</h3>
+<p><code>with-defaults</code> goes the other way, adding every value the node is running at
+its default — 1788 lines where the plain form gives 1353. Reach for it when a
+feature behaves as though something is configured and you cannot find the
+line. Often there is no line, only a default.</p>
+<pre><code class="language-saos">show running config with-defaults
+</code></pre>
+<h3 id="other-formats">Other formats</h3>
+<p><code>format cli</code> is the default and needs no flag. <code>format xml</code> prints the same
+configuration as the YANG data the node actually stores, namespaces included —
+the form a NETCONF payload takes:</p>
+<pre><code>PE_1&gt; show running config section fds format xml
+&lt;fds xmlns=&quot;urn:ciena:params:xml:ns:yang:ciena-pn:ciena-mef-fd&quot;&gt;
+  &lt;fd&gt;
+    &lt;name&gt;remote-fd&lt;/name&gt;
+    &lt;pfg-profile&gt;default-pfg-profile&lt;/pfg-profile&gt;
+    &lt;initiate-l2-transform&gt;
+      &lt;vlan-stack&gt;
+        &lt;tag&gt;1&lt;/tag&gt;
+        &lt;push-pcp&gt;map&lt;/push-pcp&gt;
+        &lt;push-vid&gt;127&lt;/push-vid&gt;
+      &lt;/vlan-stack&gt;
+    &lt;/initiate-l2-transform&gt;
+  &lt;/fd&gt;
+&lt;/fds&gt;
+</code></pre>
+<p><code>format json</code> is rejected — SAOS answers <code>Unsupported Format</code>.</p>
+<h3 id="narrowing-the-output">Narrowing the output</h3>
+<p>Three ways to ask for less, and they combine:</p>
+<table>
+<thead>
+<tr>
+<th>Option</th>
+<th>Effect</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>section &lt;name&gt;</code></td>
+<td>Only the named top-level section</td>
+</tr>
+<tr>
+<td><code>xpath &lt;path&gt;</code></td>
+<td>Only the subtree at a YANG path</td>
+</tr>
+<tr>
+<td><code>line-numbered</code></td>
+<td>Prefix each line with its position in the full output</td>
+</tr>
+</tbody>
+</table>
+<p>A section name is the YANG container, prefix included where the model has one
+— <code>fds</code>, <code>classifiers</code>, <code>system</code>, <code>oc-if:interfaces</code>. Guessing at the CLI
+keyword instead of the container gets you told:</p>
+<pre><code>PE_1&gt; show running config section interface
+ No object match for node 'interface' in expr '/interface'
+</code></pre>
+<p>The <code>|</code> filters are the familiar set, and <code>grep</code>, <code>include</code>, and <code>only</code> are
+three spellings of the same thing:</p>
+<table>
+<thead>
+<tr>
+<th>Filter</th>
+<th>Effect</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>grep</code>, <code>include</code>, <code>only</code></td>
+<td>Keep lines containing the pattern</td>
+</tr>
+<tr>
+<td><code>exclude</code>, <code>not</code></td>
+<td>Drop lines containing the pattern</td>
+</tr>
+<tr>
+<td><code>begin</code>, <code>start</code></td>
+<td>Start output at the first matching line</td>
+</tr>
+<tr>
+<td><code>end</code>, <code>stop</code></td>
+<td>End output at the first matching line</td>
+</tr>
+<tr>
+<td><code>null</code></td>
+<td>Discard the output</td>
+</tr>
+</tbody>
+</table>
+<p>Combined, they answer "where does this live in the file?":</p>
+<pre><code>PE_1&gt; show running config section oc-if:interfaces line-numbered | grep DOC-LB
+46: oc-if:interfaces interface &quot;DOC-LB&quot; config name &quot;DOC-LB&quot; type loopback 
+47: oc-if:interfaces interface &quot;DOC-LB&quot; ipv4 addresses address &quot;10.20.30.40&quot; config ip &quot;10.20.30.40&quot; prefix-length 32 
+</code></pre>
+<h3 id="config-compare-the-configuration-as-a-diff"><code>config compare</code> — the configuration as a diff</h3>
+<p><code>config compare</code> answers a different question: not "what is configured?" but
+"what changed?"</p>
+<pre><code class="language-saos">config compare source &lt;reference&gt; target &lt;comparison&gt;
+</code></pre>
+<p>The output is not a list of differences. It is the command script that turns
+the source into the target — plain command paths for what has to be added,
+<code>no</code>-prefixed paths for what has to be removed. Which end you put where
+decides what you get back.</p>
+<p>Both <code>source</code> and <code>target</code> take <code>running</code>, <code>bootstrap</code>, or the name of a saved
+backup — which is how you diff a node against a known-good state. Take the
+snapshot with <code>config backup</code>:</p>
+<pre><code>3984&gt; config backup filename f0-probe2
+Backup successful.
+</code></pre>
+<p>Add a <code>DOC-PROBE</code> loopback after that, and the two directions give you the two
+scripts worth having. Naming <code>running</code> as the source asks "how do I get back?"
+— the rollback:</p>
+<pre><code>3984&gt; config compare source running target f0-probe2
+no oc-if:interfaces interface &quot;DOC-PROBE&quot; 
+</code></pre>
+<p>Naming the snapshot as the source asks "how do I get here?" — the play, which
+is what you hand to another node, or to a change record:</p>
+<pre><code>3984&gt; config compare source f0-probe2 target running
+oc-if:interfaces interface &quot;DOC-PROBE&quot; config name &quot;DOC-PROBE&quot; type loopback
+</code></pre>
+<p>Nothing about that pair is specific to backups. Swap the snapshot for
+<code>bootstrap</code> and the same two directions become "undo everything since this node
+booted" and "rebuild this node from factory". The four captures above come from
+a physical 3984 rather than the lab sim, which rejects a saved backup in the
+<code>source</code> slot.</p>
+<p>One limit worth knowing before you lean on it: <code>config compare</code> accepts no <code>|</code>
+filter, the one command in this section that does not. Narrow it by choosing
+the two states you compare, not by filtering what comes back.</p>
 <blockquote>
-<p><strong>Key idea:</strong> the ETTP represents Ethernet termination, the logical port is
-the service-facing port abstraction, and the FP applies classifier logic to
-connect that logical port to the FD.</p>
+<p><strong>Key idea:</strong> <code>show running</code> is the version you read and <code>show running
+config</code> is the version you can put back — the <code>exit</code> lines are the whole
+difference. <code>excluding-bootstrap</code> narrows it to what someone configured,
+<code>with-defaults</code> widens it to what the node inherited, and <code>config compare</code>
+turns any two of those states into the script that moves between them.</p>
 </blockquote>
               
             </div>
