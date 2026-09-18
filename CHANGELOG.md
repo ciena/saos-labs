@@ -6,6 +6,17 @@ upstream authoring history.
 
 The format is based on [Keep a Changelog](https://keepachangelog.com/).
 
+## 2026-09-17
+
+### Changed
+- **The site is now built and deployed by GitHub Actions.** The prebuilt
+  `docs/` folder is gone from the repository; a `Pages` workflow runs
+  `mkdocs build --strict` from `labs/` and deploys the result on every merge
+  to `main`. Nothing changes for readers: the pages, search, and the
+  downloadable `topo.clab.yml` and `*.cfg.partial` files in each lab's Deploy
+  section are served as before, and a clone no longer carries a second copy
+  of every lab.
+
 ## 2026-08-29
 
 ### Added

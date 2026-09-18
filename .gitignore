@@ -5,7 +5,7 @@ __pycache__/
 .venv/
 venv/
 
-# MkDocs default output (the site is served from the committed docs/ folder)
+# MkDocs build output (built and deployed by .github/workflows/pages.yml)
 /site
 
 # Containerlab runtime artifacts (TLS certs, inventory, per-node rendered config)

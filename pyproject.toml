@@ -13,8 +13,8 @@ readme = "README.md"
 python = "^3.11"
 mkdocs = "1.6.1"
 # S3 renders a mermaid sequence diagram; the site cannot build without
-# the plugin. Both pinned because validate_docs_build compares the
-# committed docs/ against a fresh build byte for byte.
+# the plugin. Both pinned so a local build, lab-validation.yml, and the
+# mirror's pages.yml (same pins) produce the same site.
 mkdocs-mermaid2-plugin = "1.2.3"
 pyyaml = "^6.0"
 paramiko = "^3.4"
