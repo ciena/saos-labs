@@ -30,13 +30,18 @@ VLAN 105 attachment circuits.
 
 ### Node roles and loopback addressing
 
-| Node | Role | Loopback |
+| Node | Role | Address |
 | --- | --- | --- |
-| PE_1 | VPWS endpoint | 172.16.0.1/32 |
-| PE_2 | Transit PE | 172.16.0.2/32 |
-| PE_3 | VPWS endpoint | 172.16.0.5/32 |
-| CE_1 | Customer edge | 10.1.1.1/32 |
-| CE_2 | Customer edge | 10.2.2.2/32 |
+| PE_1 | VPWS endpoint | `172.16.0.1/32` (loopback) |
+| PE_2 | Transit PE | `172.16.0.2/32` (loopback) |
+| PE_3 | VPWS endpoint | `172.16.0.5/32` (loopback) |
+| CE_1 | Customer edge | `172.16.105.1/30` (attachment circuit) |
+| CE_2 | Customer edge | `172.16.105.2/30` (attachment circuit) |
+
+The customer edges have no loopback. Their addresses sit on the
+`CE_1-CE_2-if` interface either side of the VPWS, which is what makes the
+pseudowire demonstrable: the two ends are on one /30 that only works if the
+service carries it.
 
 ## Deploy
 
