@@ -7,7 +7,8 @@
 
 ## 1) Our security posture (what to expect)
 
-- Examples may show **RFC1918** lab IPv4 addresses (10/8, 172.16/12, 192.168/16) and **IPv6 documentation prefix** addresses (**2001:db8::/32**) for clarity and reproducibility.
+- Examples may show **RFC1918** (10/8, 172.16/12, 192.168/16) or **RFC 5737** documentation (192.0.2.0/24, 198.51.100.0/24, 203.0.113.0/24) IPv4 addresses, and **2001:db8::/32** documentation, **fc00::/7** unique-local (ULA) or **fe80::/10** link-local IPv6 addresses, for clarity and reproducibility. The unspecified/loopback forms `0.0.0.0`, `::` and `::1` are also fine.
+- Prose and documentation examples use **2001:db8::/32** for IPv6. Lab device configs use **ULA fc00::/7** instead, because SAOS rejects 2001:db8::/32 on an interface as a martian address ("IPv6 address is a martian address. Validation failed").
 - Examples may reference **publicly documented device default credentials** *only* to illustrate first-login flows.
   > **IMPORTANT:** Defaults are for isolated lab illustration. **Change all credentials before any deployment** and follow your organization’s password policy.
 
@@ -16,13 +17,13 @@
 ## 2) Hard rules for content (must / must-not)
 
 ### The files in this repo **MUST**:
-- Use **only** RFC1918 (IPv4) or **2001:db8::/32** (IPv6) in examples.
+- Use **only** RFC1918 or RFC 5737 (IPv4) and **2001:db8::/32**, **fc00::/7** ULA or **fe80::/10** link-local (IPv6) addresses in examples. `scripts/validate_addresses.py` enforces this on every tracked file.
 - Use **generic hostnames** in prose (e.g., `router-a`, `router-b`); keep literal IPs inside code blocks.
 - Sanitize screenshots (titles, prompts, banners, hostnames, ticket numbers).
 
 ### The files in this repo **MUST NOT** include:
 - Any **public IP addresses**
-  - i.e. Typical "public" IP addresses (such as the well-known public DNS loopbacks) must be replaced with RFC1918 or 2001:db8::/32 equivalents.
+  - i.e. Typical "public" IP addresses (such as the well-known public DNS loopbacks) must be replaced with RFC1918, RFC 5737 or 2001:db8::/32 equivalents (fc00::/7 in lab device configs).
 - Any **business system** IPs/hostnames, or real **internal DNS names**.
 - **Non-default** or environment-specific secrets: passwords, API keys, tokens, SNMP communities, TACACS/RADIUS shared secrets, certificate private keys, JWTs, SSH private keys, etc.
 - **Customer** data of any kind: configs, logs, support bundles, PCAPs, inventory lists, topologies, ticket numbers, names, or emails.
@@ -36,7 +37,7 @@
 ## 3) Example style (allowed patterns)
 
 ```bash
-# Allowed: RFC1918 IPv4 in a code block, generic hostnames in prose
+# Allowed: RFC1918 or RFC 5737 IPv4 in a code block, generic hostnames in prose
 ssh diag@10.92.44.10   # router-a (lab)
 ssh diag@10.92.44.11   # router-b (lab)
 ```
@@ -51,7 +52,7 @@ ssh diag@10.92.44.11   # router-b (lab)
 - **Automated scanning:**
   - GitHub Secret Scanning / Push Protection (if available) must be enabled.
   - CI must run a secret scanner (e.g., gitleaks or trufflehog).
-  - Configure scanners to **block real secrets** and **allow** RFC1918/2001:db8 addresses.
+  - Configure scanners to **block real secrets** and **allow** RFC1918 / RFC 5737 / 2001:db8::/32 / fc00::/7 / fe80::/10 addresses.
 - **Branch protection:** Require passing checks and at least one Security reviewer approval on protected branches.
 
 ---
@@ -60,7 +61,7 @@ ssh diag@10.92.44.11   # router-b (lab)
 
 Add the following to every PR description and check all that apply:
 
-- [ ] Only **RFC1918** (IPv4) and/or **2001:db8::/32** (IPv6) addresses appear.
+- [ ] Only **RFC1918** or **RFC 5737** (IPv4) and **2001:db8::/32**, **fc00::/7** or **fe80::/10** (IPv6) addresses appear.
 - [ ] **No public IPs**, **no internal DNS/hostnames**, **no site names**.
 - [ ] **No non-default credentials, tokens, keys, or secrets** of any kind.
 - [ ] If a default credential is shown, an **IMPORTANT** callout instructs users to **change it**.

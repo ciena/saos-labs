@@ -6,6 +6,23 @@ upstream authoring history.
 
 The format is based on [Keep a Changelog](https://keepachangelog.com/).
 
+## 2026-10-29
+
+### Changed
+- **The example address policy is wider and stated exactly.** Besides RFC1918,
+  examples may now use the RFC 5737 IPv4 documentation ranges (192.0.2.0/24,
+  198.51.100.0/24, 203.0.113.0/24). For IPv6, prose and documentation examples
+  use `2001:db8::/32`, while the lab device configs use unique-local
+  `fc00::/7`, because SAOS rejects `2001:db8::/32` on an interface as a martian
+  address; link-local `fe80::/10` is also allowed. `SECURITY.md`, its PR
+  checklist, the README and the secret-scan notes say the same thing.
+
+### Fixed
+- **S2's address table names the customer-edge addresses correctly.** CE_1 and
+  CE_2 have no loopback: the table now shows their `172.16.105.0/30`
+  attachment-circuit addresses and explains why that /30 is what proves the
+  pseudowire carries traffic.
+
 ## 2026-09-17
 
 ### Changed

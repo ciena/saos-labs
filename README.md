@@ -167,5 +167,6 @@ rendering tooling is required to build the docs.
 ## License & Security
 
 Released under the terms in [LICENSE](LICENSE). All example addresses are
-RFC1918 / `2001:db8::/32` documentation ranges; see [SECURITY.md](SECURITY.md)
+RFC1918 or RFC 5737 (IPv4) and `2001:db8::/32`, `fc00::/7` ULA (lab device
+configs) or `fe80::/10` link-local (IPv6); see [SECURITY.md](SECURITY.md)
 for the content policy and coordinated-disclosure process.
